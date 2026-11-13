@@ -1,0 +1,1219 @@
+test paste<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="A cozy barn game: muck stalls, groom horses, teach riding lessons, and earn new horses and tack.">
+<title>Willow Creek Stables</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Grandstander:wght@600;800&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: a barn at golden hour. Barn-red sign up top, a big lit barn scene, a chalkboard chore list below; mini-games open on a canvas-tan panel. Single warm theme by design. */
+:root{
+  --night:#26170f; --wood:#6e4429; --wood-lt:#8f5d37; --wood-dk:#3d2517;
+  --hay:#f0c25a; --hay-dk:#b4862a; --barn:#9a3226; --barn-dk:#5e1d16;
+  --pasture:#5d8a4c; --canvas:#f6e6c8; --canvas-dk:#e9d3ab; --ink:#3a2418;
+  --chalk:#f4efe4; --chalk-dim:#cfc6b4; --chalkboard:#2f3a32; --muted:#c7a582;
+  --good:#3f8a4f; --soft:#c47a1c;
+  --display:'Grandstander','Comic Sans MS','Trebuchet MS',system-ui,sans-serif;
+  --body:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  background-color:var(--night);
+  background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.22) 0 2px,transparent 2px 72px),linear-gradient(#3a2418,#20130c);
+  color:var(--chalk);font-family:var(--body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px 40px;min-height:100vh;
+}
+button{font:inherit}
+:focus-visible{outline:3px solid #7fd0ff;outline-offset:2px}
+.app{max-width:1000px;margin:0 auto;display:grid;gap:18px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between}
+.sign{background:var(--barn);border:4px solid #f3e3c3;border-radius:10px;padding:8px 18px 10px;box-shadow:0 5px 0 var(--barn-dk);transform:rotate(-1.2deg)}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(24px,4.4vw,36px);margin:0;color:#fff6e2;line-height:1.1;text-wrap:balance}
+.sign p{margin:2px 0 0;font-weight:800;color:#f6d8a8;font-size:14px}
+.hud{display:flex;gap:10px;flex-wrap:wrap}
+.chip{background:var(--wood-dk);border:2px solid var(--wood-lt);border-radius:12px;padding:6px 14px;display:grid;min-width:0}
+.lbl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);font-weight:800}
+.chip b{font-family:var(--display);font-size:19px;color:var(--hay);font-weight:800}
+
+/* scene */
+.scene{position:relative;border-radius:16px;overflow:hidden;border:6px solid var(--wood-dk);box-shadow:0 12px 30px rgba(0,0,0,.45);background:#7b4a2b}
+.scene svg.barn{display:block;width:100%;height:auto}
+.clicky{cursor:pointer}
+.clicky:focus-visible{outline:none}
+.clicky:focus-visible > svg{filter:drop-shadow(0 0 6px #7fd0ff)}
+.hop{animation:hop .5s ease-out}
+@keyframes hop{0%,100%{transform:translateY(0)}35%{transform:translateY(-14px)}}
+.bubble{position:absolute;transform:translate(-50%,-100%);background:#fffaf0;color:var(--ink);border-radius:14px;padding:8px 12px;font-weight:800;font-size:clamp(12px,1.8vw,15px);max-width:min(250px,46%);box-shadow:0 4px 0 rgba(0,0,0,.25);pointer-events:none;text-align:center}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-8px;margin-left:-8px;border:8px solid transparent;border-bottom:0;border-top-color:#fffaf0}
+.bubble.pop{animation:pop .25s ease-out}
+@keyframes pop{from{transform:translate(-50%,-80%) scale(.7);opacity:0}}
+.tail{transform-origin:84px 100px;animation:swish 5s ease-in-out infinite}
+@keyframes swish{0%,70%,100%{transform:rotate(0)}78%{transform:rotate(7deg)}86%{transform:rotate(-4deg)}}
+.wag{transform-box:fill-box;transform-origin:100% 90%;animation:wag .6s ease-in-out infinite alternate}
+@keyframes wag{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}
+.bulb{animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.55}}
+
+/* chalkboard */
+.board{background:var(--chalkboard);border:10px solid var(--wood);border-radius:12px;padding:18px;box-shadow:inset 0 0 50px rgba(0,0,0,.4),0 8px 20px rgba(0,0,0,.35)}
+.board h2{font-family:var(--display);margin:0 0 12px;color:var(--chalk);font-size:24px;font-weight:800}
+.chores{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.chore{display:grid;grid-template-columns:58px 1fr;gap:2px 12px;align-items:center;text-align:left;background:rgba(255,255,255,.05);border:2px dashed rgba(244,239,228,.5);border-radius:12px;padding:12px;color:var(--chalk);cursor:pointer;min-width:0}
+.chore:hover:not(:disabled){background:rgba(255,255,255,.1)}
+.chore:disabled{cursor:default}
+.chore.done{border-style:solid;border-color:var(--hay)}
+.chore .ico{grid-row:span 3;width:58px;height:58px}
+.chore .t{font-family:var(--display);font-size:19px;font-weight:800;line-height:1.15}
+.chore .s{font-size:13px;color:var(--chalk-dim)}
+.chore .st{font-weight:800;color:var(--hay);font-size:14px}
+.board-foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+.big-btn{font-family:var(--display);font-weight:800;font-size:18px;background:var(--hay);color:var(--ink);border:0;border-radius:12px;padding:12px 20px;box-shadow:0 4px 0 var(--hay-dk);cursor:pointer}
+.big-btn:active:not(:disabled){transform:translateY(2px);box-shadow:0 2px 0 var(--hay-dk)}
+.big-btn:disabled{background:#5b5a4e;color:#bdb6a6;box-shadow:none;cursor:not-allowed}
+.wood-btn{font-family:var(--display);font-weight:800;font-size:17px;background:var(--wood-lt);color:#fff3dc;border:0;border-radius:12px;padding:12px 18px;box-shadow:0 4px 0 var(--wood-dk);cursor:pointer}
+.wood-btn:active{transform:translateY(2px);box-shadow:0 2px 0 var(--wood-dk)}
+.link-btn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font-weight:700;padding:6px}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--muted);font-size:13px}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(20,12,6,.75);display:grid;place-items:center;z-index:50;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.panel{background:var(--canvas);color:var(--ink);border-radius:18px;border:6px solid var(--wood);width:min(860px,100%);max-height:100%;overflow:auto;padding:20px;position:relative;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.panel h2{font-family:var(--display);font-weight:800;color:var(--barn);margin:0;font-size:clamp(22px,3.4vw,30px);line-height:1.15;text-wrap:balance}
+.panel p{margin:6px 0}
+.x-btn{position:absolute;top:10px;right:10px;width:40px;height:40px;border-radius:50%;border:0;background:var(--canvas-dk);color:var(--ink);font-size:22px;font-weight:800;cursor:pointer;z-index:2}
+.mg-head{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;padding-right:44px;margin-bottom:6px}
+.steps{display:flex;flex-wrap:wrap;gap:6px}
+.step{font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;background:var(--canvas-dk);color:#7a5a40}
+.step.on{background:var(--barn);color:#fff}
+.step.done{background:var(--good);color:#fff}
+.hint{font-weight:800;font-size:17px;min-height:1.5em}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:800;color:#9a7552;margin:0}
+
+/* muck */
+.stall{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;border:5px solid var(--wood);margin-top:8px;
+  background:repeating-linear-gradient(35deg,#b48545 0 6px,#a07338 6px 10px,#c09253 10px 15px);transition:background .6s}
+.stall.fresh{background:repeating-linear-gradient(35deg,#f1dfae 0 6px,#e3c98d 6px 9px,#f8ebc6 9px 14px)}
+.pile{position:absolute;width:13%;border:0;padding:0;background:transparent;cursor:pointer;transition:transform .45s ease-in,opacity .45s;transform:translate(0,0)}
+.pile svg{display:block;width:100%}
+.pile:hover svg{transform:scale(1.06)}
+.pile.fly{opacity:0;pointer-events:none}
+.stink{animation:stink 1.6s ease-in-out infinite}
+@keyframes stink{50%{transform:translateY(-3px);opacity:.5}}
+.barrow{position:absolute;right:2%;bottom:3%;width:24%}
+.barrow.bump{animation:hop .3s}
+.corner-dog{position:absolute;left:1%;bottom:1%;width:18%;pointer-events:none}
+.count{position:absolute;left:2%;top:3%;background:rgba(58,36,24,.88);color:#fff;font-family:var(--display);font-weight:800;padding:4px 12px;border-radius:10px;font-variant-numeric:tabular-nums}
+.bare{position:absolute;width:20%;aspect-ratio:1.6;border-radius:50%;border:3px dashed rgba(255,255,255,.7);background:#7c5a33;cursor:pointer;transform:translate(-50%,-50%);color:#fff;font-weight:800;font-size:13px}
+.bare.filled{background:repeating-linear-gradient(35deg,#f1dfae 0 6px,#e3c98d 6px 9px,#f8ebc6 9px 14px);border-color:transparent;color:transparent;pointer-events:none}
+.water{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:12px}
+.bucket{position:relative;width:120px;height:140px;background:#d9dde0;clip-path:polygon(0 0,100% 0,86% 100%,14% 100%);flex:none}
+.bucket .fill{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(#7cc4ec,#3d8fc4)}
+.bucket .zone{position:absolute;left:0;right:0;bottom:72%;height:18%;border-top:3px dashed var(--good);border-bottom:3px dashed var(--good);background:rgba(63,138,79,.15)}
+.water-copy{flex:1;min-width:200px}
+
+/* groom */
+.groom-stage{position:relative;aspect-ratio:300/220;max-width:620px;margin:6px auto 0;touch-action:none;border-radius:14px;cursor:grab;
+  background:radial-gradient(ellipse at 50% 95%,#d7b47a 0 40%,transparent 41%),linear-gradient(#e9d6b2,#e2c899)}
+.groom-stage:active{cursor:grabbing}
+.groom-stage > svg{position:absolute;inset:0;width:100%;height:100%}
+.spot{position:absolute;transform:translate(-50%,-50%);width:12%;aspect-ratio:1;border:0;padding:0;border-radius:50%;background:transparent;cursor:inherit;transition:opacity .15s}
+.spot.mud{background:radial-gradient(circle at 45% 40%,#6b4a2c 0 30%,#5a3c22 31% 50%,rgba(90,60,34,0) 68%)}
+.spot.dust{background:radial-gradient(circle,rgba(226,214,186,.95) 0 28%,rgba(226,214,186,.55) 48%,rgba(226,214,186,0) 68%)}
+.spot.tangle svg{width:100%;height:100%}
+.spot.hoof{width:9%;cursor:pointer;background:radial-gradient(circle,#8b8478 0 22%,#6e675d 23% 30%,rgba(0,0,0,0) 34%);box-shadow:0 0 0 3px var(--hay);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(240,194,90,.35)}}
+.spot.clean{opacity:0!important;pointer-events:none;animation:none}
+.sparkle{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;pointer-events:none;animation:spark .7s ease-out forwards}
+@keyframes spark{from{transform:scale(.3) rotate(0);opacity:1}to{transform:scale(1.4) rotate(90deg);opacity:0}}
+.groom-stage.shiny > svg{filter:brightness(1.08) saturate(1.15) drop-shadow(0 0 10px rgba(255,236,170,.8))}
+.mg-dog{width:84px;flex:none;margin-left:auto}
+
+/* lesson */
+.cuecard{font-family:var(--display);font-weight:800;font-size:clamp(18px,3vw,24px);background:#fff8ea;border:3px solid var(--wood-lt);border-radius:12px;padding:8px 14px;margin:8px 0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cuecard .gt{color:var(--barn);text-transform:uppercase}
+.letter{display:inline-grid;place-items:center;width:1.6em;height:1.6em;background:var(--hay);border:2px solid var(--ink);border-radius:5px;font-family:var(--body)}
+.arena-wrap{position:relative}
+.arena-wrap canvas{display:block;width:100%;border-radius:12px}
+.callout{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:var(--good);color:#fff;font-weight:800;padding:6px 14px;border-radius:999px;font-size:15px;max-width:90%;text-align:center;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.callout.soft{background:var(--soft)}
+.gaits{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.gait{font-family:var(--display);font-weight:800;font-size:19px;border:0;border-radius:12px;padding:12px 6px;cursor:pointer;color:#fff;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.gait:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.25)}
+.gait[data-g=walk]{background:#4f8a52}.gait[data-g=trot]{background:#3f7fb8}.gait[data-g=canter]{background:#8a4fb8}.gait[data-g=halt]{background:#b8433a}
+.progress{font-weight:700;color:#7a5a40;font-size:14px;font-variant-numeric:tabular-nums}
+
+/* results & prizes */
+.result{text-align:center;display:grid;gap:10px;justify-items:center;padding:6px 0}
+.stars{display:flex;gap:6px}
+.stars svg{width:48px;height:48px}
+.result-art{width:min(380px,90%)}
+.result-art svg{width:100%;height:auto;display:block}
+.gift{width:170px;height:150px;border:0;cursor:pointer;background:none;padding:0;animation:wiggle 1.4s ease-in-out infinite}
+@keyframes wiggle{0%,60%,100%{transform:rotate(0)}70%{transform:rotate(-6deg)}80%{transform:rotate(6deg)}90%{transform:rotate(-3deg)}}
+.prize-name{font-family:var(--display);font-weight:800;font-size:22px;color:var(--ink)}
+.confetti{position:fixed;top:-20px;width:10px;height:14px;z-index:60;pointer-events:none;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* tack room */
+.tack{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:20px;align-items:start;margin-top:10px}
+.tack-preview{background:linear-gradient(#e9d6b2,#dcc08e);border-radius:14px;padding:8px;position:sticky;top:0}
+.tack-preview svg{width:100%;height:auto;display:block}
+.tack-preview .nm{font-family:var(--display);font-weight:800;text-align:center;font-size:20px}
+.tack-preview .ds{text-align:center;font-size:14px;color:#7a5a40;margin:0 0 6px}
+.opt-group{margin-bottom:14px}
+.opt-group h3{font-family:var(--display);font-weight:800;font-size:17px;margin:0 0 6px;color:var(--barn)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.cbtn{border:2px solid #c9a87a;background:#fff8ea;border-radius:999px;padding:6px 12px;font-weight:800;color:var(--ink);cursor:pointer;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.cbtn .sw{width:14px;height:14px;border-radius:50%;border:1.5px solid rgba(0,0,0,.35)}
+.cbtn.on{background:var(--barn);color:#fff;border-color:var(--barn)}
+.cbtn:disabled{opacity:.55;cursor:not-allowed;border-style:dashed}
+
+/* welcome */
+.welcome{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:start;padding-right:10px}
+.welcome-art svg{width:100%;height:auto}
+.welcome label,.welcome .lbl2{display:block;font-weight:800;margin:12px 0 4px}
+.welcome input{width:100%;max-width:320px;font:inherit;font-size:18px;padding:10px 12px;border-radius:10px;border:2px solid var(--wood-lt);background:#fffaf0;color:var(--ink)}
+.skins{display:flex;gap:8px;margin-bottom:16px}
+.skin{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer;box-shadow:0 0 0 2px rgba(0,0,0,.15)}
+.skin.on{border-color:var(--barn)}
+.meet{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;border-top:2px dashed #cfb48c;padding-top:14px}
+.meet div{display:grid;grid-template-columns:90px 1fr;gap:10px;align-items:center;font-size:14px}
+.meet b{font-family:var(--display);font-size:17px;display:block}
+
+/* barn map */
+.scene{overflow-x:auto;background:#7fae5e;-webkit-overflow-scrolling:touch}
+.map-inner{position:relative;min-width:680px}
+.map{display:block;width:100%;height:auto}
+.hot{cursor:pointer}.hot:focus-visible{outline:none}
+.hot .hl{opacity:0;transition:opacity .15s}
+.hot:hover .hl,.hot:focus-visible .hl{opacity:1}
+.mark{animation:markbob 1.2s ease-in-out infinite}
+@keyframes markbob{50%{transform:translateY(-5px)}}
+.phorse{cursor:pointer}.phorse:hover > g{filter:drop-shadow(0 0 6px #fff6c8)}
+.graze{animation:graze 6s ease-in-out infinite}
+@keyframes graze{0%,100%{transform:translateX(0)}50%{transform:translateX(8px)}}
+.walker{cursor:pointer}
+.walking .bob{animation:bob .26s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-3px)}}
+.coin{width:1em;height:1em;vertical-align:-.15em}
+.chip b .coin{width:.9em;height:.9em}
+.coin-pop{font-family:var(--display);font-weight:800;color:#8a5f1a;font-size:19px;margin:0}
+.cbtn.buy{border-color:var(--hay-dk);background:#fff1c7}
+.shop-coins{font-family:var(--display);font-weight:800;font-size:18px;display:inline-flex;gap:6px;align-items:center;background:var(--wood-dk);color:var(--hay);padding:4px 14px;border-radius:999px}
+
+/* barn radio */
+.mrow{display:flex;align-items:center;gap:8px;margin-top:2px}
+.mbtn{font-family:var(--display);font-weight:800;font-size:15px;background:var(--hay);color:var(--ink);border:0;border-radius:8px;padding:3px 12px;cursor:pointer;box-shadow:0 2px 0 var(--hay-dk)}
+.mbtn[aria-pressed=true]{background:var(--pasture);color:#fff;box-shadow:0 2px 0 #3c5e30}
+#vol{width:84px;accent-color:var(--hay)}
+
+/* arena: now cue */
+.cuecard.now{background:#dff3d8;border-color:var(--good)}
+.nowtag{display:none;background:var(--good);color:#fff;border-radius:999px;padding:2px 14px;margin-left:auto}
+.cuecard.now .nowtag{display:inline-block;animation:pop .2s}
+
+/* feed */
+.feed{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;margin-top:8px}
+.feedcard{background:#fffdf6;border:2px solid #d8c29b;border-radius:6px;padding:12px 14px;box-shadow:2px 3px 0 rgba(0,0,0,.12);transform:rotate(-1deg)}
+.feedcard ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;font-weight:800}
+.feedcard li{display:flex;justify-content:space-between;gap:8px;align-items:center;border-bottom:1px dashed #d8c29b;padding-bottom:6px}
+.ticks{display:flex;gap:4px}.ticks i{width:16px;height:16px;border:2px solid #9a7552;border-radius:4px}.ticks i.on{background:var(--good);border-color:var(--good)}
+.trough{position:relative;min-height:130px;background:linear-gradient(#8a5a36,#6e4429);border-radius:10px 10px 40px 40px;border:4px solid var(--wood-dk);display:flex;flex-wrap:wrap;align-content:flex-end;gap:2px;padding:26px 14px 12px}
+.trough-lbl{position:absolute;top:4px;left:12px;color:#f3e3c3;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.trough-item{width:44px;animation:drop .35s ease-out}.trough-item svg{width:100%;display:block}
+@keyframes drop{from{transform:translateY(-40px);opacity:0}}
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px;padding:10px;background:#d9bf92;border-bottom:8px solid var(--wood);border-radius:10px}
+.shelf-item{display:grid;justify-items:center;gap:2px;background:#fff8ea;border:2px solid #c9a87a;border-radius:12px;padding:8px 4px;cursor:pointer;font-weight:800;font-size:13px;color:var(--ink)}
+.shelf-item svg{width:44px;height:44px}
+.shelf-item:disabled{opacity:.5;cursor:default}
+.nope{animation:nope .35s}
+@keyframes nope{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* flies */
+.flystall .fwin{position:absolute;top:5%;right:4%;width:20%;aspect-ratio:1.3;background:linear-gradient(#f2a65e,#f9dda0 60%,#6f9a56 60%);border:5px solid var(--wood-dk);border-radius:4px}
+.fs-horse{position:absolute;left:18%;bottom:0;width:60%;pointer-events:none}.fs-horse svg{display:block;width:100%}
+.fly{position:absolute;left:0;top:0;width:44px;height:44px;padding:9px;border:0;background:transparent;cursor:pointer;z-index:2}
+.fly svg{width:100%;height:100%;display:block}
+.fly .wing{animation:buzz .08s linear infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes buzz{to{transform:scaleY(.4)}}
+.fly.shoo{transition:transform .6s ease-in,opacity .6s;opacity:0;pointer-events:none}
+
+/* bath + braid + tack-up */
+.deco{position:absolute;inset:0;pointer-events:none}
+.spot svg{width:100%;height:100%;display:block}
+.spot.soap{border:3px dashed rgba(255,255,255,.95);background:rgba(255,255,255,.2)}
+.spot.bubbles,.spot.drips{width:15%}
+.groom-stage.wet{background:linear-gradient(#cfe0e6,#b2cad4)}
+.groom-stage.shake > svg{animation:shake .22s 5}
+@keyframes shake{25%{transform:translateX(-6px) rotate(-1deg)}75%{transform:translateX(6px) rotate(1deg)}}
+.strands{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+.strand{background:var(--c);border:0;border-radius:14px;padding:18px 6px;font-family:var(--display);font-weight:800;font-size:19px;color:var(--ink);cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .12s,filter .12s}
+.strand.lit{transform:scale(1.08);filter:brightness(1.25);box-shadow:0 0 0 5px #fff,0 0 24px var(--c)}
+.strands.wait{pointer-events:none}
+.knot{position:absolute;width:4.6%;aspect-ratio:1;border-radius:50%;transform:translate(-60%,-50%);border:2px solid rgba(0,0,0,.35);animation:knot .3s ease-out}
+.knot::after{content:"";position:absolute;left:50%;top:55%;width:110%;height:70%;transform:translateX(-50%);background:var(--c);clip-path:polygon(0 0,50% 50%,100% 0,100% 100%,50% 50%,0 100%)}
+@keyframes knot{from{transform:translate(-60%,-50%) scale(0)}}
+.tackbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center}
+.tb.done{background:var(--good);box-shadow:0 4px 0 #2a5e35}
+.tb:disabled{cursor:default}
+canvas.lead{touch-action:none;cursor:pointer}
+
+@media (max-width:700px){
+  .chores{grid-template-columns:1fr}
+  .stall{aspect-ratio:4/3}
+  .gaits{grid-template-columns:repeat(2,1fr)}
+  .tack{grid-template-columns:1fr}
+  .tack-preview{position:static}
+  .welcome{grid-template-columns:1fr}
+  .welcome-art{width:120px}
+  .meet{grid-template-columns:1fr}
+  .mg-dog{width:64px}
+  .feed{grid-template-columns:1fr}
+  .shelf{grid-template-columns:repeat(2,1fr)}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="top">
+    <div class="sign"><h1>Willow Creek Stables</h1><p id="barnOf">Welcome, barn boss</p></div>
+    <div class="hud">
+      <div class="chip"><span class="lbl">Level</span><b id="lvl">1</b></div>
+      <div class="chip"><span class="lbl">Coins</span><b id="coins">0</b></div>
+      <div class="chip"><span class="lbl">Next prize</span><b id="nextPrize">a hairstyle</b></div>
+      <div class="chip" id="ribbonChip" hidden><span class="lbl">Blue ribbons</span><b id="ribbons">0</b></div>
+      <div class="chip"><span class="lbl">Barn radio</span><div class="mrow"><button class="mbtn" id="musicBtn" aria-pressed="false">Play</button><input type="range" id="vol" min="0" max="100" value="60" aria-label="Music volume"></div></div>
+    </div>
+  </header>
+  <section class="scene" id="scene" aria-label="The barn"></section>
+  <section class="board">
+    <h2>Today's chores</h2>
+    <div class="chores" id="chores"></div>
+    <div class="board-foot">
+      <button class="big-btn" id="finishBtn" disabled>Finish the day</button>
+      <button class="wood-btn" id="tackBtn">Go to the tack room</button>
+    </div>
+  </section>
+  <footer><span>Tip: tap a place on the map to walk there. Tap the dogs to say hi.</span><button class="link-btn" id="resetBtn">Start over</button></footer>
+</div>
+
+<div class="modal" id="modal" hidden><div class="panel" role="dialog" aria-modal="true"><button class="x-btn" id="xBtn" aria-label="Close">×</button><div id="mbody"></div></div></div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const PI=Math.PI, TAU=PI*2;
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const mod=(a,m)=>((a%m)+m)%m;
+function angDiff(a,b){let d=mod(a-b,TAU);if(d>PI)d-=TAU;return d}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function shade(hex,amt){const n=parseInt(hex.slice(1),16);const f=v=>Math.max(0,Math.min(255,Math.round(amt<0?v*(1+amt):v+(255-v)*amt)));return'#'+[n>>16,(n>>8)&255,n&255].map(v=>f(v).toString(16).padStart(2,'0')).join('')}
+let UID=0;
+
+/* ---------- catalog ---------- */
+const HORSES={
+  maple:{name:'Maple',desc:'Chestnut mare with a white blaze',coat:'#a5532b',mane:'#e0ae76',blaze:true,socks:[0]},
+  clover:{name:'Clover',desc:'Paint pony with brown patches',coat:'#f3eee6',mane:'#6e4126',patches:'#7d4a2a',socks:[]},
+  biscuit:{name:'Biscuit',desc:'Golden palomino with a snowy mane',coat:'#d6a043',mane:'#f6ead0',blaze:true,socks:[0,1]},
+  midnight:{name:'Midnight',desc:'Black Friesian with feathery feet',coat:'#2c2521',mane:'#141110',feathers:true,socks:[]},
+  pepper:{name:'Pepper',desc:'Dapple grey mare',coat:'#8d949a',mane:'#45484c',dapples:'#c4c9cd',socks:[]}
+};
+const MANES={natural:'Natural',buttons:'Button braids',ribbons:'Ribbon braids',rainbow:'Rainbow',flowers:'Flower crown',curly:'Curly'};
+const TACK={
+  pad:{label:'Saddle pad',items:{none:'None',barnred:'Barn red',sky:'Sky blue',sunflower:'Sunflower stars'}},
+  saddle:{label:'Saddle',items:{none:'None',english:'English',western:'Western'}},
+  bridle:{label:'Bridle',items:{none:'None',leather:'Leather',sparkle:'Purple sparkle'}},
+  wraps:{label:'Leg wraps',items:{none:'None',strawberry:'Strawberry'}}
+};
+const PADS={barnred:['#9b2f27','#f3e3c3'],sky:['#7db8e6','#ffffff'],sunflower:['#f2c230','#7a4a1c']};
+const PRIZES=[{t:'mane',id:'buttons'},{t:'pad',id:'sky'},{t:'horse',id:'clover'},{t:'mane',id:'ribbons'},{t:'bridle',id:'sparkle'},{t:'horse',id:'biscuit'},{t:'mane',id:'rainbow'},{t:'saddle',id:'western'},{t:'wraps',id:'strawberry'},{t:'horse',id:'midnight'},{t:'mane',id:'flowers'},{t:'pad',id:'sunflower'},{t:'horse',id:'pepper'},{t:'mane',id:'curly'}];
+const DEFAULT_OWNED=['horse:maple','mane:natural','pad:none','pad:barnred','saddle:none','saddle:english','bridle:none','bridle:leather','wraps:none'];
+const DEFAULT_LOOK={mane:'natural',pad:'barnred',saddle:'english',bridle:'leather',wraps:'none'};
+const SKINS=['#f6d2b4','#e8b48e','#c98a5e','#8d5a3b','#5e3a26'];
+const STUDENTS=['Ava','Leo','Priya','Sam','Mateo','Nora','Eli','June','Rosie','Theo'];
+
+function prizeName(p){if(p.t==='horse')return'New horse: '+HORSES[p.id].name;if(p.t==='mane')return'Hairstyle: '+MANES[p.id];return TACK[p.t].label+': '+TACK[p.t].items[p.id]}
+function prizeKind(p){return !p?'a blue ribbon':p.t==='horse'?'a new horse':p.t==='mane'?'a hairstyle':'new tack'}
+const owns=(t,id)=>S.owned.includes(t+':'+id);
+const lookOf=id=>Object.assign({},DEFAULT_LOOK,S.looks[id]||{});
+const unlockLevel=(t,id)=>{const i=PRIZES.findIndex(p=>p.t===t&&p.id===id);return i<0?1:i+2};
+
+/* ---------- save ---------- */
+const KEY='willow-creek-save-v1';
+const fresh=()=>({started:false,name:'',skin:SKINS[1],level:1,done:{muck:0,groom:0,lesson:0},owned:[...DEFAULT_OWNED],horse:'maple',looks:{},ribbons:0,coins:0});
+function load(){try{const s=localStorage.getItem(KEY);if(s)return Object.assign(fresh(),JSON.parse(s))}catch(e){}return null}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load()||fresh();
+
+/* ---------- art ---------- */
+function bow(x,y,c,s=1){return`<g transform="translate(${x} ${y}) scale(${s})"><path d="M0,0 L-7,-5 L-7,5 Z M0,0 L7,-5 L7,5 Z" fill="${c}"/><circle r="2.2" fill="${shade(c,-.25)}"/></g>`}
+function flower(x,y,c){let o='';for(let i=0;i<5;i++){const a=i/5*TAU;o+=`<circle cx="${(x+Math.cos(a)*3.6).toFixed(1)}" cy="${(y+Math.sin(a)*3.6).toFixed(1)}" r="3.2" fill="${c}"/>`}return o+`<circle cx="${x}" cy="${y}" r="2.2" fill="#f6d34a"/>`}
+function star(x,y,r,c){let p='';for(let i=0;i<10;i++){const a=-PI/2+i*PI/5,rr=i%2?r*.45:r;p+=(i?'L':'M')+(x+Math.cos(a)*rr).toFixed(1)+','+(y+Math.sin(a)*rr).toFixed(1)}return`<path d="${p}Z" fill="${c}"/>`}
+
+function horseSVG(id,look,cls='',attrs=''){
+  const h=HORSES[id],u='h'+(++UID),L=Object.assign({mane:'natural',pad:'none',saddle:'none',bridle:'none',wraps:'none'},look||{});
+  const coat=h.coat,far=shade(coat,-.22),mane=h.mane,maneDk=shade(mane,mane==='#141110'?.25:-.3);
+  const mFill=L.mane==='rainbow'?`url(#${u}rb)`:mane;
+  const crest=[[231,21],[224,32],[216,44],[208,56],[200,68],[192,80]];
+  const BODY='M72,112 a78,40 0 1,0 156,0 a78,40 0 1,0 -156,0 Z';
+  const NECK='M194,94 C198,70 212,46 228,28 L252,40 C246,62 238,92 224,124 Z';
+  const HEAD='M224,26 C236,12 256,16 264,28 L288,62 C293,71 289,80 278,81 L265,81 C256,81 250,74 246,66 L230,46 Z';
+  let o=`<svg class="horse ${cls}" ${attrs} viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${h.name} the horse">
+  <defs><linearGradient id="${u}rb" x1="0" y1="0" x2="0.4" y2="1"><stop offset="0" stop-color="#e8505b"/><stop offset=".2" stop-color="#f59e42"/><stop offset=".4" stop-color="#f4d35e"/><stop offset=".6" stop-color="#6cc36b"/><stop offset=".8" stop-color="#4a9fe0"/><stop offset="1" stop-color="#9467d6"/></linearGradient>
+  <clipPath id="${u}c"><path d="${BODY}"/><path d="${NECK}"/><path d="${HEAD}"/></clipPath></defs>
+  <ellipse cx="152" cy="202" rx="112" ry="8" fill="rgba(35,18,8,.28)"/>`;
+  // tail
+  o+='<g class="tail">';
+  if(L.mane==='curly'){for(let i=0;i<8;i++){const t=i/7;o+=`<circle cx="${(80-t*26+(i%2?5:-3)).toFixed(1)}" cy="${(102+t*76).toFixed(1)}" r="${(9-t*3).toFixed(1)}" fill="${mFill}" stroke="${maneDk}" stroke-width="1.2"/>`}}
+  else o+=`<path d="M80,98 C58,108 46,140 52,184 C58,178 64,170 68,152 C72,134 78,118 88,106 Z" fill="${mFill}"/><path d="M72,118 C64,138 60,158 58,176" stroke="${maneDk}" stroke-width="1.5" fill="none" opacity=".5"/>`;
+  if(L.mane==='ribbons')o+=bow(82,101,'#ef6a9a',1.5);
+  o+='</g>';
+  const leg=(x,y,w,hh,fill,near,idx)=>{let s=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="6" fill="${fill}"/>`;
+    if(near&&h.socks.includes(idx))s+=`<rect x="${x}" y="166" width="${w}" height="26" rx="4" fill="#f8f4ec"/>`;
+    if(L.wraps==='strawberry')s+=`<rect x="${x-1}" y="160" width="${w+2}" height="28" rx="4" fill="${near?'#de4258':'#b9374a'}"/><circle cx="${x+4}" cy="168" r="1.2" fill="#f6e27a"/><circle cx="${x+w-5}" cy="176" r="1.2" fill="#f6e27a"/><circle cx="${x+6}" cy="183" r="1.2" fill="#f6e27a"/>`;
+    s+=`<rect x="${x-1}" y="190" width="${w+2}" height="10" rx="3" fill="${near?'#3a2a20':'#2a1d16'}"/>`;
+    if(h.feathers)s+=`<path d="M${x-5},200 C${x-2},180 ${x+w+2},180 ${x+w+5},200 Z" fill="${near?'#221b18':'#171210'}"/>`;
+    return s};
+  o+=leg(107,128,15,66,far,false)+leg(186,132,14,62,far,false);
+  o+=`<path d="${BODY}" fill="${coat}"/><path d="${NECK}" fill="${coat}"/><path d="${HEAD}" fill="${coat}"/>`;
+  if(h.patches)o+=`<g clip-path="url(#${u}c)" fill="${h.patches}"><path d="M96,84 C120,70 146,82 140,104 C134,128 104,124 92,112 Z"/><path d="M168,96 C186,84 206,98 200,120 C194,140 170,138 166,118 Z"/><path d="M206,40 C222,30 240,44 232,62 C224,80 206,74 204,58 Z"/><path d="M80,124 C92,128 100,140 92,150 C84,152 76,140 80,124Z"/></g>`;
+  if(h.dapples){o+=`<g clip-path="url(#${u}c)" fill="${h.dapples}" opacity=".75">`;for(let y=84;y<150;y+=13)for(let x=84+(y%26?6:0);x<220;x+=14)o+=`<circle cx="${x}" cy="${y}" r="4.6"/>`;o+='</g>'}
+  o+=`<path d="M92,138 Q150,162 214,140" stroke="${shade(coat,-.18)}" stroke-width="3" fill="none" opacity=".5"/>`;
+  o+=leg(88,128,17,70,coat,true,1)+leg(204,132,15,66,coat,true,0);
+  o+=`<path d="M226,28 L223,10 L236,24 Z" fill="${far}"/><path d="M232,24 L238,6 L246,22 Z" fill="${coat}"/><path d="M235.5,20 L238,11 L242,20 Z" fill="${shade(coat,-.35)}"/>`;
+  if(h.blaze)o+=`<path d="M242,27 C247,27 252,31 256,38 L282,68 C284,73 280,77 274,74 L250,46 C246,40 243,34 242,27 Z" fill="#f8f4ec"/>`;
+  o+=`<circle cx="250" cy="42" r="4" fill="#1d130d"/><circle cx="251.6" cy="40.4" r="1.3" fill="#fff"/><path d="M246,38 l-3,-3 M249,37 l-1,-4" stroke="#1d130d" stroke-width="1.2"/>
+  <ellipse cx="281" cy="68" rx="2.2" ry="3.2" fill="${shade(coat,-.5)}"/><path d="M268,77 q6,3 12,0" stroke="${shade(coat,-.5)}" stroke-width="1.5" fill="none"/>`;
+  // mane
+  const naturalMane=`<path d="M236,18 C224,28 208,50 192,88 L181,84 C189,62 200,44 210,32 C216,24 224,17 232,13 Z" fill="${mFill}"/><path d="M226,24 C214,40 202,60 190,82" stroke="${maneDk}" stroke-width="1.2" fill="none" opacity=".5"/>`;
+  const forelock=`<path d="M238,23 C248,21 255,28 257,38 C250,36 244,33 240,30 Z" fill="${mFill}"/>`;
+  if(L.mane==='natural'||L.mane==='rainbow'||L.mane==='flowers')o+=naturalMane+forelock;
+  if(L.mane==='flowers'){const cs=['#f48fb1','#fff3f7','#b39ddb','#f48fb1','#fff3f7'];crest.slice(0,5).forEach(([x,y],i)=>o+=flower(x-4,y,cs[i]));o+=flower(248,26,'#ffd1dc')}
+  if(L.mane==='buttons'||L.mane==='ribbons'){crest.forEach(([x,y],i)=>{o+=`<circle cx="${x-3}" cy="${y}" r="5.6" fill="${mane}" stroke="${maneDk}" stroke-width="1.4"/>`;if(L.mane==='ribbons')o+=bow(x-3,y+1,i%2?'#5fa8e8':'#ef6a9a',.8)});o+=forelock}
+  if(L.mane==='curly'){crest.forEach(([x,y],i)=>{o+=`<circle cx="${x-6}" cy="${y-2}" r="7" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/><circle cx="${x-1}" cy="${y+5}" r="5" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/>`});o+=`<circle cx="244" cy="26" r="5" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/>`}
+  // pad + saddle
+  if(L.pad!=='none'){const[pc,pt]=PADS[L.pad];
+    if(L.saddle==='western')o+=`<rect x="116" y="68" width="78" height="40" rx="5" fill="${pc}" stroke="${pt}" stroke-width="3"/>`;
+    else o+=`<rect x="120" y="70" width="64" height="44" rx="11" fill="${pc}" stroke="${pt}" stroke-width="3"/>`;
+    if(L.pad==='sunflower')o+=star(136,98,6,'#7a4a1c')+star(170,102,5,'#7a4a1c')+star(150,84,4,'#fff6d6');}
+  if(L.saddle==='english')o+=`<rect x="151" y="102" width="12" height="48" rx="3" fill="#5b3219"/><path d="M128,76 C136,62 168,60 182,70 L180,79 C166,74 146,74 130,85 Z" fill="#6b3a1f"/><rect x="144" y="74" width="26" height="34" rx="8" fill="#7d4524"/><line x1="158" y1="100" x2="158" y2="128" stroke="#4a2a18" stroke-width="3"/><path d="M151,128 h14 l-2,8 h-10 Z" fill="none" stroke="#c9ccd0" stroke-width="2.5"/>`;
+  if(L.saddle==='western')o+=`<rect x="151" y="100" width="13" height="50" rx="3" fill="#6b3a1f"/><rect x="120" y="72" width="70" height="30" rx="8" fill="#8a4f26" stroke="#5e331a" stroke-width="2" stroke-dasharray="4 3"/><path d="M124,80 C130,66 168,64 184,68 L188,50 L196,50 L194,72 C176,72 150,76 126,90 Z" fill="#a0602e"/><circle cx="192" cy="50" r="4.5" fill="#a0602e"/><rect x="149" y="96" width="18" height="34" rx="4" fill="#8a4f26"/><rect x="146" y="128" width="24" height="9" rx="3" fill="#5e331a"/>`;
+  // bridle
+  if(L.bridle!=='none'){const bc=L.bridle==='sparkle'?'#8a4fd3':'#4a2a18';
+    o+=`<g fill="none" stroke="${bc}" stroke-width="3.6" stroke-linecap="round"><path d="M231,30 L247,34"/><path d="M240,26 L264,70"/><path d="M256,57 C264,53 278,53 286,60"/><path d="M238,29 C236,42 239,52 247,60"/><path d="M266,73 C246,96 216,100 188,76" stroke-width="2.6"/></g><circle cx="266" cy="73" r="3.4" fill="none" stroke="#c9ccd0" stroke-width="2"/>`;
+    if(L.bridle==='sparkle')o+=`<g fill="#fff">${[[244,33],[250,44],[257,57],[270,55],[281,57]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.4"/>`).join('')}</g>`;}
+  return o+'</svg>';
+}
+
+function girlSVG(skin,attrs=''){const u='g'+(++UID),hi='#6e4c3c',dk='#140b07',hair=`url(#${u}h)`;
+  return`<svg ${attrs} viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="You, the barn kid">
+  <defs><pattern id="${u}p" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#b8433a"/><rect width="8" height="3" fill="#8e2f28" opacity=".8"/><rect width="3" height="8" fill="#8e2f28" opacity=".55"/><rect x="5.5" width="1" height="8" fill="#f1d4a6" opacity=".55"/></pattern><linearGradient id="${u}h" gradientUnits="userSpaceOnUse" x1="0" y1="15" x2="0" y2="145"><stop offset="0" stop-color="#3d2921"/><stop offset=".5" stop-color="#2c1c15"/><stop offset="1" stop-color="#1f130d"/></linearGradient></defs>
+  <ellipse cx="50" cy="190" rx="28" ry="5" fill="rgba(35,18,8,.28)"/>
+  <path d="M50,15 C30,15 21,30 22,50 C23,70 21,90 22,108 C23,118 22,124 24,132 Q28,126 31,134 Q35,128 39,136 Q44,129 48,135 Q50,131 52,135 Q56,129 61,136 Q65,128 69,134 Q72,126 76,132 C78,124 77,118 78,108 C79,90 77,70 78,50 C79,30 70,15 50,15 Z" fill="${hair}"/>
+  <g stroke="${dk}" stroke-width="1.2" fill="none" opacity=".6" stroke-linecap="round"><path d="M24,70 C23,95 24,115 26,130"/><path d="M76,70 C77,95 76,115 74,130"/></g>
+  <g stroke="${hi}" stroke-width="1.4" fill="none" opacity=".55" stroke-linecap="round"><path d="M22,60 C21,80 22,96 23,112"/><path d="M78,60 C79,80 78,96 77,112"/></g>
+  <rect x="44" y="55" width="12" height="15" fill="${skin}"/>
+  <rect x="20" y="72" width="11" height="40" rx="5" fill="url(#${u}p)"/><circle cx="25.5" cy="114" r="5" fill="${skin}"/>
+  <rect x="69" y="72" width="11" height="40" rx="5" fill="url(#${u}p)"/><circle cx="74.5" cy="114" r="5" fill="${skin}"/>
+  <path d="M29,70 Q50,62 71,70 L72,121 L28,121 Z" fill="url(#${u}p)"/>
+  <path d="M42,66 L50,75 L58,66" fill="none" stroke="#f1d4a6" stroke-width="2.4"/>
+  <path d="M28,119 L72,119 L70,168 L55,168 L50,134 L45,168 L30,168 Z" fill="#3f5f8f"/>
+  <path d="M30,166 h15 v16 h-19 q-1,-7 4,-8 Z" fill="#6b3a1f"/><path d="M55,166 h15 v8 q5,1 4,8 h-19 Z" fill="#6b3a1f"/>
+  <circle cx="50" cy="40" r="19" fill="${skin}"/>
+  <path d="M29,50 C26,30 35,15 50,15 C65,15 74,30 71,50 C69,44 67,38 66,34 Q63,36.5 60,33.5 Q56.5,36.5 53,33.5 Q50,36.5 47,33.5 Q43.5,36.5 40,33.5 Q37,36.5 34,34 C33,38 31,44 29,50 Z" fill="${hair}"/>
+  <path d="M31,40 C28,56 28,72 30,86 C31,96 30,104 28,110 Q32,107 34,101 Q35,106 35,111 C37,100 37,88 36,76 C35,64 34,54 34,44 Z" fill="${hair}"/><path d="M69,40 C72,56 72,72 70,86 C69,96 70,104 72,110 Q68,107 66,101 Q65,106 65,111 C63,100 63,88 64,76 C65,64 66,54 66,44 Z" fill="${hair}"/>
+  <g stroke="${dk}" stroke-width="1.1" fill="none" opacity=".6" stroke-linecap="round"><path d="M41,21 Q39,28 40,33"/><path d="M47,18 Q46,27 47,33"/><path d="M53,18 Q54,27 53,33"/><path d="M59,21 Q61,28 60,33"/><path d="M32,52 C30,70 32,88 31,106"/><path d="M68,52 C70,70 68,88 69,106"/></g>
+  <g stroke="${hi}" fill="none" stroke-linecap="round"><path d="M35,25 Q50,15 65,25" stroke-width="3" opacity=".75"/><path d="M40,21.5 Q44,19.5 47,19" stroke="#9b7563" stroke-width="1.6"/><path d="M33,58 C32.5,70 33,80 34,92" stroke-width="1.2" opacity=".6"/><path d="M67,58 C67.5,70 67,80 66,92" stroke-width="1.2" opacity=".6"/></g>
+  ${star(64,26,4.5,'#f6c84a')}
+  <circle cx="43" cy="43" r="2.4" fill="#1d130d"/><circle cx="57" cy="43" r="2.4" fill="#1d130d"/>
+  <ellipse cx="41" cy="49" rx="3" ry="1.9" fill="#e88a8a" opacity=".55"/><ellipse cx="59" cy="49" rx="3" ry="1.9" fill="#e88a8a" opacity=".55"/>
+  <path d="M45,50 Q50,55 55,50" stroke="#7a3a2a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  </svg>`}
+
+function toastSVG(attrs=''){return`<svg ${attrs} viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Princess Toast">
+  <ellipse cx="64" cy="93" rx="46" ry="5" fill="rgba(35,18,8,.28)"/>
+  <path class="wag" d="M27,52 c-13,-4 -15,-19 -4,-21 c9,-2 11,8 3,10" fill="none" stroke="#c9976a" stroke-width="6" stroke-linecap="round"/>
+  <rect x="38" y="60" width="11" height="28" rx="5" fill="#a77a52"/><rect x="80" y="60" width="11" height="28" rx="5" fill="#a77a52"/>
+  <ellipse cx="58" cy="60" rx="34" ry="20" fill="#c9976a"/>
+  <ellipse cx="86" cy="66" rx="10" ry="12" fill="#f1e2cc"/>
+  <rect x="30" y="64" width="12" height="25" rx="5" fill="#c9976a"/><rect x="72" y="64" width="12" height="25" rx="5" fill="#c9976a"/>
+  <rect x="29" y="85" width="14" height="5" rx="2.5" fill="#f1e2cc"/><rect x="71" y="85" width="14" height="5" rx="2.5" fill="#f1e2cc"/>
+  <path d="M80,55 q10,9 20,6" stroke="#e46aa0" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <circle cx="96" cy="43" r="19" fill="#c9976a"/>
+  <ellipse cx="110" cy="51" rx="11" ry="10" fill="#3a2a24"/><ellipse cx="117" cy="46" rx="4.4" ry="3.2" fill="#111"/>
+  <path d="M106,59 q3,9 7,0" fill="#e77b8f"/>
+  <path d="M90,32 q4,-3 8,0 M88,37 q5,-3 10,0" stroke="#9a6e48" stroke-width="1.5" fill="none"/>
+  <circle cx="101" cy="41" r="3.2" fill="#1b120e"/><circle cx="102.2" cy="39.8" r="1" fill="#fff"/>
+  <path d="M84,30 l-9,-5 l3,12 Z" fill="#3a2a24"/>
+  <path d="M86,27 l3,-9 l4,6 l4,-10 l4,10 l4,-6 l2,9 Z" fill="#f2c230" stroke="#c9971e" stroke-width="1"/><circle cx="97" cy="22" r="1.6" fill="#ef6a9a"/>
+  </svg>`}
+
+function poinSVG(attrs=''){return`<svg ${attrs} viewBox="0 0 150 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Poindexter">
+  <ellipse cx="68" cy="111" rx="52" ry="5" fill="rgba(35,18,8,.28)"/>
+  <path class="wag" d="M32,50 C20,40 16,24 22,10" fill="none" stroke="#2b211c" stroke-width="5" stroke-linecap="round"/>
+  <rect x="41" y="58" width="9" height="48" rx="4" fill="#9a6232"/><rect x="92" y="58" width="9" height="48" rx="4" fill="#9a6232"/>
+  <ellipse cx="66" cy="55" rx="40" ry="16" fill="#b9783f"/>
+  <path d="M28,52 C32,34 92,32 102,47 C92,56 50,58 28,52 Z" fill="#2b211c"/>
+  <rect x="32" y="60" width="10" height="47" rx="4" fill="#b9783f"/><rect x="85" y="60" width="10" height="47" rx="4" fill="#b9783f"/>
+  <path d="M92,52 L106,24 L122,32 L106,64 Z" fill="#2b211c"/>
+  <ellipse cx="117" cy="29" rx="15" ry="12" fill="#2b211c"/>
+  <ellipse cx="133" cy="38" rx="14" ry="7.5" fill="#b9783f"/>
+  <circle cx="146" cy="36" r="3.8" fill="#111"/>
+  <circle cx="121" cy="21" r="2.4" fill="#b9783f"/>
+  <circle cx="122" cy="27" r="2.6" fill="#1b120e"/><circle cx="123" cy="26" r=".9" fill="#fff"/>
+  <circle cx="122" cy="27" r="6.2" fill="rgba(255,255,255,.15)" stroke="#e8d9b5" stroke-width="1.8"/><path d="M116,27 L106,25" stroke="#e8d9b5" stroke-width="1.6"/>
+  <path d="M111,20 C102,28 101,52 108,64 C115,62 116,42 116,25 Z" fill="#1a1411"/>
+  <path d="M98,48 q8,8 16,4" stroke="#3f8a5a" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="106" cy="58" r="3.5" fill="#f2c230"/>
+  </svg>`}
+
+const ICONS={
+  muck:`<svg class="ico" viewBox="0 0 56 56"><path d="M8,46 q10,-8 22,-2 q10,4 18,0" stroke="#e7bf73" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="14" y1="48" x2="38" y2="12" stroke="#c8915a" stroke-width="4" stroke-linecap="round"/><path d="M34,18 L30,4 M38,20 L37,6 M42,22 L44,9 M32,17 Q38,24 44,22" stroke="#f4efe4" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+  groom:`<svg class="ico" viewBox="0 0 56 56"><rect x="8" y="16" width="40" height="16" rx="8" fill="#c8915a"/><path d="M12,32 v12 M17,32 v13 M22,32 v13 M27,32 v13 M32,32 v13 M37,32 v13 M42,32 v12" stroke="#f4efe4" stroke-width="2.5" stroke-linecap="round"/><path d="M14,22 q14,-6 28,0" stroke="#f0c25a" stroke-width="2" fill="none"/></svg>`,
+  lesson:`<svg class="ico" viewBox="0 0 56 56"><path d="M14,46 V24 a14,14 0 0 1 28,0 V46" fill="none" stroke="#c9ccd0" stroke-width="7" stroke-linecap="round"/><g fill="#2f3a32"><circle cx="14" cy="38" r="1.6"/><circle cx="14" cy="28" r="1.6"/><circle cx="42" cy="38" r="1.6"/><circle cx="42" cy="28" r="1.6"/></g>${star(28,22,6,'#f0c25a')}</svg>`
+};
+const starIcon=on=>`<svg viewBox="0 0 24 24">${star(12,12.5,11,on?'#f0c25a':'#d9c7a6')}</svg>`;
+const starRow=n=>[1,2,3].map(i=>starIcon(i<=n)).join('');
+
+/* ---------- barn map ---------- */
+const COIN=`<svg class="coin" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#f0c25a" stroke="#b4862a" stroke-width="2"/><path d="M6.5,6 v4 a3.5,3.5 0 0 0 7,0 v-4" stroke="#8a5f1a" stroke-width="2" fill="none" stroke-linecap="round"/></svg>`;
+function bale(x,y,w,h){return`<g><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="#e2b450" stroke="#b98a2e" stroke-width="2"/><path d="M${x+5},${y+h*.35} l${w*.3},-2 M${x+w*.45},${y+h*.7} l${w*.35},1" stroke="#f3d27e" stroke-width="2" stroke-linecap="round"/><line x1="${x+w*.3}" y1="${y}" x2="${x+w*.3}" y2="${y+h}" stroke="#8b5a2b" stroke-width="2"/><line x1="${x+w*.7}" y1="${y}" x2="${x+w*.7}" y2="${y+h}" stroke="#8b5a2b" stroke-width="2"/></g>`}
+function sign(x,y,title,sub){const w=Math.max(title.length*10.5,sub?sub.length*7.4:0)+26,h=sub?44:28;
+  return`<g class="sign"><rect x="${x-w/2}" y="${y-h/2}" width="${w}" height="${h}" rx="7" fill="#3d2517" stroke="#c9974f" stroke-width="2.5"/><text x="${x}" y="${y+(sub?-3:6)}" text-anchor="middle" font-family="Grandstander, Comic Sans MS, sans-serif" font-weight="800" font-size="17" fill="#f0c25a">${esc(title)}</text>${sub?`<text x="${x}" y="${y+15}" text-anchor="middle" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="12" fill="#f3e3c3">${esc(sub)}</text>`:''}</g>`}
+function mark(x,y,done){return done
+  ?`<g pointer-events="none"><circle cx="${x}" cy="${y}" r="14" fill="#3f8a4f" stroke="#fff" stroke-width="3"/><path d="M${x-6},${y} l4,5 l8,-9" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`
+  :`<g pointer-events="none"><g class="mark"><circle cx="${x}" cy="${y}" r="15" fill="#f0c25a" stroke="#fff" stroke-width="3"/><text x="${x}" y="${y+7}" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="20" fill="#3a2418">!</text></g></g>`}
+const hl=(x,y,w,h,r=6)=>`<rect class="hl" x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="none" stroke="#f0c25a" stroke-width="5"/>`;
+const hot=(go,label,inner)=>`<g class="hot" data-go="${go}" tabindex="0" role="button" aria-label="${esc(label)}">${inner}</g>`;
+const ownedHorses=()=>S.owned.filter(o=>o.startsWith('horse:')).map(o=>o.slice(6));
+const nextPrize=()=>PRIZES.find(p=>!owns(p.t,p.id));
+
+/* where the barn kid stands; each entry starts at its aisle/path point */
+const LOC={home:[[300,240]],stall:[[137,240],[137,224]],groom:[[157,240],[157,312]],tack:[[462,240],[462,224]],lounge:[[488,240],[488,300]],
+  arena:[[662,240],[742,232]],paddock:[[600,300],[600,476],[624,530]]};
+const INB=['home','stall','groom','tack','lounge'],HUB=[588,240];
+let kidAt='home',walking=false;
+function route(a,b){if(a===b)return[];const out=[...LOC[a]].reverse().slice(1);
+  if(INB.includes(a)&&INB.includes(b))return[...out,...LOC[b]];return[...out,HUB,...LOC[b]]}
+const posOf=loc=>LOC[loc][LOC[loc].length-1];
+
+function mapSVG(){
+  const H=HORSES[S.horse],dn=S.done,others=ownedHorses().filter(id=>id!==S.horse);
+  const SLOTS=[[140,566],[330,622],[512,566],[722,622],[884,570]];
+  const [kx,ky]=posOf(kidAt);
+  let o=`<svg class="map" id="map" viewBox="0 -16 1000 676" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Map of the barn. Tap a place to walk there.">
+  <defs>
+    <pattern id="grass" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#7fae5e"/><path d="M6,12 l2,-6 l2,6 M26,30 l2,-6 l2,6 M30,8 l1.5,-5 l1.5,5" stroke="#6b9a4c" stroke-width="1.6" fill="none"/></pattern>
+    <pattern id="pgrass" width="46" height="46" patternUnits="userSpaceOnUse"><rect width="46" height="46" fill="#93c46f"/><path d="M8,14 l2,-6 l2,6 M30,34 l2,-6 l2,6 M36,10 l1.5,-5 l1.5,5" stroke="#7cad5c" stroke-width="1.6" fill="none"/><circle cx="20" cy="26" r="2" fill="#fff6c8"/><circle cx="20" cy="26" r=".9" fill="#f0c25a"/></pattern>
+    <pattern id="straw2" width="30" height="16" patternUnits="userSpaceOnUse"><rect width="30" height="16" fill="#d9b06a"/><path d="M3,5 l9,-2 M15,12 l10,1 M20,4 l7,-2" stroke="#efce8a" stroke-width="1.6" stroke-linecap="round"/></pattern>
+    <pattern id="tile" width="22" height="22" patternUnits="userSpaceOnUse"><rect width="22" height="22" fill="#b7c9cf"/><path d="M0,0 h22 M0,0 v22" stroke="#9fb3ba" stroke-width="2"/></pattern>
+    <pattern id="boards" width="200" height="18" patternUnits="userSpaceOnUse"><rect width="200" height="18" fill="#a77a4c"/><path d="M0,0 h200" stroke="#8a613a" stroke-width="2"/><path d="M70,0 v18 M160,0 v18" stroke="#8a613a" stroke-width="1.5"/></pattern>
+    <pattern id="sand" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#dcbf8e"/><circle cx="5" cy="7" r="1" fill="#c4a571"/><circle cx="17" cy="15" r="1.2" fill="#c4a571"/><circle cx="11" cy="20" r=".8" fill="#c4a571"/></pattern>
+    <pattern id="plaid2" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#b8433a"/><rect width="10" height="4" fill="#8e2f28" opacity=".7"/><rect width="4" height="10" fill="#8e2f28" opacity=".5"/></pattern>
+  </defs>
+  <rect y="-16" width="1000" height="676" fill="url(#grass)"/>
+  <path d="M560,240 H700 M600,240 V500" stroke="#c49a6a" stroke-width="46" stroke-linecap="round" fill="none"/>
+  <path d="M560,240 H700 M600,240 V500" stroke="#d8b689" stroke-width="34" stroke-linecap="round" fill="none"/>`;
+
+  /* paddock */
+  let posts='';for(let x=40;x<=960;x+=46)posts+=`<rect x="${x-4}" y="474" width="8" height="12" fill="#6b3f22"/>`;
+  const herd=others.length?others.slice(0,5).map((id,i)=>{const[x,y]=SLOTS[i];return`<g class="phorse" data-horse="${id}" tabindex="0" role="button" aria-label="${HORSES[id].name}, grazing. Bring in to work.">
+      <ellipse cx="${x}" cy="${y-2}" rx="52" ry="7" fill="rgba(30,50,20,.25)"/><g class="graze" style="animation-delay:-${i*1.7}s">${horseSVG(id,lookOf(id),'',`x="${x-60}" y="${y-86}" width="120" height="88"`)}</g>
+      <text x="${x}" y="${y+14}" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="15" fill="#2f4a22">${HORSES[id].name}</text></g>`}).join('')
+    :`<text x="500" y="580" text-anchor="middle" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="17" fill="#3f6630">New horses you win will graze out here.</text>`;
+  o+=hot('paddock','Paddock',`<rect x="30" y="476" width="940" height="172" rx="14" fill="url(#pgrass)"/>
+    <rect x="34" y="478" width="932" height="166" rx="12" fill="none" stroke="#7a4a2b" stroke-width="4"/>${posts}
+    <rect x="574" y="470" width="52" height="16" fill="#d8b689"/>
+    <ellipse cx="930" cy="634" rx="34" ry="8" fill="rgba(30,50,20,.25)"/><rect x="896" y="606" width="66" height="26" rx="6" fill="#9aa3a8" stroke="#6f777c" stroke-width="2"/><rect x="902" y="611" width="54" height="10" rx="3" fill="#6cc0ea"/>
+    <ellipse cx="70" cy="636" rx="44" ry="10" fill="rgba(30,50,20,.3)"/><circle cx="70" cy="598" r="40" fill="#4f7d3b"/><circle cx="56" cy="586" r="20" fill="#5f9148"/>
+    ${hl(30,476,940,172,14)}${sign(380,476,'Paddock',others.length?`${others.length} horse${others.length>1?'s':''} grazing`:'Where your horses graze')}`)+herd;
+
+  /* arena */
+  const lv=variant('lesson');
+  const LET=[['A',622,198],['K',720,44],['E',800,44],['H',880,44],['C',982,195],['M',880,348],['B',800,348],['F',720,348]];
+  o+=hot('arena',`Arena: ${lv.t}`,`<rect x="630" y="54" width="340" height="282" rx="16" fill="url(#sand)"/>
+    <rect x="640" y="62" width="320" height="266" rx="12" fill="none" stroke="#fbf7ee" stroke-width="5"/>
+    <rect x="634" y="218" width="14" height="44" fill="#d8b689"/>
+    ${LET.map(([l,x,y])=>`<rect x="${x-10}" y="${y-10}" width="20" height="20" rx="3" fill="#fbf7ee" stroke="#3a2418" stroke-width="1.5"/><text x="${x}" y="${y+5}" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="13" fill="#3a2418">${l}</text>`).join('')}
+    <rect x="742" y="132" width="64" height="7" rx="2" fill="#e8505b"/><rect x="756" y="132" width="10" height="7" fill="#fff"/><rect x="782" y="132" width="10" height="7" fill="#fff"/><rect x="738" y="126" width="6" height="19" fill="#3d6aa8"/><rect x="804" y="126" width="6" height="19" fill="#3d6aa8"/>
+    <rect x="884" y="216" width="7" height="64" rx="2" fill="#5fa8e8"/><rect x="884" y="232" width="7" height="10" fill="#fff"/><rect x="884" y="258" width="7" height="10" fill="#fff"/><rect x="878" y="212" width="19" height="6" fill="#e8505b"/><rect x="878" y="278" width="19" height="6" fill="#e8505b"/>
+    ${hl(630,54,340,282,16)}${sign(800,206,'Arena',lv.t)}${mark(952,84,dn.lesson)}`);
+
+  /* barn shell */
+  o+=`<rect x="30" y="48" width="560" height="372" rx="8" fill="rgba(40,20,10,.25)"/>
+  <rect x="26" y="40" width="560" height="372" rx="8" fill="#9a3226" stroke="#f3e3c3" stroke-width="4"/>
+  <rect x="40" y="54" width="532" height="344" fill="#5a3520"/>
+  <rect x="40" y="208" width="550" height="56" fill="#bba98c"/><path d="M40,236 H586" stroke="#a8977a" stroke-width="2" stroke-dasharray="14 10"/>
+  <rect x="20" y="208" width="24" height="56" fill="#bba98c"/>`;
+
+  /* stall */
+  const mv=variant('muck');
+  const piles=dn.muck?'':`<g fill="#5e3c22"><ellipse cx="84" cy="186" rx="9" ry="5"/><ellipse cx="196" cy="182" rx="8" ry="5"/><ellipse cx="150" cy="194" rx="7" ry="4"/></g>`;
+  o+=hot('stall',`${H.name}'s stall: ${mv.t}`,`<rect x="44" y="58" width="172" height="146" fill="url(#straw2)"/>${piles}
+    <g data-who="horse">${horseSVG(S.horse,lookOf(S.horse),'','x="60" y="84" width="150" height="110"')}</g>
+    <path d="M190,64 h20 l-3,22 h-14 Z" fill="#8a9196"/><ellipse cx="200" cy="64" rx="10" ry="3" fill="#6cc0ea"/>
+    ${hl(44,58,172,146,2)}${sign(130,22,`${H.name}'s stall`,mv.t)}${mark(62,76,dn.muck)}`);
+
+  /* feed room (decor) */
+  o+=`<rect x="224" y="58" width="122" height="146" fill="url(#boards)"/>
+    <rect x="234" y="70" width="34" height="40" rx="6" fill="#4f7d8a"/><rect x="232" y="66" width="38" height="8" rx="3" fill="#3c6370"/>
+    <rect x="276" y="70" width="34" height="40" rx="6" fill="#a8742c"/><rect x="274" y="66" width="38" height="8" rx="3" fill="#80561e"/>
+    ${bale(244,138,58,34)}${bale(256,112,46,28)}
+    <text x="285" y="196" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="12" fill="#3d2517">Feed room</text>`;
+
+  /* tack room */
+  const saddleTop=(x,c)=>`<rect x="${x-26}" y="76" width="52" height="5" rx="2" fill="#3d2517"/><path d="M${x-22},80 C${x-18},64 ${x+18},62 ${x+24},76 L${x+20},96 C${x+6},90 ${x-10},90 ${x-20},98 Z" fill="${c}"/><rect x="${x-6}" y="84" width="12" height="20" rx="3" fill="${shade(c,-.2)}"/>`;
+  o+=hot('tack',`Tack room and shop. You have ${S.coins||0} coins.`,`<rect x="352" y="58" width="220" height="146" fill="url(#boards)"/>
+    ${saddleTop(386,'#6b3a1f')}${saddleTop(446,'#a0602e')}${saddleTop(506,'#7d4524')}
+    <g fill="none" stroke-width="3"><path d="M548,72 v8 a8,12 0 1 0 0.1,0" stroke="#4a2a18"/><path d="M548,120 v8 a8,12 0 1 0 0.1,0" stroke="#8a4fd3"/></g>
+    <rect x="378" y="150" width="130" height="30" rx="4" fill="#6b3a1f"/><rect x="470" y="140" width="26" height="14" rx="3" fill="#f0c25a" stroke="#b4862a" stroke-width="2"/>
+    <rect x="386" y="138" width="22" height="14" rx="3" fill="#7db8e6"/><rect x="412" y="138" width="22" height="14" rx="3" fill="#ef6a9a"/>
+    ${hl(352,58,220,146,2)}${sign(462,22,'Tack room',`Shop · ${S.coins||0} coins`)}`);
+
+  /* grooming bay */
+  const gv=variant('groom');
+  o+=hot('groom',`Grooming bay: ${gv.t}`,`<rect x="44" y="268" width="212" height="126" fill="url(#tile)"/>
+    <rect x="58" y="282" width="10" height="56" rx="3" fill="#6b3a1f"/><rect x="232" y="282" width="10" height="56" rx="3" fill="#6b3a1f"/>
+    <path d="M68,296 Q110,316 150,302 M232,296 Q192,316 150,302" stroke="#e46aa0" stroke-width="3" fill="none"/>
+    <g fill="none" stroke="#4f9a4a" stroke-width="4"><circle cx="222" cy="364" r="16"/><circle cx="222" cy="364" r="9"/></g>
+    <rect x="62" y="352" width="44" height="26" rx="4" fill="#5fa8e8"/><rect x="68" y="342" width="8" height="14" rx="2" fill="#c8915a"/><rect x="82" y="340" width="8" height="16" rx="2" fill="#f0c25a"/><rect x="94" y="344" width="6" height="12" rx="2" fill="#ef6a9a"/>
+    ${hl(44,268,212,126,2)}${sign(150,442,'Grooming bay',gv.t)}${mark(242,384,dn.groom)}`);
+
+  /* hay loft (decor) */
+  o+=`<rect x="262" y="268" width="132" height="126" fill="url(#boards)"/>${bale(272,330,56,32)}${bale(330,330,56,32)}${bale(284,298,56,32)}${bale(316,274,56,26)}
+    <text x="328" y="386" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="12" fill="#3d2517">Hay storage</text>`;
+
+  /* dog lounge (decor) */
+  o+=`<rect x="400" y="268" width="172" height="126" fill="url(#boards)"/>
+    <ellipse cx="452" cy="356" rx="40" ry="24" fill="url(#plaid2)" stroke="#6e2a22" stroke-width="5"/>
+    <ellipse cx="530" cy="356" rx="34" ry="20" fill="#5f8fc0" stroke="#3d6aa8" stroke-width="5"/>
+    <rect x="510" y="300" width="22" height="9" rx="4" fill="#d9b483"/>
+    <g class="clicky" data-who="toast" tabindex="0" role="button" aria-label="Pet Princess Toast">${toastSVG('x="410" y="304" width="84" height="64"')}</g>
+    <text x="486" y="390" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="12" fill="#f3e3c3">Dog lounge</text>`;
+
+  /* interior walls with doorways */
+  o+=`<g fill="#3d2517"><rect x="40" y="202" width="532" height="8"/><rect x="40" y="262" width="532" height="8"/>
+    <rect x="216" y="54" width="8" height="152"/><rect x="346" y="54" width="8" height="152"/><rect x="256" y="264" width="8" height="134"/><rect x="394" y="264" width="8" height="134"/></g>
+    <g fill="#bba98c"><rect x="104" y="201" width="66" height="10"/><rect x="262" y="201" width="44" height="10"/><rect x="430" y="201" width="64" height="10"/>
+    <rect x="118" y="261" width="78" height="10"/><rect x="300" y="261" width="50" height="10"/><rect x="456" y="261" width="64" height="10"/></g>
+    <rect x="580" y="170" width="12" height="40" fill="#9a3226" stroke="#f3e3c3" stroke-width="2"/><rect x="580" y="262" width="12" height="40" fill="#9a3226" stroke="#f3e3c3" stroke-width="2"/>
+    <rect x="590" y="208" width="4" height="56" fill="#bba98c"/>`;
+
+  /* you + Poindexter */
+  o+=`<g id="pdx" class="walker" data-who="poin" tabindex="0" role="button" aria-label="Pet Poindexter" style="transform:translate(${kx-34}px,${ky+6}px)"><g class="flipper"><g class="bob">${poinSVG('x="-30" y="-44" width="60" height="48"')}</g></g></g>
+  <g id="kid" class="walker" data-who="girl" tabindex="0" role="button" aria-label="${esc(S.name||'You')}" style="transform:translate(${kx}px,${ky}px)"><ellipse cx="0" cy="0" rx="14" ry="4" fill="rgba(30,20,10,.3)"/><g class="bob">${girlSVG(S.skin,'x="-19" y="-74" width="38" height="76"')}</g></g>`;
+  return o+'</svg>';
+}
+
+function say(who,text){const inner=$('#mapInner'),b=$('#bubble');if(!inner||!b)return;const el=$(`#map [data-who="${who}"]`);if(!el)return;
+  const r=el.getBoundingClientRect(),ir=inner.getBoundingClientRect();
+  b.style.left=Math.min(ir.width-120,Math.max(120,r.left-ir.left+r.width/2))+'px';b.style.top=Math.max(40,r.top-ir.top+2)+'px';
+  b.textContent=text;b.hidden=false;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');clearTimeout(say.t);say.t=setTimeout(()=>{b.hidden=true},3400)}
+const LINES={
+  toast:['*snort snort*','Princess Toast flops over for belly rubs.','*sneezes* Excuse me. I am a princess.','Princess Toast is guarding the treat bin.','*happy wiggle butt*','Princess Toast stole a sock. It is hers now.','Princess Toast would like to inspect the hay. With her face.'],
+  poin:['AROOOOOO!','Poindexter is reading the barn mail. With his nose.','*sniff sniff sniff sniff*','Poindexter found a carrot. Poindexter ate the carrot.','Poindexter pushes up his glasses. "Fascinating hay."','*long hound sigh*','Poindexter follows you everywhere. It is his job.'],
+  girl:()=>["Okay team, let's get to work!",'I love the smell of fresh hay.',`${HORSES[S.horse].name} is waiting in the stall!`,'Where to next?','Best barn ever.'],
+  horse:()=>{const n=HORSES[S.horse].name;return[`${n} nickers softly.`,`${n} nuzzles your pocket for treats.`,`${n} stomps a hoof. Flies!`,`${n} blows a big snuffly breath.`]}
+};
+function lineFor(who){const l=LINES[who];return pick(typeof l==='function'?l():l)}
+
+/* walking */
+function setPos(el,x,y,dur){el.style.transition=dur?`transform ${dur}s linear`:'none';el.style.transform=`translate(${x}px,${y}px)`}
+function walkTo(loc,cb){
+  if(walking)return;const pts=route(kidAt,loc);if(!pts.length){cb&&cb();return}
+  walking=true;const kid=$('#kid'),pdx=$('#pdx');kid.classList.add('walking');pdx.classList.add('walking');
+  let [cx,cy]=posOf(kidAt),i=0;
+  const leg=()=>{if(i>=pts.length){kid.classList.remove('walking');setTimeout(()=>pdx.classList.remove('walking'),350);walking=false;kidAt=loc;cb&&cb();return}
+    const[nx,ny]=pts[i++],d=Math.hypot(nx-cx,ny-cy)/230;
+    setPos(kid,nx,ny,d);
+    const fx=nx-cx;setTimeout(()=>{if(Math.abs(fx)>2)pdx.querySelector('.flipper').setAttribute('transform',fx<0?'scale(-1,1)':'');setPos(pdx,nx+(fx<0?34:-34),ny+6,d)},300);
+    cx=nx;cy=ny;setTimeout(leg,d*1000)};
+  leg();
+}
+const GOTO={muck:'stall',groom:'groom',lesson:'arena'};
+const PLACE={muck:'stall',groom:'grooming bay',lesson:'arena'};
+function go(loc,after){
+  walkTo(loc,()=>{
+    if(after)return after();
+    const hn=HORSES[S.horse].name;
+    if(loc==='stall')return S.done.muck?say('horse',`${hn}'s stall is already done. ${hn} is napping.`):variant('muck').fn();
+    if(loc==='groom')return S.done.groom?say('girl',`Already did that today. ${hn} is shining!`):variant('groom').fn();
+    if(loc==='arena')return S.done.lesson?say('girl','Lessons are done for today!'):variant('lesson').fn();
+    if(loc==='tack')return openTack();
+    if(loc==='paddock'){const o=ownedHorses().filter(id=>id!==S.horse).map(id=>HORSES[id].name);
+      return say('girl',o.length?`${o.join(' and ')} ${o.length>1?'are':'is'} munching grass. Tap one to bring them in.`:'Someday this paddock will be full of horses!')}
+  });
+}
+
+/* ---------- main render ---------- */
+const CHORES=[{id:'muck'},{id:'groom'},{id:'lesson'}];
+const VARIANTS={
+  muck:[{t:'Muck the stall',s:'Scoop, fill water, fresh bedding',fn:()=>startMuck()},{t:'Feeding time',s:'Fill the feeder from the feed card',fn:()=>muckFeed()},{t:'Fly patrol',s:'Shoo the flies out the window',fn:()=>muckFlies()}],
+  groom:[{t:'Groom the horse',s:'Curry, brush, comb, pick hooves',fn:()=>startGroom()},{t:'Bath day',s:'Soap up, rinse off, scrape dry',fn:()=>groomBath()},{t:'Braid the mane',s:'Copy the braid pattern',fn:()=>groomBraid()}],
+  lesson:[{t:'Arena letters',s:'Call the cues when the letter turns green',fn:()=>startLesson()},{t:'Tack up for a lesson',s:'Put the tack on in the right order',fn:()=>lessonTack()},{t:'Lead-line ride',s:'Lead a new rider through the cones',fn:()=>lessonLead()}]
+};
+const variant=id=>VARIANTS[id][(S.level-1)%3];
+function bindTap(el,fn){el.addEventListener('click',e=>{e.stopPropagation();fn()});el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();e.stopPropagation();fn()}})}
+function render(){
+  $('#barnOf').textContent=S.name?`${S.name}'s barn · with ${HORSES[S.horse].name}`:'Welcome, barn boss';
+  $('#lvl').textContent=S.level;$('#coins').innerHTML=`${COIN} ${S.coins||0}`;
+  $('#nextPrize').textContent=prizeKind(nextPrize());
+  $('#ribbonChip').hidden=!S.ribbons;$('#ribbons').textContent=S.ribbons;
+  walking=false;
+  $('#scene').innerHTML=`<div class="map-inner" id="mapInner">${mapSVG()}<div class="bubble" id="bubble" hidden></div></div>`;
+  $$('#map .hot').forEach(g=>bindTap(g,()=>go(g.dataset.go)));
+  $$('#map .phorse').forEach(g=>bindTap(g,()=>go('paddock',()=>paddockHorse(g.dataset.horse))));
+  $$('#map [data-who]').forEach(g=>{if(g.closest('.hot')&&g.dataset.who==='horse')return;bindTap(g,()=>{const w=g.dataset.who;say(w,lineFor(w));if(w==='toast'){g.classList.remove('hop');void g.getBBox();g.classList.add('hop')}})});
+  $('#chores').innerHTML=CHORES.map(c=>{const d=S.done[c.id];return`<button class="chore ${d?'done':''}" data-c="${c.id}" ${d?'disabled':''}>${ICONS[c.id]}<span class="t">${variant(c.id).t}</span><span class="s">${variant(c.id).s}</span><span class="st">${d?'Done '+'★'.repeat(d)+'☆'.repeat(3-d):'Walk to the '+PLACE[c.id]+' →'}</span></button>`}).join('');
+  $$('.chore').forEach(b=>b.onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go(GOTO[b.dataset.c])});
+  const all=CHORES.every(c=>S.done[c.id]);const fb=$('#finishBtn');fb.disabled=!all;
+  fb.textContent=all?'Finish the day & open your prize':`Finish the day (${CHORES.filter(c=>S.done[c.id]).length}/3 chores)`;
+}
+
+function paddockHorse(id){const h=HORSES[id];
+  openModal(`<div class="result"><h2>${h.name}</h2><div class="result-art">${horseSVG(id,lookOf(id))}</div><p>${h.desc}. ${h.name} is grazing in the paddock.</p>
+  <div class="btn-row"><button class="big-btn" id="bring">Bring ${h.name} in to work</button><button class="wood-btn" id="stay">Let ${h.name} graze</button></div></div>`);
+  $('#bring').onclick=()=>{const old=HORSES[S.horse].name;S.horse=id;save();closeModal();say('horse',`${h.name} heads into the stall. ${old} trots out to graze.`)};
+  $('#stay').onclick=closeModal;
+}
+
+/* ---------- modal ---------- */
+let cleanups=[];
+let GEN=0;
+function runCleanups(){GEN++;cleanups.forEach(f=>{try{f()}catch(e){}});cleanups=[]}
+function later(fn,ms){const g=GEN;setTimeout(()=>{if(g===GEN)fn()},ms)}
+function openModal(html,{closable=true}={}){runCleanups();$('#mbody').innerHTML=html;$('#xBtn').hidden=!closable;$('#modal').hidden=false;$('.panel').scrollTop=0}
+function setBody(html){runCleanups();$('#mbody').innerHTML=html}
+function closeModal(){runCleanups();$('#modal').hidden=true;render()}
+$('#xBtn').onclick=closeModal;
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden&&!$('#xBtn').hidden)closeModal()});
+
+function finishChore(kind,stars,line,art,title){
+  S.done[kind]=Math.max(S.done[kind]||0,stars);const earned=stars*10;S.coins=(S.coins||0)+earned;save();
+  title=title||{muck:'The stall is spotless!',groom:'All groomed and shiny!',lesson:'Lesson complete!'}[kind];
+  const left=CHORES.filter(c=>!S.done[c.id]).length;
+  setBody(`<div class="result"><h2>${title}</h2><div class="stars" aria-label="${stars} of 3 stars">${starRow(stars)}</div><p class="coin-pop">${COIN} +${earned} coins</p><p>${line}</p><div class="result-art">${art}</div>
+  <p class="eyebrow">${left?left+' chore'+(left>1?'s':'')+' left today':'All chores done. Time to open your prize!'}</p><button class="big-btn" id="backBtn">Back to the barn</button></div>`);
+  $('#backBtn').onclick=closeModal;$('#backBtn').focus();
+}
+
+/* ---------- mini-game: muck ---------- */
+const PILE=`<svg viewBox="0 0 60 50"><ellipse cx="30" cy="42" rx="26" ry="7" fill="#4a2f1a"/><ellipse cx="30" cy="34" rx="20" ry="9" fill="#5e3c22"/><ellipse cx="30" cy="25" rx="12" ry="7" fill="#6e4a2b"/><ellipse cx="26" cy="22" rx="4" ry="2" fill="#87613d"/><g class="stink" stroke="#6b8a4a" stroke-width="2" fill="none" stroke-linecap="round"><path d="M18,13 q4,-4 0,-9"/><path d="M30,11 q4,-4 0,-9"/><path d="M42,13 q4,-4 0,-9"/></g></svg>`;
+const BARROW=`<svg viewBox="0 0 120 80"><path d="M10,18 h86 l-10,34 h-62 Z" fill="#3f7a52" stroke="#2c5a3b" stroke-width="3"/><ellipse cx="54" cy="18" rx="42" ry="5" fill="#2c5a3b"/><line x1="96" y1="20" x2="118" y2="32" stroke="#8a5a36" stroke-width="5" stroke-linecap="round"/><circle cx="34" cy="64" r="12" fill="#2a2a2a"/><circle cx="34" cy="64" r="4" fill="#9aa0a6"/><line x1="70" y1="52" x2="74" y2="76" stroke="#555" stroke-width="4"/></svg>`;
+function startMuck(){
+  const hn=HORSES[S.horse].name,n=Math.min(12,4+S.level);
+  openModal(`<div class="mg-head"><h2>Muck out ${esc(hn)}'s stall</h2><div class="steps"><span class="step on" id="ms1">Scoop</span><span class="step" id="ms2">Water</span><span class="step" id="ms3">Fresh bedding</span></div></div>
+  <p class="hint" id="mhint">Tap every pile to scoop it into the wheelbarrow.</p>
+  <div class="stall" id="stall"><div class="count" id="mcount">0 / ${n}</div><div class="barrow" id="barrow">${BARROW}</div><div class="corner-dog">${toastSVG()}</div></div>
+  <div class="water" id="water" hidden><div class="bucket"><div class="zone"></div><div class="fill" id="wfill"></div></div><div class="water-copy"><p><b>Fill the water bucket.</b> Hold the button and let go when the water is inside the green dashed band.</p><button class="big-btn" id="hold">Hold to fill</button></div></div>`);
+  const stall=$('#stall'),barrow=$('#barrow');const pts=[];
+  for(let i=0;i<n;i++){let p,tries=0;do{p=[6+Math.random()*64,6+Math.random()*52];tries++}while(tries<80&&pts.some(q=>Math.hypot(q[0]-p[0],(q[1]-p[1])*.6)<11));pts.push(p)}
+  let got=0;const t0=performance.now();
+  pts.forEach(([x,y])=>{const b=document.createElement('button');b.className='pile';b.style.left=x+'%';b.style.top=y+'%';b.setAttribute('aria-label','Manure pile');b.innerHTML=PILE;stall.appendChild(b);
+    b.onclick=()=>{if(b.dataset.gone)return;b.dataset.gone=1;const pr=b.getBoundingClientRect(),br=barrow.getBoundingClientRect();
+      b.style.transform=`translate(${br.left+br.width*.45-pr.left-pr.width/2}px,${br.top+br.height*.2-pr.top-pr.height/2}px) scale(.35)`;b.classList.add('fly');
+      setTimeout(()=>{b.remove();barrow.classList.remove('bump');void barrow.offsetWidth;barrow.classList.add('bump')},450);
+      got++;$('#mcount').textContent=`${got} / ${n}`;
+      if(got===n){const per=(performance.now()-t0)/1000/n;const stars=per<1.6?3:per<3?2:1;setTimeout(()=>waterStep(stars),600)}}});
+  function waterStep(stars){
+    $('#ms1').className='step done';$('#ms2').className='step on';$('#mhint').textContent=`Great scooping! ${hn} needs fresh water.`;
+    $('#water').hidden=false;$('#water').scrollIntoView({behavior:'smooth',block:'nearest'});
+    let lvl=0,filling=false,raf,last;const fill=$('#wfill'),hold=$('#hold');
+    const tick=now=>{const dt=Math.min(.05,(now-last)/1000);last=now;lvl+=dt*42;if(lvl>=100){lvl=100;fill.style.height='100%';stop(true);return}fill.style.height=lvl+'%';raf=requestAnimationFrame(tick)};
+    const start=e=>{if(filling)return;e&&e.preventDefault();filling=true;last=performance.now();raf=requestAnimationFrame(tick);hold.textContent='Filling…'};
+    const stop=spill=>{if(!filling)return;filling=false;cancelAnimationFrame(raf);hold.textContent='Hold to fill';
+      if(spill===true){$('#mhint').textContent='Splash! Too full. Poindexter happily drinks the puddle. Try again.';lvl=40}
+      else if(lvl<72)$('#mhint').textContent='A little more water. Hold again!';
+      else if(lvl>90){$('#mhint').textContent='Just over the line. Princess Toast takes a sip for you. Try again!';lvl=58}
+      else{$('#mhint').textContent='Perfect! The bucket is full.';hold.disabled=true;setTimeout(()=>beddingStep(stars),700)}
+      fill.style.height=lvl+'%'};
+    hold.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>hold.addEventListener(ev,()=>stop()));
+    hold.addEventListener('keydown',e=>{if((e.key===' '||e.key==='Enter')&&!e.repeat)start(e)});hold.addEventListener('keyup',e=>{if(e.key===' '||e.key==='Enter')stop()});
+    hold.addEventListener('contextmenu',e=>e.preventDefault());
+    cleanups.push(()=>cancelAnimationFrame(raf));
+  }
+  function beddingStep(stars){
+    $('#ms2').className='step done';$('#ms3').className='step on';$('#water').hidden=true;
+    $('#mhint').textContent='Tap the four bare spots to spread fresh shavings.';stall.scrollIntoView({behavior:'smooth',block:'nearest'});
+    let left=4;[[22,28],[52,22],[34,58],[62,52]].forEach(([x,y])=>{const b=document.createElement('button');b.className='bare';b.style.left=x+'%';b.style.top=y+'%';b.textContent='Spread';
+      b.onclick=()=>{b.classList.add('filled');left--;if(!left){stall.classList.add('fresh');$('#mhint').textContent='So fluffy!';
+        setTimeout(()=>finishChore('muck',stars,`${esc(hn)}'s stall is clean and fluffy. Princess Toast immediately flopped into the fresh shavings.`,toastSVG()),900)}};stall.appendChild(b)});
+  }
+}
+
+/* ---------- mini-game: groom ---------- */
+const TANGLE=`<svg viewBox="0 0 40 40"><path d="M6,20 q4,-12 9,0 t9,0 t9,0 M8,28 q5,-9 10,0 t10,0" stroke="#5a3c22" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M10,12 q6,6 12,-2 t10,4" stroke="#8a6a3a" stroke-width="2" fill="none"/></svg>`;
+const GROOM=[
+  {tool:'Curry comb',verb:'Curry comb: click and drag in little circles to scrub off the mud.',kind:'mud',spots:[[118,98],[158,94],[188,118],[104,132],[140,134],[96,172],[212,166]]},
+  {tool:'Soft brush',verb:'Soft brush: drag over the dusty spots to sweep them away.',kind:'dust',spots:[[132,86],[172,90],[205,100],[118,116],[160,124],[238,58]]},
+  {tool:'Mane comb',verb:'Mane comb: drag across the tangles in the mane and tail.',kind:'tangle',spots:[[222,32],[210,50],[198,70],[68,126],[60,158]]},
+  {tool:'Hoof pick',verb:'Hoof pick: tap each glowing hoof to pick out the pebbles.',kind:'hoof',tap:true,spots:[[96,195],[114,195],[193,195],[211,195]]}
+];
+function startGroom(){
+  const hn=HORSES[S.horse].name,t0=performance.now();let step=0,spots=[];
+  openModal(`<div class="mg-head"><h2>Groom ${esc(hn)}</h2><div class="steps" id="gsteps"></div>${poinSVG('class="mg-dog"')}</div><p class="hint" id="ghint"></p>
+  <div class="groom-stage" id="stage">${horseSVG(S.horse,{mane:lookOf(S.horse).mane})}<div id="spots"></div></div>`);
+  const stage=$('#stage'),spotsEl=$('#spots');
+  function renderStep(){const st=GROOM[step];
+    $('#gsteps').innerHTML=GROOM.map((g,i)=>`<span class="step ${i<step?'done':i===step?'on':''}">${g.tool}</span>`).join('');
+    $('#ghint').textContent=st.verb;spots=st.spots.map(([x,y])=>({x,y,hp:st.tap?1:9}));
+    spotsEl.innerHTML=spots.map((s,i)=>`<button class="spot ${st.kind}" data-i="${i}" style="left:${(s.x/3).toFixed(2)}%;top:${(s.y/2.2).toFixed(2)}%" aria-label="${st.tap?'Hoof':'Dirty spot'}">${st.kind==='tangle'?TANGLE:''}</button>`).join('');
+    stage.style.cursor=st.tap?'pointer':'';
+    $$('#spots .spot').forEach(b=>b.onclick=()=>{const s=spots[+b.dataset.i];if(s.hp<=0)return;s.hp=st.tap?0:Math.max(0,s.hp-4);b.style.opacity=st.tap?0:s.hp/9;if(s.hp<=0)cleaned(b,s)})}
+  function sparkle(px,py){const r=stage.getBoundingClientRect(),el=document.createElement('span');el.className='sparkle';el.style.left=(px/300*r.width)+'px';el.style.top=(py/220*r.height)+'px';el.innerHTML=`<svg viewBox="0 0 24 24">${star(12,12,11,'#fff6c8')}</svg>`;stage.appendChild(el);setTimeout(()=>el.remove(),700)}
+  function cleaned(el,s){el.classList.add('clean');sparkle(s.x,s.y);
+    if(spots.every(q=>q.hp<=0)){step++;
+      if(step>=GROOM.length){$('#gsteps').innerHTML=GROOM.map(g=>`<span class="step done">${g.tool}</span>`).join('');stage.classList.add('shiny');$('#ghint').textContent=`${hn} is gleaming!`;
+        for(let i=0;i<8;i++)setTimeout(()=>sparkle(80+Math.random()*170,40+Math.random()*120),i*90);
+        const secs=(performance.now()-t0)/1000,stars=secs<40?3:secs<70?2:1;
+        setTimeout(()=>finishChore('groom',stars,`${esc(hn)} is shining! Poindexter tried to help by licking the hoof pick.`,horseSVG(S.horse,lookOf(S.horse))),1300)}
+      else{$('#ghint').textContent=`Nice! Next up: ${GROOM[step].tool}.`;setTimeout(renderStep,700)}}}
+  let rubbing=false,lx=0,ly=0;
+  function rub(e){if(step>=GROOM.length||GROOM[step].tap)return;const r=stage.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top,rad=r.width*.075;
+    spots.forEach((s,i)=>{if(s.hp<=0)return;const sx=s.x/300*r.width,sy=s.y/220*r.height;if(Math.hypot(px-sx,py-sy)<rad){s.hp--;const el=spotsEl.children[i];el.style.opacity=Math.max(0,s.hp/9);if(s.hp<=0)cleaned(el,s)}})}
+  stage.addEventListener('pointerdown',e=>{if(step>=GROOM.length||GROOM[step].tap)return;rubbing=true;lx=e.clientX;ly=e.clientY;try{stage.setPointerCapture(e.pointerId)}catch(_){}rub(e)});
+  stage.addEventListener('pointermove',e=>{if(!rubbing)return;if(Math.hypot(e.clientX-lx,e.clientY-ly)<5)return;lx=e.clientX;ly=e.clientY;rub(e)});
+  ['pointerup','pointercancel'].forEach(ev=>stage.addEventListener(ev,()=>{rubbing=false}));
+  renderStep();
+}
+
+/* ---------- mini-game: riding lesson ---------- */
+function startLesson(){
+  const student=pick(STUDENTS),H=HORSES[S.horse],hn=H.name,L=lookOf(S.horse);
+  const helmet=pick(['#e25a7a','#4a90d9','#6cbf5a','#9b6ad6','#f2a33a']);
+  const padColor=L.pad!=='none'?PADS[L.pad][0]:'#6b3a1f';
+  const plan=S.level>=4?['trot','canter','trot','walk','halt']:['trot','canter','trot','halt'];
+  openModal(`<div class="mg-head"><h2>Riding lesson with ${student}</h2></div>
+  <p class="hint">${student} is riding ${esc(hn)}. When the letter turns green and the card says NOW, press the cue. Missed it? No problem, they'll come around again.</p>
+  <div class="cuecard" id="cue"></div>
+  <div class="arena-wrap" id="arenaWrap"><canvas id="arena" aria-label="Riding arena seen from above"></canvas><div class="callout" id="callout" hidden></div></div>
+  <div class="gaits">${['walk','trot','canter','halt'].map(g=>`<button class="gait" data-g="${g}">${g[0].toUpperCase()+g.slice(1)}!</button>`).join('')}</div>
+  <p class="progress" id="lprog"></p>`);
+  const cv=$('#arena'),ctx=cv.getContext('2d'),wrap=$('#arenaWrap');let W=0,Hh=0;
+  function size(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;Hh=Math.round(W*.6);cv.width=W*dpr;cv.height=Hh*dpr;cv.style.height=Hh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();window.addEventListener('resize',size);cleanups.push(()=>window.removeEventListener('resize',size));
+  const LET=[['A',PI],['K',PI+.62],['E',1.5*PI],['H',TAU-.62],['C',0],['M',.62],['B',.5*PI],['F',PI-.62]];
+  const SPEED={halt:0,walk:.26,trot:.42,canter:.58},WIN=.45;
+  const sand=Array.from({length:160},()=>[Math.random(),Math.random(),Math.random()]);
+  let theta=PI+.12,gait='walk',ci=0,misses=0,cue=null,done=false,trail=[],trailT=0;
+  function nextCue(){let c=LET.filter(([,a])=>{const f=mod(a-theta,TAU);return f>1.1&&f<4.3});if(!c.length)c=LET;const[l,a]=pick(c);cue={l,a,g:plan[ci],armed:true};
+    $('#cue').innerHTML=`Ask ${student} to <span class="gt">${cue.g}</span> at <span class="letter">${l}</span><span class="nowtag">NOW!</span>`;$('#lprog').textContent=`Cue ${ci+1} of ${plan.length}`}
+  function callout(t,kind){const c=$('#callout');c.textContent=t;c.className='callout '+(kind||'');c.hidden=false;clearTimeout(callout.t);callout.t=setTimeout(()=>{c.hidden=true},1700)}
+  $$('.gait').forEach(b=>b.onclick=()=>{if(!cue||done)return;const g=b.dataset.g,d=angDiff(theta,cue.a);
+    if(Math.abs(d)<=WIN){if(g===cue.g){gait=g;callout(pick(['Perfect timing!','Nice cue!','Right on the letter!','Great call, coach!']),'good');ci++;
+        if(ci>=plan.length){done=true;$('#cue').innerHTML=`${student} halted right on the letter!`;$('#lprog').textContent='All cues done';
+          const stars=misses<=2?3:misses<=4?2:1;setTimeout(()=>finishChore('lesson',stars,`${student} gave ${esc(hn)} a peppermint. Poindexter howled his approval.`,poinSVG()),1500)}
+        else nextCue()}
+      else{misses++;callout(`Right spot! But the cue at ${cue.l} is ${cue.g.toUpperCase()}.`,'soft')}}
+    else if(d<0){misses++;callout(`Not yet. Wait until ${student} reaches ${cue.l}.`,'soft')}
+    else{misses++;cue.armed=false;callout(`A little late. Catch ${cue.l} next lap!`,'soft')}});
+  function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+  function ell(x,y,a,b){ctx.beginPath();ctx.ellipse(x,y,a,b,0,0,TAU);ctx.fill()}
+  function draw(now){
+    const cx=W/2,cy=Hh/2,FW=W*.42,FH=Hh*.36,rx=FW*.8,ry=FH*.66,sc=Math.max(.75,W/560);
+    ctx.fillStyle='#6d9a55';ctx.fillRect(0,0,W,Hh);
+    ctx.fillStyle='#dcbf8e';rr(cx-FW,cy-FH,FW*2,FH*2,14);ctx.fill();
+    ctx.fillStyle='rgba(160,120,70,.35)';sand.forEach(([u,v,s])=>{ctx.fillRect(cx-FW+u*FW*2,cy-FH+v*FH*2,1+s*1.5,1+s*1.5)});
+    ctx.strokeStyle='rgba(150,105,55,.35)';ctx.lineWidth=Math.max(10,W*.03);ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,TAU);ctx.stroke();
+    ctx.strokeStyle='#fbf7ee';ctx.lineWidth=4;rr(cx-FW,cy-FH,FW*2,FH*2,14);ctx.stroke();
+    // letters
+    LET.forEach(([l,a])=>{const px=Math.cos(a)*rx,py=Math.sin(a)*ry;const kx=Math.abs(px)>1e-6?FW/Math.abs(px):1e9,ky=Math.abs(py)>1e-6?FH/Math.abs(py):1e9;let x,y;
+      if(kx<ky){x=cx+Math.sign(px)*(FW+15);y=cy+py*kx}else{x=cx+px*ky;y=cy+Math.sign(py)*(FH+15)}
+      const tgt=cue&&!done&&cue.l===l;
+      if(tgt){ctx.strokeStyle='rgba(240,194,90,.9)';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y,15+3*Math.sin(now/180),0,TAU);ctx.stroke()}
+      ctx.fillStyle=tgt?(Math.abs(angDiff(theta,a))<=WIN?'#6cbf5a':'#f0c25a'):'#fbf7ee';rr(x-11,y-11,22,22,4);ctx.fill();ctx.strokeStyle='#3a2418';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle='#3a2418';ctx.font='800 13px Nunito, system-ui, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(l,x,y+1)});
+    const hx=cx+Math.cos(theta)*rx,hy=cy+Math.sin(theta)*ry,hd=Math.atan2(ry*Math.cos(theta),-rx*Math.sin(theta));
+    // trail
+    trail.forEach(([x,y],i)=>{ctx.fillStyle=`rgba(110,75,40,${(i/trail.length)*.45})`;ell(x,y,2,2)});
+    // instructor (you) in the center
+    const ia=Math.atan2(hy-cy,hx-cx);ctx.save();ctx.translate(cx,cy);ctx.rotate(ia);ctx.scale(sc,sc);
+    ctx.fillStyle='#2b1c16';ell(-9,0,9,6);ctx.fillStyle='#b8433a';ell(0,0,5,11);ctx.fillStyle='#2b1c16';ell(0,0,7,7);ctx.restore();
+    ctx.fillStyle='#fbf7ee';ctx.font=`800 ${Math.round(11*sc)}px Nunito, system-ui, sans-serif`;ctx.textAlign='center';ctx.fillText(S.name||'You',cx,cy+20*sc);
+    // horse + rider
+    const bob=gait==='halt'?0:Math.sin(now/(gait==='canter'?90:gait==='trot'?110:180))*.8;
+    ctx.save();ctx.translate(hx,hy);ctx.rotate(hd);ctx.scale(sc,sc);
+    ctx.fillStyle=H.mane;ell(-21,0,8,2.6);
+    ctx.fillStyle=H.coat;ctx.strokeStyle=shade(H.coat,-.35);ctx.lineWidth=1;ctx.beginPath();ctx.ellipse(0,0,16,8,0,0,TAU);ctx.fill();ctx.stroke();
+    ctx.beginPath();ctx.ellipse(16,0,8,4.6,0,0,TAU);ctx.fill();ctx.stroke();ctx.beginPath();ctx.ellipse(24,0,6,3.8,0,0,TAU);ctx.fill();ctx.stroke();
+    ctx.fillStyle=shade(H.coat,-.3);ell(19,-3.4,1.6,1.2);ell(19,3.4,1.6,1.2);
+    ctx.fillStyle=H.mane;ell(13,0,7,1.5);
+    ctx.fillStyle=padColor;rr(-7,-8.5,13,17,3);ctx.fill();
+    ctx.fillStyle='#3b5f8f';ell(-1,0,4.5,7.5+bob*.3);ctx.fillStyle=helmet;ell(-1+bob,0,4.2,4.2);
+    ctx.restore();
+  }
+  let last=performance.now(),raf;
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;theta=mod(theta+SPEED[gait]*dt,TAU);
+    trailT+=dt;if(trailT>.12&&gait!=='halt'){trailT=0;const cx=W/2,cy=Hh/2;trail.push([cx+Math.cos(theta)*W*.42*.8,cy+Math.sin(theta)*Hh*.36*.66]);if(trail.length>26)trail.shift()}
+    if(cue&&!done){const d=angDiff(theta,cue.a);$('#cue').classList.toggle('now',Math.abs(d)<=WIN);if(d<-WIN)cue.armed=true;if(cue.armed&&d>WIN&&d<WIN+.5){cue.armed=false;callout(`No worries. ${student} will pass ${cue.l} again.`,'soft')}}
+    draw(now);raf=requestAnimationFrame(frame)}
+  nextCue();raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+
+/* ---------- shared helpers for the rotating chores ---------- */
+function sparkleAt(stage,x,y,col){const r=stage.getBoundingClientRect(),el=document.createElement('span');el.className='sparkle';el.style.left=(x/300*r.width)+'px';el.style.top=(y/220*r.height)+'px';el.innerHTML=`<svg viewBox="0 0 24 24">${star(12,12,11,col||'#fff6c8')}</svg>`;stage.appendChild(el);setTimeout(()=>el.remove(),700)}
+const stepChips=(names,i)=>names.map((n,k)=>`<span class="step ${k<i?'done':k===i?'on':''}">${n}</span>`).join('');
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function nope(b){b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope')}
+function rrect(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function rubbable(stage,onRub,onKey){let rub=false,lx=0,ly=0;const go=e=>{const r=stage.getBoundingClientRect();onRub(e.clientX-r.left,e.clientY-r.top,r)};
+  stage.addEventListener('pointerdown',e=>{rub=true;lx=e.clientX;ly=e.clientY;try{stage.setPointerCapture(e.pointerId)}catch(_){}go(e)});
+  stage.addEventListener('pointermove',e=>{if(!rub||Math.hypot(e.clientX-lx,e.clientY-ly)<5)return;lx=e.clientX;ly=e.clientY;go(e)});
+  ['pointerup','pointercancel'].forEach(ev=>stage.addEventListener(ev,()=>{rub=false}));
+  if(onKey)stage.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();onKey()}})}
+function drawHorseTop(c,x,y,ang,sc,H,pad,helmet,bob){const el=(a,b,rx,ry)=>{c.beginPath();c.ellipse(a,b,rx,ry,0,0,TAU);c.fill()};
+  c.save();c.translate(x,y);c.rotate(ang);c.scale(sc,sc);
+  c.fillStyle=H.mane;el(-21,0,8,2.6);
+  c.fillStyle=H.coat;c.strokeStyle=shade(H.coat,-.35);c.lineWidth=1;[[0,0,16,8],[16,0,8,4.6],[24,0,6,3.8]].forEach(([a,b,rx,ry])=>{c.beginPath();c.ellipse(a,b,rx,ry,0,0,TAU);c.fill();c.stroke()});
+  c.fillStyle=shade(H.coat,-.3);el(19,-3.4,1.6,1.2);el(19,3.4,1.6,1.2);
+  c.fillStyle=H.mane;el(13,0,7,1.5);
+  c.fillStyle=pad;rrect(c,-7,-8.5,13,17,3);c.fill();
+  c.fillStyle='#3b5f8f';el(-1,0,4.5,7.5);c.fillStyle=helmet;el(-1+bob,0,4.2,4.2);c.restore()}
+function drawYouTop(c,x,y,ang,sc){c.save();c.translate(x,y);c.rotate(ang);c.scale(sc,sc);c.fillStyle='#2b1c16';c.beginPath();c.ellipse(-8,0,8,5.5,0,0,TAU);c.fill();c.fillStyle='#b8433a';c.beginPath();c.ellipse(0,0,4.5,10,0,0,TAU);c.fill();c.fillStyle='#2b1c16';c.beginPath();c.arc(0,0,6.5,0,TAU);c.fill();c.restore()}
+
+/* ---------- muck B: feeding time ---------- */
+const FEED_ICONS={
+  hay:`<rect x="6" y="14" width="36" height="22" rx="4" fill="#e2b450" stroke="#b98a2e" stroke-width="2"/><path d="M10,20 h14 M20,28 h16 M12,32 h8" stroke="#f3d27e" stroke-width="2.5" stroke-linecap="round"/><line x1="17" y1="14" x2="17" y2="36" stroke="#8b5a2b" stroke-width="2"/><line x1="31" y1="14" x2="31" y2="36" stroke="#8b5a2b" stroke-width="2"/>`,
+  grain:`<path d="M8,20 h26 l-3,16 h-20 Z" fill="#b8bec4" stroke="#7d848a" stroke-width="2"/><rect x="33" y="24" width="11" height="5" rx="2" fill="#7d848a"/><ellipse cx="21" cy="20" rx="13" ry="4" fill="#d9a24a"/><g fill="#a8742c"><circle cx="16" cy="19" r="1.3"/><circle cx="22" cy="18" r="1.3"/><circle cx="27" cy="20" r="1.3"/></g>`,
+  carrot:`<path d="M12,38 L33,15 C37,12 40,16 36,20 Z" fill="#f08a2c"/><path d="M35,15 l6,-8 M37,17 l8,-4 M33,13 l1,-9" stroke="#5aa04a" stroke-width="3" stroke-linecap="round"/><path d="M21,29 l4,2 M26,24 l3,2" stroke="#c96a1a" stroke-width="1.5"/>`,
+  apple:`<circle cx="24" cy="27" r="13" fill="#d8413c"/><path d="M24,14 q1,-6 4,-8" stroke="#6b3a1f" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="30" cy="11" rx="5" ry="2.6" fill="#5aa04a" transform="rotate(-25 30 11)"/><ellipse cx="18" cy="22" rx="3" ry="4" fill="#fff" opacity=".35"/>`,
+  sock:`<path d="M16,6 h14 v20 l8,7 c4,4 0,11 -6,9 l-14,-8 c-3,-2 -2,-6 -2,-8 Z" fill="#f3eee6" stroke="#9a3226" stroke-width="2"/><path d="M16,12 h14 M16,18 h14" stroke="#9a3226" stroke-width="3"/>`,
+  bone:`<rect x="13" y="20" width="22" height="8" rx="3" fill="#d9b483"/><circle cx="12" cy="19" r="5" fill="#d9b483"/><circle cx="12" cy="29" r="5" fill="#d9b483"/><circle cx="36" cy="19" r="5" fill="#d9b483"/><circle cx="36" cy="29" r="5" fill="#d9b483"/>`
+};
+const ico=k=>`<svg viewBox="0 0 48 48">${FEED_ICONS[k]}</svg>`;
+function muckFeed(){
+  const hn=HORSES[S.horse].name,treat=pick(['carrot','apple']);
+  const req={hay:1+Math.floor(Math.random()*3),grain:1+Math.floor(Math.random()*2),carrot:0,apple:0};req[treat]=1+Math.floor(Math.random()*2);
+  const NAMES={hay:['flake of hay','flakes of hay'],grain:['scoop of grain','scoops of grain'],carrot:['carrot','carrots'],apple:['apple','apples']};
+  const DECOY={sock:"That's the sock Princess Toast stole! Horses don't eat socks.",bone:'A dog biscuit? Poindexter would like that back, please.'};
+  const LABEL={hay:'Hay flake',grain:'Grain scoop',carrot:'Carrot',apple:'Apple',sock:'Striped sock',bone:'Dog biscuit'};
+  const have={hay:0,grain:0,carrot:0,apple:0};let mistakes=0;
+  const rows=()=>Object.keys(req).filter(k=>req[k]).map(k=>`<li><span>${req[k]} ${NAMES[k][req[k]>1?1:0]}</span><span class="ticks">${Array.from({length:req[k]},(_,i)=>`<i class="${i<have[k]?'on':''}"></i>`).join('')}</span></li>`).join('');
+  openModal(`<div class="mg-head"><h2>Feeding time for ${esc(hn)}</h2>${toastSVG('class="mg-dog"')}</div>
+  <p class="hint" id="fhint">Read the feed card, then tap the shelf to put exactly that much in the feeder.</p>
+  <div class="feed"><div class="feedcard"><p class="eyebrow">${esc(hn)}'s feed card</p><ul id="fcard">${rows()}</ul></div><div class="trough" id="trough"><span class="trough-lbl">Feeder</span></div></div>
+  <div class="shelf">${shuffle(Object.keys(LABEL)).map(k=>`<button class="shelf-item" data-k="${k}">${ico(k)}<span>${LABEL[k]}</span></button>`).join('')}</div>`);
+  const hint=$('#fhint'),trough=$('#trough');
+  $$('.shelf-item').forEach(b=>b.onclick=()=>{const k=b.dataset.k;
+    if(DECOY[k]){mistakes++;hint.textContent=DECOY[k];nope(b);return}
+    if(have[k]>=req[k]){mistakes++;hint.textContent=req[k]?`${hn} only gets ${req[k]} ${NAMES[k][req[k]>1?1:0]}. You put the extra back.`:`No ${NAMES[k][1]} on the card today. Check the feed card!`;nope(b);return}
+    have[k]++;const it=document.createElement('span');it.className='trough-item';it.innerHTML=ico(k);trough.appendChild(it);$('#fcard').innerHTML=rows();
+    hint.textContent=pick(['Yum!','Good measuring!','Into the feeder!',`${hn} perks up their ears.`]);
+    if(Object.keys(req).every(q=>have[q]===req[q])){$$('.shelf-item').forEach(x=>x.disabled=true);hint.textContent='Exactly right!';
+      const stars=mistakes===0?3:mistakes<=2?2:1;
+      later(()=>finishChore('muck',stars,`${esc(hn)} is munching happily. Princess Toast is staring very hard at the ${treat}.`,horseSVG(S.horse,lookOf(S.horse)),'Dinner is served!'),900)}});
+}
+
+/* ---------- muck C: fly patrol ---------- */
+const FLY=`<svg viewBox="0 0 24 24"><g class="wing"><ellipse cx="7" cy="9" rx="6" ry="3.6" fill="rgba(225,238,248,.9)" stroke="#9fb3c2" stroke-width=".6"/><ellipse cx="17" cy="9" rx="6" ry="3.6" fill="rgba(225,238,248,.9)" stroke="#9fb3c2" stroke-width=".6"/></g><ellipse cx="12" cy="14" rx="4.5" ry="5.5" fill="#262626"/><circle cx="12" cy="8.5" r="3" fill="#333"/><circle cx="10.6" cy="8" r="1.1" fill="#c33"/><circle cx="13.4" cy="8" r="1.1" fill="#c33"/></svg>`;
+function muckFlies(){
+  const hn=HORSES[S.horse].name,n=Math.min(14,6+S.level),t0=performance.now();
+  openModal(`<div class="mg-head"><h2>Fly patrol</h2>${poinSVG('class="mg-dog"')}</div>
+  <p class="hint" id="flyhint">Flies are bugging ${esc(hn)}! Tap them to shoo them out the window.</p>
+  <div class="stall fresh flystall" id="fs"><div class="fwin" id="fwin"></div><div class="fs-horse">${horseSVG(S.horse,lookOf(S.horse))}</div><div class="count" id="fcount">0 / ${n}</div></div>`);
+  const fs=$('#fs'),win=$('#fwin');let got=0,W=fs.clientWidth,Hh=fs.clientHeight;const flies=[];
+  for(let i=0;i<n;i++){const b=document.createElement('button');b.className='fly';b.setAttribute('aria-label','Fly');b.innerHTML=FLY;fs.appendChild(b);
+    const f={el:b,x:W*(.08+Math.random()*.6),y:Hh*(.2+Math.random()*.5),a:Math.random()*TAU,gone:false};flies.push(f);b.onclick=()=>shoo(f,'tap')}
+  function shoo(f,by){if(f.gone)return;f.gone=true;const wr=win.getBoundingClientRect(),fr=fs.getBoundingClientRect();
+    f.el.style.transform=`translate(${wr.left-fr.left+wr.width/2-22}px,${wr.top-fr.top+wr.height/2-22}px) scale(.4)`;f.el.classList.add('shoo');setTimeout(()=>f.el.remove(),650);
+    got++;$('#fcount').textContent=`${got} / ${n}`;
+    $('#flyhint').textContent=by==='dog'?'Poindexter snapped one out of the air! Gross, but helpful.':pick(['Shoo!','Out you go!','Bye, fly!',`${hn} swishes a thank-you.`]);
+    if(got===n){const per=(performance.now()-t0)/1000/n,stars=per<2.5?3:per<4.5?2:1;$('#flyhint').textContent='Fly-free! The stall is peaceful again.';
+      later(()=>finishChore('muck',stars,`${esc(hn)} lets out a happy sigh. Poindexter is very proud of the fly he caught.`,poinSVG(),'No more flies!'),900)}}
+  let last=performance.now(),raf,dogT=0;
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;W=fs.clientWidth;Hh=fs.clientHeight;const sp=W*(.09+Math.min(S.level,8)*.007);
+    flies.forEach(f=>{if(f.gone)return;f.a+=(Math.random()-.5)*6*dt;f.x+=Math.cos(f.a)*sp*dt;f.y+=Math.sin(f.a)*sp*dt;
+      if(f.x<4||f.x>W-48){f.a=PI-f.a;f.x=Math.max(4,Math.min(W-48,f.x))}if(f.y<4||f.y>Hh-48){f.a=-f.a;f.y=Math.max(4,Math.min(Hh-48,f.y))}
+      f.el.style.transform=`translate(${f.x}px,${f.y}px)`});
+    dogT+=dt;if(dogT>6){dogT=0;const live=flies.filter(f=>!f.gone);if(live.length>2&&Math.random()<.6)shoo(pick(live),'dog')}
+    raf=requestAnimationFrame(frame)}
+  raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+
+/* ---------- groom B: bath day ---------- */
+const BUBBLES=`<svg viewBox="0 0 40 40"><g fill="rgba(255,255,255,.9)" stroke="#bfe3f5" stroke-width="1"><circle cx="14" cy="16" r="9"/><circle cx="26" cy="13" r="7"/><circle cx="23" cy="26" r="8"/><circle cx="10" cy="28" r="5"/><circle cx="32" cy="25" r="5"/></g><circle cx="11" cy="13" r="2" fill="#fff"/></svg>`;
+const DRIPS=`<svg viewBox="0 0 40 40"><g fill="#5fb3e4"><path d="M12,6 q6,9 0,13 q-6,-4 0,-13Z"/><path d="M27,12 q6,9 0,13 q-6,-4 0,-13Z"/><path d="M18,22 q6,9 0,13 q-6,-4 0,-13Z"/></g></svg>`;
+function groomBath(){
+  const hn=HORSES[S.horse].name,t0=performance.now();
+  const Z=[[112,100],[150,92],[188,104],[122,132],[166,130],[212,72],[234,46],[97,170],[210,168]];
+  const STEPS=[{n:'Sponge',verb:`Soap up: click and drag the sponge all over ${hn}.`,k:'soap',pos:Z},{n:'Hose',verb:'Rinse: drag the hose over the bubbles to wash them away.',k:'bubbles',pos:Z},{n:'Sweat scraper',verb:'Scrape off the extra water: drag over the drips.',k:'drips',pos:Z.filter((_,i)=>i%2===0)}];
+  let step=0,spots=[];
+  openModal(`<div class="mg-head"><h2>Bath day for ${esc(hn)}</h2><div class="steps" id="gsteps"></div>${poinSVG('class="mg-dog"')}</div><p class="hint" id="ghint"></p>
+  <div class="groom-stage wet" id="stage" tabindex="0" aria-label="Wash rack. Drag to scrub, or press Space.">${horseSVG(S.horse,{mane:lookOf(S.horse).mane})}<div class="deco" id="deco"></div><div id="spots"></div></div>`);
+  const stage=$('#stage'),spotsEl=$('#spots'),deco=$('#deco');
+  const vis=k=>k==='bubbles'?BUBBLES:k==='drips'?DRIPS:'';
+  function renderStep(){const st=STEPS[step];$('#gsteps').innerHTML=stepChips(STEPS.map(s=>s.n),step);$('#ghint').textContent=st.verb;
+    spots=st.pos.map(([x,y])=>({x,y,hp:6}));deco.innerHTML='';
+    spotsEl.innerHTML=spots.map(s=>`<div class="spot ${st.k}" style="left:${(s.x/3).toFixed(2)}%;top:${(s.y/2.2).toFixed(2)}%">${vis(st.k)}</div>`).join('')}
+  function hit(i){const s=spots[i],st=STEPS[step];if(!s||s.hp<=0)return;s.hp--;const el=spotsEl.children[i];if(st.k!=='soap')el.style.opacity=Math.max(.05,s.hp/6);
+    if(s.hp>0)return;el.classList.add('clean');
+    if(st.k==='soap'){const d=document.createElement('div');d.className='spot bubbles';d.style.left=el.style.left;d.style.top=el.style.top;d.innerHTML=BUBBLES;deco.appendChild(d)}
+    else sparkleAt(stage,s.x,s.y,st.k==='bubbles'?'#bfe8ff':'#fff6c8');
+    if(!spots.every(q=>q.hp<=0))return;step++;
+    if(step>=STEPS.length){$('#gsteps').innerHTML=stepChips(STEPS.map(s=>s.n),99);stage.classList.add('shake','shiny');$('#ghint').textContent=`${hn} gives a giant shake… and splashes Poindexter!`;
+      const secs=(performance.now()-t0)/1000,stars=secs<45?3:secs<75?2:1;
+      later(()=>finishChore('groom',stars,`${esc(hn)} is squeaky clean. Poindexter is now also clean. He did not ask for that.`,horseSVG(S.horse,lookOf(S.horse)),'Bath time is done!'),1600)}
+    else{$('#ghint').textContent=`Nice! Next up: ${STEPS[step].n}.`;later(renderStep,700)}}
+  rubbable(stage,(px,py,r)=>{if(step>=STEPS.length)return;spots.forEach((s,i)=>{if(Math.hypot(px-s.x/300*r.width,py-s.y/220*r.height)<r.width*.08)hit(i)})},()=>{if(step>=STEPS.length)return;const i=spots.findIndex(s=>s.hp>0);if(i>=0){hit(i);hit(i);hit(i)}});
+  renderStep();
+}
+
+/* ---------- groom C: braid the mane ---------- */
+function groomBraid(){
+  const H=HORSES[S.horse],hn=H.name;
+  const crest=[[231,21],[224,32],[216,44],[208,56],[200,68],[192,80]];
+  const COLS=[['#ef6a9a','Pink'],['#f0c25a','Gold'],['#5fa8e8','Blue']],LENS=[3,4,5];
+  let round=0,seq=[],input=[],busy=true,mistakes=0;
+  openModal(`<div class="mg-head"><h2>Braid ${esc(hn)}'s mane</h2><div class="steps" id="bsteps"></div>${toastSVG('class="mg-dog"')}</div>
+  <p class="hint" id="bhint">Watch the strands light up, then tap them in the same order.</p>
+  <div class="groom-stage" id="stage">${horseSVG(S.horse,{mane:'natural'})}<div class="deco" id="deco"></div></div>
+  <div class="strands wait" id="strands">${COLS.map(([c,n],i)=>`<button class="strand" data-i="${i}" style="--c:${c}">${n}</button>`).join('')}</div>`);
+  const btns=$$('.strand'),hint=$('#bhint'),deco=$('#deco'),wrap=$('#strands'),NAMES=['Braid 1','Braid 2','Braid 3'];
+  const flash=i=>{btns[i].classList.add('lit');later(()=>btns[i].classList.remove('lit'),380)};
+  function play(){busy=true;input=[];wrap.classList.add('wait');hint.textContent='Watch the pattern…';
+    seq.forEach((v,k)=>later(()=>flash(v),700+k*650));
+    later(()=>{busy=false;wrap.classList.remove('wait');hint.textContent=`Your turn! Tap the ${seq.length} strands in the same order.`},700+seq.length*650)}
+  function newRound(){$('#bsteps').innerHTML=stepChips(NAMES,round);seq=Array.from({length:LENS[round]},()=>Math.floor(Math.random()*3));play()}
+  btns.forEach(b=>b.onclick=()=>{if(busy)return;const i=+b.dataset.i;flash(i);input.push(i);
+    if(i!==seq[input.length-1]){mistakes++;busy=true;wrap.classList.add('wait');hint.textContent='Oops, the braid slipped! Watch again.';later(play,1000);return}
+    if(input.length<seq.length)return;
+    busy=true;wrap.classList.add('wait');
+    [crest[round*2],crest[round*2+1]].forEach(([x,y])=>{const k=document.createElement('span');k.className='knot';k.style.cssText=`left:${x/3}%;top:${y/2.2}%;background:${H.mane};--c:${COLS[round][0]}`;deco.appendChild(k)});
+    sparkleAt($('#stage'),crest[round*2][0],crest[round*2][1]);round++;
+    if(round>=3){$('#bsteps').innerHTML=stepChips(NAMES,3);hint.textContent=`${hn} looks ready for a horse show!`;const stars=mistakes===0?3:mistakes<=2?2:1;
+      later(()=>finishChore('groom',stars,`${esc(hn)} has six perfect braids. Princess Toast wants braids too. She does not have enough hair.`,horseSVG(S.horse,lookOf(S.horse)),'Braids done!'),1300)}
+    else{hint.textContent=pick(['Beautiful braid!','So neat!','Perfect over-under!']);later(newRound,1100)}});
+  newRound();
+}
+
+/* ---------- lesson B: tack up ---------- */
+function lessonTack(){
+  const student=pick(STUDENTS),hn=HORSES[S.horse].name,L=lookOf(S.horse);
+  const gear={pad:L.pad!=='none'?L.pad:'barnred',saddle:L.saddle!=='none'?L.saddle:'english',bridle:L.bridle!=='none'?L.bridle:'leather'};
+  const ORDER=[
+    {id:'pad',name:'Saddle pad',ok:"The pad goes on first to cushion the horse's back."},
+    {id:'saddle',name:'Saddle',ok:'The saddle sits right on top of the pad.',early:'The saddle needs a pad underneath it first.'},
+    {id:'girth',name:'Buckle the girth',ok:"A snug girth keeps the saddle from slipping.",early:"There's no saddle to buckle yet!"},
+    {id:'bridle',name:'Bridle',ok:'Bridle on, reins over the neck. Almost ready!',early:'The bridle goes on after the saddle is buckled.'},
+    {id:'helmet',name:`${student}'s helmet`,ok:`${student} buckles their helmet. Safety first!`,early:'Get the horse all tacked up before the rider gears up.'}];
+  const DECOYS=[{id:'tiara',name:"Princess Toast's tiara",line:"That's Princess Toast's tiara! She snorts and takes it back."},{id:'glasses',name:"Poindexter's glasses",line:'Poindexter needs those to read the barn mail!'}];
+  let k=0,mistakes=0;const look={mane:L.mane,pad:'none',saddle:'none',bridle:'none'};
+  openModal(`<div class="mg-head"><h2>Tack up for ${student}'s lesson</h2><div class="steps" id="tsteps"></div></div>
+  <p class="hint" id="thint">Get ${esc(hn)} ready to ride. Tap the tack in the order it goes on.</p>
+  <div class="groom-stage" id="stage">${horseSVG(S.horse,look)}</div>
+  <div class="tackbtns">${shuffle([...ORDER,pick(DECOYS)]).map(o=>`<button class="wood-btn tb" data-id="${o.id}">${esc(o.name)}</button>`).join('')}</div>`);
+  const stage=$('#stage'),hint=$('#thint');
+  const chips=()=>{$('#tsteps').innerHTML=stepChips(ORDER.map((o,i)=>i<k?o.name:'Step '+(i+1)),k)};chips();
+  $$('.tb').forEach(b=>b.onclick=()=>{const id=b.dataset.id,dec=DECOYS.find(d=>d.id===id);
+    if(dec){mistakes++;hint.textContent=dec.line;b.disabled=true;return}
+    const want=ORDER[k];
+    if(id!==want.id){mistakes++;hint.textContent=ORDER.find(x=>x.id===id).early;nope(b);return}
+    if(id==='pad')look.pad=gear.pad;if(id==='saddle')look.saddle=gear.saddle;if(id==='bridle')look.bridle=gear.bridle;
+    stage.querySelector('svg').outerHTML=horseSVG(S.horse,look);
+    sparkleAt(stage,...{pad:[152,92],saddle:[155,72],girth:[157,126],bridle:[258,52],helmet:[150,40]}[id]);
+    hint.textContent='✓ '+want.ok;b.disabled=true;b.classList.add('done');k++;chips();
+    if(k>=ORDER.length){const stars=mistakes===0?3:mistakes<=2?2:1;$$('.tb').forEach(x=>x.disabled=true);
+      later(()=>finishChore('lesson',stars,`${student} climbed on and rode ${esc(hn)} around the arena. Poindexter supervised from the fence.`,horseSVG(S.horse,look),'Ready to ride!'),1500)}});
+}
+
+/* ---------- lesson C: lead-line ride ---------- */
+function lessonLead(){
+  const student=pick(STUDENTS),H=HORSES[S.horse],hn=H.name,L=lookOf(S.horse);
+  const helmet=pick(['#e25a7a','#4a90d9','#6cbf5a','#9b6ad6','#f2a33a']),pad=L.pad!=='none'?PADS[L.pad][0]:'#6b3a1f';
+  const PRE=[[[.22,.3,0],[.5,.2,0],[.8,.36,1],[.68,.76,0],[.36,.74,0]],[[.25,.72,0],[.28,.3,1],[.56,.5,0],[.82,.28,1],[.8,.74,0]],[[.5,.25,1],[.8,.5,0],[.52,.78,1],[.22,.6,0],[.46,.5,1]]];
+  const gates=pick(PRE).map(([u,v,o])=>({u,v,a:o?PI/2:0,done:false,knock:[false,false]}));
+  openModal(`<div class="mg-head"><h2>Lead-line ride with ${student}</h2>${toastSVG('class="mg-dog"')}</div>
+  <p class="hint">${student} is brand new to riding. Tap or drag in the arena to lead ${esc(hn)}. Walk through the cone gates in number order.</p>
+  <div class="arena-wrap" id="arenaWrap"><canvas id="arena" class="lead" aria-label="Arena with numbered cone gates"></canvas><div class="callout" id="callout" hidden></div></div>
+  <p class="progress" id="lprog">Gate 1 of ${gates.length}</p>`);
+  const cv=$('#arena'),ctx=cv.getContext('2d'),wrap=$('#arenaWrap');let W=0,Hh=0;
+  function size(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;Hh=Math.round(W*.62);cv.width=W*dpr;cv.height=Hh*dpr;cv.style.height=Hh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();window.addEventListener('resize',size);cleanups.push(()=>window.removeEventListener('resize',size));
+  const sand=Array.from({length:160},()=>[Math.random(),Math.random(),Math.random()]);
+  let hx=.06,hy=.5,tx=.06,ty=.5,ang=0,next=0,bumps=0,done=false,drag=false,walkT=0;
+  const box=()=>({x0:W*.04,y0:Hh*.06,fw:W*.92,fh:Hh*.88});
+  const toPx=(u,v)=>{const b=box();return[b.x0+u*b.fw,b.y0+v*b.fh]};
+  function setT(e){const r=cv.getBoundingClientRect(),b=box();tx=Math.max(.03,Math.min(.97,(e.clientX-r.left-b.x0)/b.fw));ty=Math.max(.05,Math.min(.95,(e.clientY-r.top-b.y0)/b.fh))}
+  cv.addEventListener('pointerdown',e=>{drag=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}setT(e)});
+  cv.addEventListener('pointermove',e=>{if(drag)setT(e)});
+  ['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{drag=false}));
+  function callout(t,kind){const c=$('#callout');c.textContent=t;c.className='callout '+(kind||'');c.hidden=false;clearTimeout(callout.t);callout.t=setTimeout(()=>{c.hidden=true},1500)}
+  function draw(now){const b=box(),gw=W*.07,cr=Math.max(5,W*.013),sc=Math.max(.75,W/560);
+    ctx.fillStyle='#6d9a55';ctx.fillRect(0,0,W,Hh);ctx.fillStyle='#dcbf8e';rrect(ctx,b.x0,b.y0,b.fw,b.fh,14);ctx.fill();
+    ctx.fillStyle='rgba(160,120,70,.35)';sand.forEach(([u,v,s])=>ctx.fillRect(b.x0+u*b.fw,b.y0+v*b.fh,1+s*1.5,1+s*1.5));
+    ctx.strokeStyle='#fbf7ee';ctx.lineWidth=4;rrect(ctx,b.x0,b.y0,b.fw,b.fh,14);ctx.stroke();
+    gates.forEach((g,gi)=>{const[cx,cy]=toPx(g.u,g.v),ex=Math.cos(g.a)*gw,ey=Math.sin(g.a)*gw;
+      if(g.done||(gi===next&&!done)){ctx.setLineDash(g.done?[]:[6,5]);ctx.strokeStyle=g.done?'rgba(63,138,79,.85)':'#f0c25a';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(cx-ex,cy-ey);ctx.lineTo(cx+ex,cy+ey);ctx.stroke();ctx.setLineDash([])}
+      [-1,1].forEach((s,ci)=>{const kx=cx+ex*s,ky=cy+ey*s;ctx.fillStyle='#e8742c';
+        if(g.knock[ci]){ctx.beginPath();ctx.ellipse(kx,ky,cr*1.5,cr*.6,.6,0,TAU);ctx.fill()}
+        else{ctx.beginPath();ctx.arc(kx,ky,cr,0,TAU);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(kx,ky,cr*.5,0,TAU);ctx.fill();ctx.fillStyle='#e8742c';ctx.beginPath();ctx.arc(kx,ky,cr*.22,0,TAU);ctx.fill()}});
+      const lx=cx+ex*1.75,ly=cy+ey*1.75;ctx.fillStyle=g.done?'#3f8a4f':gi===next&&!done?'#f0c25a':'#fbf7ee';ctx.beginPath();ctx.arc(lx,ly,10,0,TAU);ctx.fill();ctx.strokeStyle='#3a2418';ctx.lineWidth=1.5;ctx.stroke();
+      ctx.fillStyle=g.done?'#fff':'#3a2418';ctx.font='800 12px Nunito, system-ui, sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(g.done?'✓':String(gi+1),lx,ly+1)});
+    const[px,py]=toPx(hx,hy);
+    if(!done){const[qx,qy]=toPx(tx,ty);if(Math.hypot(qx-px,qy-py)>6){ctx.strokeStyle='rgba(58,36,24,.55)';ctx.lineWidth=2;ctx.beginPath();ctx.arc(qx,qy,8,0,TAU);ctx.stroke()}}
+    const gx=px+Math.cos(ang)*12*sc+Math.cos(ang-PI/2)*17*sc,gy=py+Math.sin(ang)*12*sc+Math.sin(ang-PI/2)*17*sc;
+    ctx.strokeStyle='#c43f6a';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(gx,gy);ctx.lineTo(px+Math.cos(ang)*22*sc,py+Math.sin(ang)*22*sc);ctx.stroke();
+    drawHorseTop(ctx,px,py,ang,sc,H,pad,helmet,Math.sin(walkT*9)*.6);
+    drawYouTop(ctx,gx,gy,ang,sc)}
+  let last=performance.now(),raf;
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;const b=box();
+    const[px,py]=toPx(hx,hy),[qx,qy]=toPx(tx,ty),dx=qx-px,dy=qy-py,dist=Math.hypot(dx,dy);
+    if(dist>3&&!done){const st=Math.min(dist,W*.13*dt);hx+=dx/dist*st/b.fw;hy+=dy/dist*st/b.fh;ang+=angDiff(Math.atan2(dy,dx),ang)*Math.min(1,dt*8);walkT+=dt}
+    const[nx,ny]=toPx(hx,hy),gw=W*.07;
+    gates.forEach(g=>{const[cx,cy]=toPx(g.u,g.v);[-1,1].forEach((s,ci)=>{if(g.knock[ci])return;if(Math.hypot(nx-(cx+Math.cos(g.a)*gw*s),ny-(cy+Math.sin(g.a)*gw*s))<W*.022){g.knock[ci]=true;bumps++;callout('Oops! Bumped a cone.','soft')}})});
+    if(!done){const g=gates[next],[cx,cy]=toPx(g.u,g.v);if(Math.hypot(nx-cx,ny-cy)<W*.045){g.done=true;next++;
+      if(next>=gates.length){done=true;$('#lprog').textContent='All gates done!';callout(`${student} did it!`,'good');const stars=bumps<=1?3:bumps<=3?2:1;
+        later(()=>finishChore('lesson',stars,`${student} gave ${esc(hn)} a big hug. Princess Toast gave ${student} a big lick.`,horseSVG(S.horse,lookOf(S.horse)),'Great lead-line ride!'),1500)}
+      else{callout(pick(['Nice!','Right through!','Good steering!']),'good');$('#lprog').textContent=`Gate ${next+1} of ${gates.length}`}}}
+    draw(now);raf=requestAnimationFrame(frame)}
+  raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+
+/* ---------- finish day & prizes ---------- */
+const GIFT=`<svg viewBox="0 0 170 150"><rect x="20" y="58" width="130" height="86" rx="8" fill="#9a3226"/><rect x="12" y="40" width="146" height="28" rx="6" fill="#b8433a"/><rect x="76" y="40" width="18" height="104" fill="#f0c25a"/><path d="M85,40 C60,6 36,24 58,40 Z M85,40 C110,6 134,24 112,40 Z" fill="#f0c25a" stroke="#b4862a" stroke-width="2"/></svg>`;
+const RIBBON=`<svg viewBox="0 0 120 160"><path d="M44,80 L30,150 L50,138 L60,156 L66,84 Z M76,80 L90,150 L70,138 L60,156 L54,84 Z" fill="#2f63b8"/><circle cx="60" cy="58" r="44" fill="#3b78d8"/><circle cx="60" cy="58" r="32" fill="#f4efe4"/><text x="60" y="67" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="26" fill="#2f63b8">1st</text></svg>`;
+function confetti(){const cs=['#f0c25a','#ef6a9a','#5fa8e8','#6cbf5a','#9b6ad6','#fff'];for(let i=0;i<60;i++){const c=document.createElement('span');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=pick(cs);c.style.animationDelay=Math.random()*.6+'s';c.style.animationDuration=1.6+Math.random()*1.4+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3600)}}
+function finishDay(){
+  if(!CHORES.every(c=>S.done[c.id]))return;
+  const lv=S.level,p=nextPrize();let art,name;
+  if(p){S.owned.push(p.t+':'+p.id);name=prizeName(p);
+    if(p.t==='horse')art=horseSVG(p.id,DEFAULT_LOOK);
+    else art=horseSVG(S.horse,Object.assign(lookOf(S.horse),{[p.t]:p.id},p.t==='saddle'&&lookOf(S.horse).pad==='none'?{pad:'barnred'}:{}));}
+  else{S.ribbons++;name=`Blue ribbon #${S.ribbons}`;art=RIBBON}
+  S.coins=(S.coins||0)+25;S.level++;S.done={muck:0,groom:0,lesson:0};save();
+  openModal(`<div class="result"><p class="eyebrow">Level ${lv} complete</p><h2>You earned a prize!</h2><div id="pbox"><button class="gift" id="gift" aria-label="Open your prize">${GIFT}</button><p>Tap the present to open it.</p></div></div>`);
+  $('#gift').onclick=()=>{confetti();
+    const tryBtn=p?`<button class="big-btn" id="tryBtn">${p.t==='horse'?'Bring '+HORSES[p.id].name+' in':'Try it on'}</button>`:'';
+    $('#pbox').innerHTML=`<div class="result-art" style="margin:0 auto">${art}</div><p class="prize-name">${esc(name)}</p><p class="coin-pop">${COIN} +25 coin bonus</p>${p?'':'<p>You have unlocked everything! Keep finishing days to collect blue ribbons.</p>'}${p&&p.t==='horse'?`<p>${HORSES[p.id].desc}. Find them in the paddock.</p>`:''}<div class="btn-row">${tryBtn}<button class="wood-btn" id="pBack">Back to the barn</button></div>`;
+    $('#pBack').onclick=closeModal;
+    if(p)$('#tryBtn').onclick=()=>{if(p.t==='horse'){S.horse=p.id;save();closeModal();return}const l=lookOf(S.horse);l[p.t]=p.id;if(p.t==='saddle'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l;save();openTack()}};
+}
+$('#finishBtn').onclick=finishDay;
+
+/* ---------- tack room shop ---------- */
+const PRICE={mane:{buttons:40,ribbons:60,flowers:70,curly:70,rainbow:90},pad:{sky:40,sunflower:70},saddle:{western:120},bridle:{sparkle:80},wraps:{strawberry:60}};
+function openTack(msg){
+  let hint=msg||'Dress up your horse, or spend coins on something new. Every chore star earns 10 coins.';
+  const draw=()=>{const L=lookOf(S.horse),H=HORSES[S.horse],coins=S.coins||0;
+    const chip=(t,id,label,on,extra='')=>{
+      if(owns(t,id))return`<button class="cbtn ${on?'on':''}" data-t="${t}" data-id="${id}" ${on?'aria-pressed="true"':''}>${extra}${label}</button>`;
+      if(t==='horse')return`<button class="cbtn" disabled>${extra}${label} · level prize</button>`;
+      const pr=PRICE[t][id];return`<button class="cbtn buy" data-buy="${t}:${id}" ${coins>=pr?'':'disabled'} aria-label="Buy ${label} for ${pr} coins">${extra}${label} · ${COIN}${pr}</button>`};
+    const groups=[
+      ['Horse',Object.keys(HORSES).map(id=>chip('horse',id,HORSES[id].name,S.horse===id,`<span class="sw" style="background:${HORSES[id].coat}"></span>`)).join('')],
+      ['Hairstyle',Object.keys(MANES).map(id=>chip('mane',id,MANES[id],L.mane===id)).join('')],
+      ...Object.keys(TACK).map(t=>[TACK[t].label,Object.keys(TACK[t].items).map(id=>chip(t,id,TACK[t].items[id],L[t]===id,PADS[id]&&t==='pad'?`<span class="sw" style="background:${PADS[id][0]}"></span>`:'')).join('')])];
+    return`<div class="mg-head"><h2>Tack room</h2><span class="shop-coins">${COIN} ${coins} coins</span></div><p class="hint">${esc(hint)}</p>
+    <div class="tack"><div class="tack-preview">${horseSVG(S.horse,L)}<div class="nm">${esc(H.name)}</div><p class="ds">${H.desc}</p></div>
+    <div>${groups.map(([h,c])=>`<div class="opt-group"><h3>${h}</h3><div class="chips">${c}</div></div>`).join('')}<button class="big-btn" id="tackDone">Done</button></div></div>`};
+  const bind=()=>{
+    $$('.cbtn[data-t]').forEach(b=>b.onclick=()=>{const t=b.dataset.t,id=b.dataset.id;
+      if(t==='horse')S.horse=id;else{const l=lookOf(S.horse);l[t]=id;if(t==='saddle'&&id!=='none'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l}
+      save();redraw()});
+    $$('.cbtn[data-buy]').forEach(b=>b.onclick=()=>{const[t,id]=b.dataset.buy.split(':'),pr=PRICE[t][id];if((S.coins||0)<pr)return;
+      S.coins-=pr;S.owned.push(t+':'+id);const l=lookOf(S.horse);l[t]=id;if(t==='saddle'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l;save();
+      hint=`You bought ${t==='mane'?'the '+MANES[id]+' hairstyle':'the '+TACK[t].items[id]+' '+TACK[t].label.toLowerCase()}! ${HORSES[S.horse].name} is trying it on.`;redraw()});
+    $('#tackDone').onclick=closeModal};
+  const redraw=()=>{$('#mbody').innerHTML=draw();bind()};
+  openModal(draw());bind();
+}
+$('#tackBtn').onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go('tack')};
+
+/* ---------- welcome ---------- */
+function startScreen(){
+  let skin=S.skin||SKINS[1];
+  openModal(`<div class="welcome"><div class="welcome-art" id="wart">${girlSVG(skin)}</div><div>
+    <p class="eyebrow">Welcome to</p><h2>Willow Creek Stables</h2>
+    <p>You run the barn! Tap places on the barn map to walk there: the stall, the grooming bay, and the arena each have a chore. Finish all three to complete a level and win a prize. Chores earn coins to spend in the tack room.</p>
+    <label for="nameIn">What's your name?</label><input id="nameIn" maxlength="16" autocomplete="off" placeholder="Type your name" value="${esc(S.name)}">
+    <span class="lbl2">Pick your skin tone</span><div class="skins">${SKINS.map(c=>`<button class="skin ${c===skin?'on':''}" data-c="${c}" style="background:${c}" aria-label="Skin tone"></button>`).join('')}</div>
+    <button class="big-btn" id="goBtn">Open the barn doors</button></div></div>
+    <div class="meet"><div>${toastSVG()}<span><b>Princess Toast</b>A pittie-pug mix and rescue. Loves naps, snacks, and fresh shavings.</span></div><div>${poinSVG()}<span><b>Poindexter</b>A coonhound mutt and rescue. Smells everything. Wears glasses for reading the mail.</span></div></div>`,{closable:false});
+  $$('.skin').forEach(b=>b.onclick=()=>{skin=b.dataset.c;$$('.skin').forEach(x=>x.classList.toggle('on',x===b));$('#wart').innerHTML=girlSVG(skin)});
+  const go=()=>{S.name=$('#nameIn').value.trim().slice(0,16)||'Barn Boss';S.skin=skin;S.started=true;save();closeModal();setTimeout(()=>say('girl',`Hi! I'm ${S.name}. Let's get to work!`),300)};
+  $('#goBtn').onclick=go;$('#nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+}
+
+/* ---------- reset ---------- */
+let resetArmed=false;
+$('#resetBtn').onclick=()=>{const b=$('#resetBtn');if(!resetArmed){resetArmed=true;b.textContent='Tap again to erase all progress';setTimeout(()=>{resetArmed=false;b.textContent='Start over'},3500);return}
+  resetArmed=false;b.textContent='Start over';S=fresh();save();render();startScreen()};
+
+/* ---------- ambient chatter ---------- */
+setInterval(()=>{if($('#modal').hidden&&!document.hidden){const w=pick(['toast','poin','toast','poin','horse']);say(w,lineFor(w))}},17000);
+
+/* ---------- barn radio: an original country tune made with Web Audio ---------- */
+const Music=(()=>{
+  let ac,master,noise,timer,nextT=0,bar=0,on=false,vol=.6;
+  const BPM=112,B=60/BPM,f=m=>440*Math.pow(2,(m-69)/12);
+  const CH={G:{c:[55,59,62,67],b:[43,38],r:[67,71,74,79]},C:{c:[48,52,55,60],b:[48,43],r:[67,72,76,79]},D:{c:[50,54,57,62],b:[38,45],r:[66,69,74,78]}};
+  const PROG='GGCGDDGGCCGGDDGG'.split('');
+  const MEL=[
+    [[0,67,1],[1,71,1],[2,74,1.5],[3.5,71,.5]],[[0,74,1],[1,76,.5],[1.5,74,.5],[2,71,2]],[[0,72,1],[1,76,1],[2,79,1],[3,76,1]],[[0,74,2],[2,71,1],[3,67,1]],
+    [[0,66,1],[1,69,1],[2,74,1.5],[3.5,72,.5]],[[0,71,1],[1,69,1],[2,66,1],[3,69,1]],[[0,67,1],[1,71,.5],[1.5,69,.5],[2,67,1],[3,62,1]],[[0,67,3]],
+    [[0,76,1.5],[1.5,74,.5],[2,72,1],[3,76,1]],[[0,79,2],[2,76,1],[3,72,1]],[[0,74,1],[1,71,1],[2,67,1],[3,71,1]],[[0,74,3],[3,76,1]],
+    [[0,78,1],[1,76,1],[2,74,1],[3,72,1]],[[0,71,1],[1,69,1],[2,66,1],[3,62,1]],[[0,67,1],[1,71,1],[2,74,1],[3,71,1]],[[0,67,3]]];
+  const sw=x=>{const i=Math.floor(x),fr=x-i;return i+(fr===.5?.6:fr)};
+  function init(){ac=new(window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=0;const comp=ac.createDynamicsCompressor();master.connect(comp);comp.connect(ac.destination);
+    const len=Math.floor(ac.sampleRate*.2);noise=ac.createBuffer(1,len,ac.sampleRate);const d=noise.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1}
+  function pluck(t,m,o){const{type='sawtooth',cut=1800,dec=.3,g=.1,q=1,bend=0,bt=.05}=o||{};const osc=ac.createOscillator(),fl=ac.createBiquadFilter(),v=ac.createGain();
+    osc.type=type;osc.frequency.setValueAtTime(f(m-bend),t);if(bend)osc.frequency.linearRampToValueAtTime(f(m),t+bt);fl.type='lowpass';fl.Q.value=q;fl.frequency.setValueAtTime(cut,t);fl.frequency.exponentialRampToValueAtTime(Math.max(200,cut*.3),t+dec);
+    v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(g,t+.005);v.gain.exponentialRampToValueAtTime(.0005,t+dec);osc.connect(fl);fl.connect(v);v.connect(master);osc.start(t);osc.stop(t+dec+.05)}
+  function twang(t,m,dur,bend){const end=t+dur*B,v=ac.createGain(),fl=ac.createBiquadFilter();fl.type='lowpass';fl.Q.value=9;fl.frequency.setValueAtTime(4200,t);fl.frequency.exponentialRampToValueAtTime(1100,t+.25);
+    [['sawtooth',0],['square',7]].forEach(([ty,det])=>{const o=ac.createOscillator(),lfo=ac.createOscillator(),lg=ac.createGain();o.type=ty;o.detune.value=det;o.frequency.setValueAtTime(f(m-bend),t);if(bend)o.frequency.linearRampToValueAtTime(f(m),t+.09);
+      lfo.frequency.value=6;lg.gain.setValueAtTime(0,t);lg.gain.linearRampToValueAtTime(f(m)*.012,t+Math.min(.4,dur*B));lfo.connect(lg);lg.connect(o.frequency);o.connect(fl);o.start(t);lfo.start(t);o.stop(end+.05);lfo.stop(end+.05)});
+    v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(.05,t+.008);v.gain.exponentialRampToValueAtTime(.022,t+.3);v.gain.setValueAtTime(.022,Math.max(t+.31,end-.06));v.gain.linearRampToValueAtTime(0,end);fl.connect(v);v.connect(master)}
+  function steel(t,ms){ms.forEach(m=>{const o=ac.createOscillator(),lfo=ac.createOscillator(),lg=ac.createGain(),v=ac.createGain(),end=t+4*B;o.type='triangle';o.frequency.setValueAtTime(f(m-2),t);o.frequency.linearRampToValueAtTime(f(m),t+.35);
+    lfo.frequency.value=5;lg.gain.value=f(m)*.006;lfo.connect(lg);lg.connect(o.frequency);v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(.03,t+.45);v.gain.linearRampToValueAtTime(0,end);o.connect(v);v.connect(master);o.start(t);lfo.start(t);o.stop(end+.05);lfo.stop(end+.05)})}
+  function fiddle(t,m,dur){const o=ac.createOscillator(),lfo=ac.createOscillator(),lg=ac.createGain(),fl=ac.createBiquadFilter(),v=ac.createGain(),end=t+dur*B;
+    o.type='sawtooth';o.frequency.value=f(m);lfo.frequency.value=5.5;lg.gain.value=f(m)*.008;lfo.connect(lg);lg.connect(o.frequency);fl.type='lowpass';fl.frequency.value=2000;
+    v.gain.setValueAtTime(0,t);v.gain.linearRampToValueAtTime(.05,t+.06);v.gain.setValueAtTime(.045,Math.max(t+.07,end-.08));v.gain.linearRampToValueAtTime(0,end);
+    o.connect(fl);fl.connect(v);v.connect(master);o.start(t);lfo.start(t);o.stop(end+.05);lfo.stop(end+.05)}
+  function brush(t){const s=ac.createBufferSource(),fl=ac.createBiquadFilter(),v=ac.createGain();s.buffer=noise;fl.type='bandpass';fl.frequency.value=3200;fl.Q.value=.7;
+    v.gain.setValueAtTime(.05,t);v.gain.exponentialRampToValueAtTime(.0005,t+.12);s.connect(fl);fl.connect(v);v.connect(master);s.start(t);s.stop(t+.15)}
+  function schedBar(t,i){const ch=CH[PROG[i]];
+    pluck(t,ch.b[0],{type:'triangle',cut:900,dec:.5,g:.24});pluck(t+2*B,ch.b[1],{type:'triangle',cut:900,dec:.5,g:.22});
+    [1,3].forEach(bt=>{ch.c.forEach((m,k)=>pluck(t+bt*B+k*.012,m,{cut:2800,dec:.16,g:.04,q:4}));brush(t+bt*B)});
+    [0,1,3,0,2,3,1,3].forEach((ri,k)=>pluck(t+sw(k*.5)*B,ch.r[ri],{type:'square',cut:4200,dec:.12,g:.018,q:6,bend:-.35,bt:.025}));
+    MEL[i].forEach(([o,m,d])=>twang(t+sw(o)*B,m,d*.95,(o===0||d>=1.5)?2:0));if(PROG[i]!==PROG[(i+15)%16])steel(t,[ch.c[2]+12,ch.c[3]+12])}
+  function tick(){if(!on)return;while(nextT<ac.currentTime+.3){schedBar(nextT,bar);nextT+=4*B;bar=(bar+1)%16}}
+  function ramp(to,s){const t=ac.currentTime;master.gain.cancelScheduledValues(t);master.gain.setValueAtTime(master.gain.value,t);master.gain.linearRampToValueAtTime(to,t+s)}
+  return{
+    start(){try{if(!ac)init();ac.resume();if(on)return;on=true;nextT=ac.currentTime+.1;bar=0;ramp(vol,1);tick();timer=setInterval(tick,50)}catch(e){on=false}},
+    stop(){if(!on)return;on=false;clearInterval(timer);ramp(0,.4)},
+    setVol(v){vol=v;if(ac&&on)ramp(v,.15)},
+    get on(){return on},
+    suspend(h){if(!ac)return;h?ac.suspend():(on&&ac.resume())}
+  };
+})();
+(function(){
+  const btn=$('#musicBtn'),vr=$('#vol');let pref=true;
+  try{pref=localStorage.getItem('wcs-music')!=='0';const v=localStorage.getItem('wcs-vol');if(v!==null)vr.value=v}catch(e){}
+  Music.setVol(vr.value/100);
+  const sync=()=>{btn.textContent=Music.on?'Pause':'Play';btn.setAttribute('aria-pressed',Music.on)};
+  btn.onclick=e=>{e.stopPropagation();Music.on?Music.stop():Music.start();pref=Music.on;try{localStorage.setItem('wcs-music',pref?'1':'0')}catch(_){}sync()};
+  vr.oninput=()=>{Music.setVol(vr.value/100);try{localStorage.setItem('wcs-vol',vr.value)}catch(_){}};
+  const first=e=>{if(e.target===btn)return;document.removeEventListener('pointerdown',first,true);document.removeEventListener('keydown',first,true);if(pref&&!Music.on){Music.start();sync()}};
+  document.addEventListener('pointerdown',first,true);document.addEventListener('keydown',first,true);
+  document.addEventListener('visibilitychange',()=>Music.suspend(document.hidden));
+  sync();
+})();
+
+render();
+if(!S.started)startScreen();
+</script>
+
+</body>
+</html>
