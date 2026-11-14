@@ -211,6 +211,66 @@ footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:v
 .cbtn.buy{border-color:var(--hay-dk);background:#fff1c7}
 .shop-coins{font-family:var(--display);font-weight:800;font-size:18px;display:inline-flex;gap:6px;align-items:center;background:var(--wood-dk);color:var(--hay);padding:4px 14px;border-radius:999px}
 
+/* horse show */
+.judge-h{font-family:var(--display);font-weight:800;font-size:18px;margin:0 0 6px;color:var(--barn)}
+.judge{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.judge li{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:center;background:#fff8ea;border:2px solid #e3cfa8;border-radius:10px;padding:6px 10px;font-weight:700;font-size:14px;color:#8a6a50}
+.judge li b{font-family:var(--display);font-size:17px;color:#a89780}
+.judge li.ok{color:var(--ink);border-color:#9cc98f;background:#eef7e8}.judge li.ok b{color:var(--good)}
+.score-line{font-weight:800;font-variant-numeric:tabular-nums}
+.jump-btn{width:100%;margin-top:10px;font-size:22px;padding:14px}
+.board-tbl{border-collapse:collapse;min-width:260px;font-variant-numeric:tabular-nums;color:var(--ink);font-size:15px}
+.board-tbl td{color:var(--ink)}
+.board-tbl th,.board-tbl td{padding:6px 12px;text-align:left;border-bottom:1px solid #e3cfa8}
+.board-tbl th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#9a7552}
+.board-tbl tr.me td{font-weight:800;background:#fff1c7}
+.cbtn.prize{border-style:dashed;background:#f3ead8}
+.chip b small{font-size:12px;color:var(--chalk-dim)}
+
+/* v2: weather, store, dogs, trail */
+.wx{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.wx.rainy{background-color:rgba(60,80,110,.14);background-image:repeating-linear-gradient(105deg,transparent 0 16px,rgba(210,230,250,.5) 16px 17px);background-size:100% 300px;animation:rain .45s linear infinite}
+@keyframes rain{to{background-position:-20px 300px}}
+.wx.snowy{background-color:rgba(255,255,255,.14);background-image:radial-gradient(circle,#fff 0 1.6px,transparent 2.2px),radial-gradient(circle,#fff 0 1px,transparent 1.6px);background-size:46px 46px,27px 27px;animation:snow 7s linear infinite}
+@keyframes snow{to{background-position:30px 460px,-15px 270px}}
+.wx.hot{background:radial-gradient(circle at 96% 2%,rgba(255,206,100,.5),rgba(255,206,100,0) 42%);animation:heat 2.5s ease-in-out infinite alternate}
+@keyframes heat{to{opacity:.55}}
+.wx.windy i{position:absolute;left:-3%;width:11px;height:6px;border-radius:60% 0;background:#d9a521;animation:leaf 4s linear infinite}
+.wx.windy i:nth-child(odd){background:#c96a1a}
+@keyframes leaf{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(55vw,-20px) rotate(360deg)}100%{transform:translate(110vw,10px) rotate(720deg)}}
+.wxi{width:1.05em;height:1.05em;vertical-align:-.18em}
+.wx-tip{margin:-4px 0 14px;color:var(--chalk-dim);font-weight:700;font-size:15px}
+.wx-tip b{color:var(--chalk)}
+.tabs{display:flex;gap:6px;margin:6px 0 12px;flex-wrap:wrap}
+.tab{border:2px solid var(--wood-lt);background:#fff8ea;border-radius:999px;padding:6px 14px;font-weight:800;cursor:pointer;color:var(--ink)}
+.tab.on{background:var(--wood-lt);color:#fff}
+.store-row{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:center;background:#fff8ea;border:2px solid #e3cfa8;border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.store-row.credit{grid-template-columns:minmax(0,1fr) auto;border-color:#9cc98f;background:#eef7e8}
+.store-ico svg{width:56px;display:block}
+.store-note{font-size:14px;color:#7a5a40}
+.adopt{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.adopt-card{background:#fff8ea;border:2px solid #e3cfa8;border-radius:12px;padding:12px;display:grid;gap:6px;justify-items:center;text-align:center}
+.adopt-art{width:140px;height:100px;display:grid;place-items:center}.adopt-art svg{max-width:100%;max-height:100%}
+.lives{font-weight:800;color:var(--good)}
+.drive{position:relative;height:170px;overflow:hidden;border-radius:12px;background:linear-gradient(#9fd0ef 0 55%,#86b862 55%)}
+.drive .road{position:absolute;left:0;right:0;bottom:26px;height:36px;background:#8d949a;border-top:3px solid #6f777c}
+.drive .truck{position:absolute;bottom:36px;left:-130px;width:120px;animation:drive 1.5s ease-in-out forwards}
+@keyframes drive{to{left:105%}}
+.drive .hint{position:absolute;top:8px;left:14px;margin:0}
+.dog-big{width:min(240px,70%);position:relative;margin:0 auto}.dog-big svg{width:100%;display:block}
+.hearts{position:absolute;inset:0;pointer-events:none}.hearts span{position:absolute;bottom:30%;color:#e85c8a;font-size:28px;animation:heart 1.5s ease-out forwards}
+@keyframes heart{to{transform:translateY(-120px);opacity:0}}
+.bales{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.bale{background:none;border:0;padding:0;cursor:pointer;aspect-ratio:1.5;border-radius:8px;transition:transform .15s}
+.bale:hover{transform:scale(1.05)}
+.bale svg{width:100%;height:100%;display:block}.bale.open{background:#f3ead8;display:grid;place-items:center}
+.bale .empty{font-weight:800;color:#a89780;font-size:13px}
+.find-card{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,92%);background:#fffaf0;border:4px solid var(--wood);border-radius:14px;padding:14px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.find-card p{margin:4px 0}
+.fc-ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center}.fc-ico svg{width:30px}
+.wardrobe-prev svg{display:block;width:auto;max-width:100%;max-height:320px;margin:0 auto}
+.strands{margin:6px 0 10px}
+
 /* barn radio */
 .mrow{display:flex;align-items:center;gap:8px;margin-top:2px}
 .mbtn{font-family:var(--display);font-weight:800;font-size:15px;background:var(--hay);color:var(--ink);border:0;border-radius:8px;padding:3px 12px;cursor:pointer;box-shadow:0 2px 0 var(--hay-dk)}
@@ -294,18 +354,25 @@ canvas.lead{touch-action:none;cursor:pointer}
     <div class="hud">
       <div class="chip"><span class="lbl">Level</span><b id="lvl">1</b></div>
       <div class="chip"><span class="lbl">Coins</span><b id="coins">0</b></div>
+      <div class="chip"><span class="lbl">Weather</span><b id="wxChip">Sunny</b></div>
+      <div class="chip"><span class="lbl">Feed bags</span><b id="feedChip">3</b></div>
       <div class="chip"><span class="lbl">Next prize</span><b id="nextPrize">a hairstyle</b></div>
-      <div class="chip" id="ribbonChip" hidden><span class="lbl">Blue ribbons</span><b id="ribbons">0</b></div>
+      <div class="chip" id="ribbonChip" hidden><span class="lbl">Trophies</span><b id="ribbons">0</b></div>
+      <div class="chip"><span class="lbl">Show ribbons</span><b id="showRibs">0</b></div>
       <div class="chip"><span class="lbl">Barn radio</span><div class="mrow"><button class="mbtn" id="musicBtn" aria-pressed="false">Play</button><input type="range" id="vol" min="0" max="100" value="60" aria-label="Music volume"></div></div>
     </div>
   </header>
   <section class="scene" id="scene" aria-label="The barn"></section>
   <section class="board">
-    <h2>Today's chores</h2>
+    <h2>Today's chores</h2><p class="wx-tip" id="wxTip"></p>
     <div class="chores" id="chores"></div>
     <div class="board-foot">
       <button class="big-btn" id="finishBtn" disabled>Finish the day</button>
       <button class="wood-btn" id="tackBtn">Go to the tack room</button>
+      <button class="wood-btn" id="showBtn">Go to the horse show</button>
+      <button class="wood-btn" id="trailBtn">Trail ride</button>
+      <button class="wood-btn" id="feedBtn">Feed store</button>
+      <button class="wood-btn" id="wardBtn">Wardrobe</button>
     </div>
   </section>
   <footer><span>Tip: tap a place on the map to walk there. Tap the dogs to say hi.</span><button class="link-btn" id="resetBtn">Start over</button></footer>
@@ -329,31 +396,33 @@ const HORSES={
   clover:{name:'Clover',desc:'Paint pony with brown patches',coat:'#f3eee6',mane:'#6e4126',patches:'#7d4a2a',socks:[]},
   biscuit:{name:'Biscuit',desc:'Golden palomino with a snowy mane',coat:'#d6a043',mane:'#f6ead0',blaze:true,socks:[0,1]},
   midnight:{name:'Midnight',desc:'Black Friesian with feathery feet',coat:'#2c2521',mane:'#141110',feathers:true,socks:[]},
+  peanut:{name:'Peanut',desc:'Mini pony',coat:'#8a5a3a',mane:'#f3e3c3',blaze:true,socks:[0,1],mini:true},
   pepper:{name:'Pepper',desc:'Dapple grey mare',coat:'#8d949a',mane:'#45484c',dapples:'#c4c9cd',socks:[]}
 };
-const MANES={natural:'Natural',buttons:'Button braids',ribbons:'Ribbon braids',rainbow:'Rainbow',flowers:'Flower crown',curly:'Curly'};
+const MANES={natural:'Natural',buttons:'Button braids',ribbons:'Ribbon braids',rainbow:'Rainbow',flowers:'Flower crown',curly:'Curly',stars:'Star-spangled',champion:'Champion rosettes'};
 const TACK={
-  pad:{label:'Saddle pad',items:{none:'None',barnred:'Barn red',sky:'Sky blue',sunflower:'Sunflower stars'}},
+  pad:{label:'Saddle pad',items:{none:'None',barnred:'Barn red',sky:'Sky blue',sunflower:'Sunflower stars',galaxy:'Galaxy',gold:'Gold champion'}},
   saddle:{label:'Saddle',items:{none:'None',english:'English',western:'Western'}},
-  bridle:{label:'Bridle',items:{none:'None',leather:'Leather',sparkle:'Purple sparkle'}},
-  wraps:{label:'Leg wraps',items:{none:'None',strawberry:'Strawberry'}}
+  bridle:{label:'Bridle',items:{none:'None',leather:'Leather',sparkle:'Purple sparkle',gold:'Gold show'}},
+  wraps:{label:'Leg wraps',items:{none:'None',strawberry:'Strawberry',rainbow:'Rainbow'}}
 };
-const PADS={barnred:['#9b2f27','#f3e3c3'],sky:['#7db8e6','#ffffff'],sunflower:['#f2c230','#7a4a1c']};
-const PRIZES=[{t:'mane',id:'buttons'},{t:'pad',id:'sky'},{t:'horse',id:'clover'},{t:'mane',id:'ribbons'},{t:'bridle',id:'sparkle'},{t:'horse',id:'biscuit'},{t:'mane',id:'rainbow'},{t:'saddle',id:'western'},{t:'wraps',id:'strawberry'},{t:'horse',id:'midnight'},{t:'mane',id:'flowers'},{t:'pad',id:'sunflower'},{t:'horse',id:'pepper'},{t:'mane',id:'curly'}];
+const PADS={barnred:['#9b2f27','#f3e3c3'],sky:['#7db8e6','#ffffff'],sunflower:['#f2c230','#7a4a1c'],galaxy:['#3b2a6b','#c9b6ff'],gold:['#e2b13c','#ffffff']};
+const PRIZES=[{t:'mane',id:'stars'},{t:'pad',id:'galaxy'},{t:'horse',id:'clover'},{t:'wraps',id:'rainbow'},{t:'bridle',id:'gold'},{t:'horse',id:'biscuit'},{t:'mane',id:'champion'},{t:'pad',id:'gold'},{t:'horse',id:'midnight'},{t:'horse',id:'pepper'}];
+const PRIZE_ONLY=PRIZES.filter(p=>p.t!=='horse').map(p=>p.t+':'+p.id);
 const DEFAULT_OWNED=['horse:maple','mane:natural','pad:none','pad:barnred','saddle:none','saddle:english','bridle:none','bridle:leather','wraps:none'];
 const DEFAULT_LOOK={mane:'natural',pad:'barnred',saddle:'english',bridle:'leather',wraps:'none'};
 const SKINS=['#f6d2b4','#e8b48e','#c98a5e','#8d5a3b','#5e3a26'];
 const STUDENTS=['Ava','Leo','Priya','Sam','Mateo','Nora','Eli','June','Rosie','Theo'];
 
 function prizeName(p){if(p.t==='horse')return'New horse: '+HORSES[p.id].name;if(p.t==='mane')return'Hairstyle: '+MANES[p.id];return TACK[p.t].label+': '+TACK[p.t].items[p.id]}
-function prizeKind(p){return !p?'a blue ribbon':p.t==='horse'?'a new horse':p.t==='mane'?'a hairstyle':'new tack'}
+function prizeKind(p){return !p?'a trophy':p.t==='horse'?'a new horse':p.t==='mane'?'a hairstyle':'new tack'}
 const owns=(t,id)=>S.owned.includes(t+':'+id);
-const lookOf=id=>Object.assign({},DEFAULT_LOOK,S.looks[id]||{});
+const lookOf=id=>Object.assign({},DEFAULT_LOOK,S.looks[id]||{},{acc:((S.accOn||{})[id]||[])});
 const unlockLevel=(t,id)=>{const i=PRIZES.findIndex(p=>p.t===t&&p.id===id);return i<0?1:i+2};
 
 /* ---------- save ---------- */
 const KEY='willow-creek-save-v1';
-const fresh=()=>({started:false,name:'',skin:SKINS[1],level:1,done:{muck:0,groom:0,lesson:0},owned:[...DEFAULT_OWNED],horse:'maple',looks:{},ribbons:0,coins:0});
+const fresh=()=>({started:false,name:'',skin:SKINS[1],level:1,done:{muck:0,groom:0,lesson:0},owned:[...DEFAULT_OWNED],horse:'maple',looks:{},ribbons:0,coins:0,showLevel:0,showRibbons:{blue:0,red:0,yellow:0,white:0},feed:3,weather:'sunny',clothes:['shirt:plaid','hat:none','boots:brown'],outfit:{shirt:'plaid',hat:'none',boots:'brown'},animals:[],acc:{},accOn:{},journal:[],trailLevel:0,dogPlayed:{}});
 function load(){try{const s=localStorage.getItem(KEY);if(s)return Object.assign(fresh(),JSON.parse(s))}catch(e){}return null}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 let S=load()||fresh();
@@ -380,9 +449,11 @@ function horseSVG(id,look,cls='',attrs=''){
   if(L.mane==='curly'){for(let i=0;i<8;i++){const t=i/7;o+=`<circle cx="${(80-t*26+(i%2?5:-3)).toFixed(1)}" cy="${(102+t*76).toFixed(1)}" r="${(9-t*3).toFixed(1)}" fill="${mFill}" stroke="${maneDk}" stroke-width="1.2"/>`}}
   else o+=`<path d="M80,98 C58,108 46,140 52,184 C58,178 64,170 68,152 C72,134 78,118 88,106 Z" fill="${mFill}"/><path d="M72,118 C64,138 60,158 58,176" stroke="${maneDk}" stroke-width="1.5" fill="none" opacity=".5"/>`;
   if(L.mane==='ribbons')o+=bow(82,101,'#ef6a9a',1.5);
+  o+=accArt(id,L.acc,'tail');
   o+='</g>';
   const leg=(x,y,w,hh,fill,near,idx)=>{let s=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="6" fill="${fill}"/>`;
     if(near&&h.socks.includes(idx))s+=`<rect x="${x}" y="166" width="${w}" height="26" rx="4" fill="#f8f4ec"/>`;
+    if(L.wraps==='rainbow')s+=['#e8505b','#f59e42','#f4d35e','#6cc36b','#4a9fe0','#9467d6'].map((c,k)=>`<rect x="${x-1}" y="${160+k*4.7}" width="${w+2}" height="5" fill="${c}" opacity="${near?1:.8}"/>`).join('');
     if(L.wraps==='strawberry')s+=`<rect x="${x-1}" y="160" width="${w+2}" height="28" rx="4" fill="${near?'#de4258':'#b9374a'}"/><circle cx="${x+4}" cy="168" r="1.2" fill="#f6e27a"/><circle cx="${x+w-5}" cy="176" r="1.2" fill="#f6e27a"/><circle cx="${x+6}" cy="183" r="1.2" fill="#f6e27a"/>`;
     s+=`<rect x="${x-1}" y="190" width="${w+2}" height="10" rx="3" fill="${near?'#3a2a20':'#2a1d16'}"/>`;
     if(h.feathers)s+=`<path d="M${x-5},200 C${x-2},180 ${x+w+2},180 ${x+w+5},200 Z" fill="${near?'#221b18':'#171210'}"/>`;
@@ -400,47 +471,51 @@ function horseSVG(id,look,cls='',attrs=''){
   // mane
   const naturalMane=`<path d="M236,18 C224,28 208,50 192,88 L181,84 C189,62 200,44 210,32 C216,24 224,17 232,13 Z" fill="${mFill}"/><path d="M226,24 C214,40 202,60 190,82" stroke="${maneDk}" stroke-width="1.2" fill="none" opacity=".5"/>`;
   const forelock=`<path d="M238,23 C248,21 255,28 257,38 C250,36 244,33 240,30 Z" fill="${mFill}"/>`;
-  if(L.mane==='natural'||L.mane==='rainbow'||L.mane==='flowers')o+=naturalMane+forelock;
+  if(L.mane==='natural'||L.mane==='rainbow'||L.mane==='flowers'||L.mane==='stars')o+=naturalMane+forelock;
+  if(L.mane==='stars'){crest.forEach(([x,y],i)=>o+=star(x-4,y+(i%2?3:-1),i%2?3.6:4.8,i%2?'#fff6c8':'#f6c84a'));o+=star(249,30,5,'#f6c84a')}
   if(L.mane==='flowers'){const cs=['#f48fb1','#fff3f7','#b39ddb','#f48fb1','#fff3f7'];crest.slice(0,5).forEach(([x,y],i)=>o+=flower(x-4,y,cs[i]));o+=flower(248,26,'#ffd1dc')}
+  if(L.mane==='champion'){crest.forEach(([x,y],i)=>{o+=`<circle cx="${x-3}" cy="${y}" r="5.6" fill="${mane}" stroke="${maneDk}" stroke-width="1.4"/>`;if(i%2===0)o+=`<circle cx="${x-3}" cy="${y}" r="5" fill="#2f63b8"/><circle cx="${x-3}" cy="${y}" r="2.6" fill="#f0c25a"/>`});o+=forelock+`<path d="M234,40 l-4,12 l4,-3 l3,4 Z" fill="#2f63b8"/><circle cx="234" cy="38" r="6" fill="#2f63b8"/><circle cx="234" cy="38" r="3" fill="#f0c25a"/>`}
   if(L.mane==='buttons'||L.mane==='ribbons'){crest.forEach(([x,y],i)=>{o+=`<circle cx="${x-3}" cy="${y}" r="5.6" fill="${mane}" stroke="${maneDk}" stroke-width="1.4"/>`;if(L.mane==='ribbons')o+=bow(x-3,y+1,i%2?'#5fa8e8':'#ef6a9a',.8)});o+=forelock}
   if(L.mane==='curly'){crest.forEach(([x,y],i)=>{o+=`<circle cx="${x-6}" cy="${y-2}" r="7" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/><circle cx="${x-1}" cy="${y+5}" r="5" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/>`});o+=`<circle cx="244" cy="26" r="5" fill="${mane}" stroke="${maneDk}" stroke-width="1.2"/>`}
+  o+=accArt(id,L.acc,'body')+accArt(id,L.acc,'hooves');
   // pad + saddle
   if(L.pad!=='none'){const[pc,pt]=PADS[L.pad];
     if(L.saddle==='western')o+=`<rect x="116" y="68" width="78" height="40" rx="5" fill="${pc}" stroke="${pt}" stroke-width="3"/>`;
     else o+=`<rect x="120" y="70" width="64" height="44" rx="11" fill="${pc}" stroke="${pt}" stroke-width="3"/>`;
-    if(L.pad==='sunflower')o+=star(136,98,6,'#7a4a1c')+star(170,102,5,'#7a4a1c')+star(150,84,4,'#fff6d6');}
+    if(L.pad==='sunflower')o+=star(136,98,6,'#7a4a1c')+star(170,102,5,'#7a4a1c')+star(150,84,4,'#fff6d6');
+    if(L.pad==='galaxy')o+=star(134,96,5,'#fff')+star(172,104,3.5,'#fff')+star(148,82,3,'#c9b6ff')+star(176,86,4,'#f6d34a')+'<circle cx="160" cy="96" r="1.6" fill="#fff"/><circle cx="130" cy="84" r="1.2" fill="#fff"/>';
+    if(L.pad==='gold')o+='<circle cx="140" cy="96" r="9" fill="#2f63b8"/><circle cx="140" cy="96" r="5" fill="#fff"/><path d="M136,104 l-3,10 l4,-2 l2,3 Z M144,104 l3,10 l-4,-2 l-2,3 Z" fill="#2f63b8"/>';}
   if(L.saddle==='english')o+=`<rect x="151" y="102" width="12" height="48" rx="3" fill="#5b3219"/><path d="M128,76 C136,62 168,60 182,70 L180,79 C166,74 146,74 130,85 Z" fill="#6b3a1f"/><rect x="144" y="74" width="26" height="34" rx="8" fill="#7d4524"/><line x1="158" y1="100" x2="158" y2="128" stroke="#4a2a18" stroke-width="3"/><path d="M151,128 h14 l-2,8 h-10 Z" fill="none" stroke="#c9ccd0" stroke-width="2.5"/>`;
   if(L.saddle==='western')o+=`<rect x="151" y="100" width="13" height="50" rx="3" fill="#6b3a1f"/><rect x="120" y="72" width="70" height="30" rx="8" fill="#8a4f26" stroke="#5e331a" stroke-width="2" stroke-dasharray="4 3"/><path d="M124,80 C130,66 168,64 184,68 L188,50 L196,50 L194,72 C176,72 150,76 126,90 Z" fill="#a0602e"/><circle cx="192" cy="50" r="4.5" fill="#a0602e"/><rect x="149" y="96" width="18" height="34" rx="4" fill="#8a4f26"/><rect x="146" y="128" width="24" height="9" rx="3" fill="#5e331a"/>`;
+  o+=accArt(id,L.acc,'head');
   // bridle
-  if(L.bridle!=='none'){const bc=L.bridle==='sparkle'?'#8a4fd3':'#4a2a18';
+  if(L.bridle!=='none'){const bc=L.bridle==='sparkle'?'#8a4fd3':L.bridle==='gold'?'#d4a72c':'#4a2a18';
     o+=`<g fill="none" stroke="${bc}" stroke-width="3.6" stroke-linecap="round"><path d="M231,30 L247,34"/><path d="M240,26 L264,70"/><path d="M256,57 C264,53 278,53 286,60"/><path d="M238,29 C236,42 239,52 247,60"/><path d="M266,73 C246,96 216,100 188,76" stroke-width="2.6"/></g><circle cx="266" cy="73" r="3.4" fill="none" stroke="#c9ccd0" stroke-width="2"/>`;
-    if(L.bridle==='sparkle')o+=`<g fill="#fff">${[[244,33],[250,44],[257,57],[270,55],[281,57]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.4"/>`).join('')}</g>`;}
+    if(L.bridle==='sparkle'||L.bridle==='gold')o+=`<g fill="#fff">${[[244,33],[250,44],[257,57],[270,55],[281,57]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.4"/>`).join('')}</g>`;}
   return o+'</svg>';
 }
 
-function girlSVG(skin,attrs=''){const u='g'+(++UID),hi='#6e4c3c',dk='#140b07',hair=`url(#${u}h)`;
+function girlSVG(skin,attrs='',outfit){const u='g'+(++UID),hi='#6e4c3c',dk='#140b07',hair=`url(#${u}h)`,of=outfit||outfitOf();
   return`<svg ${attrs} viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="You, the barn kid">
-  <defs><pattern id="${u}p" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#b8433a"/><rect width="8" height="3" fill="#8e2f28" opacity=".8"/><rect width="3" height="8" fill="#8e2f28" opacity=".55"/><rect x="5.5" width="1" height="8" fill="#f1d4a6" opacity=".55"/></pattern><linearGradient id="${u}h" gradientUnits="userSpaceOnUse" x1="0" y1="15" x2="0" y2="145"><stop offset="0" stop-color="#3d2921"/><stop offset=".5" stop-color="#2c1c15"/><stop offset="1" stop-color="#1f130d"/></linearGradient></defs>
+  <defs><pattern id="${u}p" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="8" fill="#b8433a"/><rect width="8" height="3" fill="#8e2f28" opacity=".8"/><rect width="3" height="8" fill="#8e2f28" opacity=".55"/><rect x="5.5" width="1" height="8" fill="#f1d4a6" opacity=".55"/></pattern><pattern id="${u}rs" width="8" height="18" patternUnits="userSpaceOnUse"><rect width="8" height="3" fill="#e8505b"/><rect y="3" width="8" height="3" fill="#f59e42"/><rect y="6" width="8" height="3" fill="#f4d35e"/><rect y="9" width="8" height="3" fill="#6cc36b"/><rect y="12" width="8" height="3" fill="#4a90d9"/><rect y="15" width="8" height="3" fill="#9467d6"/></pattern><linearGradient id="${u}h" gradientUnits="userSpaceOnUse" x1="0" y1="15" x2="0" y2="145"><stop offset="0" stop-color="#3d2921"/><stop offset=".5" stop-color="#2c1c15"/><stop offset="1" stop-color="#1f130d"/></linearGradient></defs>
   <ellipse cx="50" cy="190" rx="28" ry="5" fill="rgba(35,18,8,.28)"/>
   <path d="M50,15 C30,15 21,30 22,50 C23,70 21,90 22,108 C23,118 22,124 24,132 Q28,126 31,134 Q35,128 39,136 Q44,129 48,135 Q50,131 52,135 Q56,129 61,136 Q65,128 69,134 Q72,126 76,132 C78,124 77,118 78,108 C79,90 77,70 78,50 C79,30 70,15 50,15 Z" fill="${hair}"/>
   <g stroke="${dk}" stroke-width="1.2" fill="none" opacity=".6" stroke-linecap="round"><path d="M24,70 C23,95 24,115 26,130"/><path d="M76,70 C77,95 76,115 74,130"/></g>
   <g stroke="${hi}" stroke-width="1.4" fill="none" opacity=".55" stroke-linecap="round"><path d="M22,60 C21,80 22,96 23,112"/><path d="M78,60 C79,80 78,96 77,112"/></g>
   <rect x="44" y="55" width="12" height="15" fill="${skin}"/>
-  <rect x="20" y="72" width="11" height="40" rx="5" fill="url(#${u}p)"/><circle cx="25.5" cy="114" r="5" fill="${skin}"/>
-  <rect x="69" y="72" width="11" height="40" rx="5" fill="url(#${u}p)"/><circle cx="74.5" cy="114" r="5" fill="${skin}"/>
-  <path d="M29,70 Q50,62 71,70 L72,121 L28,121 Z" fill="url(#${u}p)"/>
-  <path d="M42,66 L50,75 L58,66" fill="none" stroke="#f1d4a6" stroke-width="2.4"/>
   <path d="M28,119 L72,119 L70,168 L55,168 L50,134 L45,168 L30,168 Z" fill="#3f5f8f"/>
-  <path d="M30,166 h15 v16 h-19 q-1,-7 4,-8 Z" fill="#6b3a1f"/><path d="M55,166 h15 v8 q5,1 4,8 h-19 Z" fill="#6b3a1f"/>
+  ${shirtLayer(of.shirt,u).replace(/SKIN/g,skin)}
+  ${bootsLayer(of.boots)}
   <circle cx="50" cy="40" r="19" fill="${skin}"/>
   <path d="M29,50 C26,30 35,15 50,15 C65,15 74,30 71,50 C69,44 67,38 66,34 Q63,36.5 60,33.5 Q56.5,36.5 53,33.5 Q50,36.5 47,33.5 Q43.5,36.5 40,33.5 Q37,36.5 34,34 C33,38 31,44 29,50 Z" fill="${hair}"/>
   <path d="M31,40 C28,56 28,72 30,86 C31,96 30,104 28,110 Q32,107 34,101 Q35,106 35,111 C37,100 37,88 36,76 C35,64 34,54 34,44 Z" fill="${hair}"/><path d="M69,40 C72,56 72,72 70,86 C69,96 70,104 72,110 Q68,107 66,101 Q65,106 65,111 C63,100 63,88 64,76 C65,64 66,54 66,44 Z" fill="${hair}"/>
   <g stroke="${dk}" stroke-width="1.1" fill="none" opacity=".6" stroke-linecap="round"><path d="M41,21 Q39,28 40,33"/><path d="M47,18 Q46,27 47,33"/><path d="M53,18 Q54,27 53,33"/><path d="M59,21 Q61,28 60,33"/><path d="M32,52 C30,70 32,88 31,106"/><path d="M68,52 C70,70 68,88 69,106"/></g>
   <g stroke="${hi}" fill="none" stroke-linecap="round"><path d="M35,25 Q50,15 65,25" stroke-width="3" opacity=".75"/><path d="M40,21.5 Q44,19.5 47,19" stroke="#9b7563" stroke-width="1.6"/><path d="M33,58 C32.5,70 33,80 34,92" stroke-width="1.2" opacity=".6"/><path d="M67,58 C67.5,70 67,80 66,92" stroke-width="1.2" opacity=".6"/></g>
-  ${star(64,26,4.5,'#f6c84a')}
+  ${of.hat==='none'?star(64,26,4.5,'#f6c84a'):''}
   <circle cx="43" cy="43" r="2.4" fill="#1d130d"/><circle cx="57" cy="43" r="2.4" fill="#1d130d"/>
   <ellipse cx="41" cy="49" rx="3" ry="1.9" fill="#e88a8a" opacity=".55"/><ellipse cx="59" cy="49" rx="3" ry="1.9" fill="#e88a8a" opacity=".55"/>
   <path d="M45,50 Q50,55 55,50" stroke="#7a3a2a" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+  ${hatLayer(of.hat)}
   </svg>`}
 
 function toastSVG(attrs=''){return`<svg ${attrs} viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Princess Toast">
@@ -502,10 +577,11 @@ const nextPrize=()=>PRIZES.find(p=>!owns(p.t,p.id));
 
 /* where the barn kid stands; each entry starts at its aisle/path point */
 const LOC={home:[[300,240]],stall:[[137,240],[137,224]],groom:[[157,240],[157,312]],tack:[[462,240],[462,224]],lounge:[[488,240],[488,300]],
-  arena:[[662,240],[742,232]],paddock:[[600,300],[600,476],[624,530]]};
+  arena:[[662,240],[742,232]],show:[[600,420],[690,422]],trail:[[600,300],[600,712],[300,722]],feed:[[600,300],[600,712],[740,716]],paddock:[[600,300],[600,476],[624,530]]};
 const INB=['home','stall','groom','tack','lounge'],HUB=[588,240];
 let kidAt='home',walking=false;
 function route(a,b){if(a===b)return[];const out=[...LOC[a]].reverse().slice(1);
+  const SOUTH=['trail','feed'];if(SOUTH.includes(a)&&SOUTH.includes(b))return[[600,712],...LOC[b].slice(2)];
   if(INB.includes(a)&&INB.includes(b))return[...out,...LOC[b]];return[...out,HUB,...LOC[b]]}
 const posOf=loc=>LOC[loc][LOC[loc].length-1];
 
@@ -513,7 +589,7 @@ function mapSVG(){
   const H=HORSES[S.horse],dn=S.done,others=ownedHorses().filter(id=>id!==S.horse);
   const SLOTS=[[140,566],[330,622],[512,566],[722,622],[884,570]];
   const [kx,ky]=posOf(kidAt);
-  let o=`<svg class="map" id="map" viewBox="0 -16 1000 676" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Map of the barn. Tap a place to walk there.">
+  let o=`<svg class="map" id="map" viewBox="0 -16 1000 856" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Map of the barn. Tap a place to walk there.">
   <defs>
     <pattern id="grass" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#7fae5e"/><path d="M6,12 l2,-6 l2,6 M26,30 l2,-6 l2,6 M30,8 l1.5,-5 l1.5,5" stroke="#6b9a4c" stroke-width="1.6" fill="none"/></pattern>
     <pattern id="pgrass" width="46" height="46" patternUnits="userSpaceOnUse"><rect width="46" height="46" fill="#93c46f"/><path d="M8,14 l2,-6 l2,6 M30,34 l2,-6 l2,6 M36,10 l1.5,-5 l1.5,5" stroke="#7cad5c" stroke-width="1.6" fill="none"/><circle cx="20" cy="26" r="2" fill="#fff6c8"/><circle cx="20" cy="26" r=".9" fill="#f0c25a"/></pattern>
@@ -523,7 +599,7 @@ function mapSVG(){
     <pattern id="sand" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#dcbf8e"/><circle cx="5" cy="7" r="1" fill="#c4a571"/><circle cx="17" cy="15" r="1.2" fill="#c4a571"/><circle cx="11" cy="20" r=".8" fill="#c4a571"/></pattern>
     <pattern id="plaid2" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="10" fill="#b8433a"/><rect width="10" height="4" fill="#8e2f28" opacity=".7"/><rect width="4" height="10" fill="#8e2f28" opacity=".5"/></pattern>
   </defs>
-  <rect y="-16" width="1000" height="676" fill="url(#grass)"/>
+  <rect y="-16" width="1000" height="856" fill="url(#grass)"/>
   <path d="M560,240 H700 M600,240 V500" stroke="#c49a6a" stroke-width="46" stroke-linecap="round" fill="none"/>
   <path d="M560,240 H700 M600,240 V500" stroke="#d8b689" stroke-width="34" stroke-linecap="round" fill="none"/>`;
 
@@ -532,7 +608,7 @@ function mapSVG(){
   const herd=others.length?others.slice(0,5).map((id,i)=>{const[x,y]=SLOTS[i];return`<g class="phorse" data-horse="${id}" tabindex="0" role="button" aria-label="${HORSES[id].name}, grazing. Bring in to work.">
       <ellipse cx="${x}" cy="${y-2}" rx="52" ry="7" fill="rgba(30,50,20,.25)"/><g class="graze" style="animation-delay:-${i*1.7}s">${horseSVG(id,lookOf(id),'',`x="${x-60}" y="${y-86}" width="120" height="88"`)}</g>
       <text x="${x}" y="${y+14}" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="15" fill="#2f4a22">${HORSES[id].name}</text></g>`}).join('')
-    :`<text x="500" y="580" text-anchor="middle" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="17" fill="#3f6630">New horses you win will graze out here.</text>`;
+    :`<text x="300" y="580" text-anchor="middle" font-family="Nunito, system-ui, sans-serif" font-weight="800" font-size="17" fill="#3f6630">New horses you win will graze out here.</text>`;
   o+=hot('paddock','Paddock',`<rect x="30" y="476" width="940" height="172" rx="14" fill="url(#pgrass)"/>
     <rect x="34" y="478" width="932" height="166" rx="12" fill="none" stroke="#7a4a2b" stroke-width="4"/>${posts}
     <rect x="574" y="470" width="52" height="16" fill="#d8b689"/>
@@ -550,6 +626,46 @@ function mapSVG(){
     <rect x="742" y="132" width="64" height="7" rx="2" fill="#e8505b"/><rect x="756" y="132" width="10" height="7" fill="#fff"/><rect x="782" y="132" width="10" height="7" fill="#fff"/><rect x="738" y="126" width="6" height="19" fill="#3d6aa8"/><rect x="804" y="126" width="6" height="19" fill="#3d6aa8"/>
     <rect x="884" y="216" width="7" height="64" rx="2" fill="#5fa8e8"/><rect x="884" y="232" width="7" height="10" fill="#fff"/><rect x="884" y="258" width="7" height="10" fill="#fff"/><rect x="878" y="212" width="19" height="6" fill="#e8505b"/><rect x="878" y="278" width="19" height="6" fill="#e8505b"/>
     ${hl(630,54,340,282,16)}${sign(800,206,'Arena',lv.t)}${mark(952,84,dn.lesson)}`);
+
+  /* lane + bottom strip */
+  o+=`<path d="M600,470 V712" stroke="#c49a6a" stroke-width="40" fill="none"/><path d="M600,470 V712" stroke="#d8b689" stroke-width="28" fill="none"/>
+  <path d="M590,712 H260 M610,712 H760" stroke="#c49a6a" stroke-width="34" stroke-linecap="round" fill="none"/><path d="M590,712 H260 M610,712 H760" stroke="#d8b689" stroke-width="22" stroke-linecap="round" fill="none"/>`;
+  {const to=trailOpen();const TR=[[40,690,22],[80,742,26],[34,800,20],[120,690,18],[150,790,24],[210,800,18],[250,776,16],[100,816,16],[190,688,16]];
+  o+=hot('trail',`Willow Trail. ${to?'Ride out and explore.':'Resting until next level.'}`,`<rect x="16" y="672" width="330" height="164" rx="14" fill="#5f8f45"/>
+    <path d="M300,724 C250,726 230,760 170,752 S80,740 50,770" stroke="#c9a274" stroke-width="18" fill="none" stroke-linecap="round"/>
+    ${TR.map(([x,y,r])=>`<ellipse cx="${x+4}" cy="${y+r*.6}" rx="${r}" ry="${r*.45}" fill="rgba(20,40,10,.3)"/><circle cx="${x}" cy="${y}" r="${r}" fill="#2f5d36"/><circle cx="${x-r*.3}" cy="${y-r*.3}" r="${r*.45}" fill="#3f7546"/>`).join('')}
+    <rect x="286" y="694" width="7" height="50" fill="#6e4429"/><rect x="326" y="694" width="7" height="50" fill="#6e4429"/><path d="M280,700 Q310,680 340,700" stroke="#6e4429" stroke-width="8" fill="none"/>
+    <rect x="290" y="700" width="40" height="13" rx="3" fill="#3d2517"/><text x="310" y="710" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="8" fill="#f0c25a">TRAIL</text>
+    ${hl(16,672,330,164,14)}${sign(176,812,'Willow Trail',to?'Ride out and explore':'Resting until next level')}${to?`<g pointer-events="none"><g class="mark"><circle cx="330" cy="684" r="15" fill="#3f8a4f" stroke="#fff" stroke-width="3"/>${star(330,685,8,'#fff6c8')}</g></g>`:''}`)}
+  {const n=(S.animals||[]).length;
+  o+=`<g><rect x="360" y="672" width="266" height="164" rx="14" fill="#86b862"/><rect x="366" y="678" width="254" height="152" rx="10" fill="none" stroke="#8a5a36" stroke-width="3" stroke-dasharray="10 6"/>
+    <ellipse cx="420" cy="784" rx="44" ry="20" fill="#6cc0ea"/><ellipse cx="410" cy="778" rx="16" ry="5" fill="rgba(255,255,255,.5)"/>
+    <rect x="574" y="694" width="42" height="34" fill="#9a3226"/><path d="M570,696 L595,678 L620,696 Z" fill="#6e2a22"/><rect x="588" y="712" width="14" height="16" fill="#3d2517"/>
+    ${hasAnimal('pony')?`<g class="clicky" data-who="pony" tabindex="0" role="button" aria-label="Peanut the mini pony">${ponySVG('x="372" y="684" width="84" height="62"')}</g>`:''}
+    ${hasAnimal('donkey')?`<g class="clicky" data-who="donkey" tabindex="0" role="button" aria-label="Hank the donkey">${donkeySVG('x="470" y="700" width="98" height="80"')}</g>`:''}
+    ${hasAnimal('goose')?`<g class="clicky" data-who="goose" tabindex="0" role="button" aria-label="Gertrude the goose">${gooseSVG('x="398" y="742" width="46" height="46"')}</g>`:''}
+    ${n?'':'<text x="493" y="740" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="14" fill="#2f4a22">No barnyard friends yet.</text><text x="493" y="758" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="700" font-size="12" fill="#2f4a22">Adopt some at the feed store!</text>'}
+    ${sign(493,812,'Barnyard',n?`${n} friend${n>1?'s':''}`:'')}</g>`;}
+  {const fb=S.feed||0;
+  o+=hot('feed',`Drive to the feed store. ${fb} feed bags left.`,`<rect x="640" y="672" width="344" height="164" rx="14" fill="#9cc47a"/>
+    <path d="M640,760 C760,760 840,728 990,722" stroke="#8d949a" stroke-width="40" fill="none"/><path d="M640,760 C760,760 840,728 990,722" stroke="#f0c25a" stroke-width="2.5" fill="none" stroke-dasharray="12 10"/>
+    ${TRUCK.replace('<svg ','<svg x="700" y="704" width="120" height="60" ')}
+    <rect x="920" y="684" width="5" height="40" fill="#6e4429"/><rect x="880" y="680" width="86" height="24" rx="3" fill="#2f6b3f" stroke="#fff" stroke-width="2"/><text x="923" y="696" text-anchor="middle" font-family="Nunito, sans-serif" font-weight="800" font-size="9.5" fill="#fff">Hilltop Feed 2 mi</text>
+    ${hl(640,672,344,164,14)}${sign(812,812,'Feed store',`${fb} feed bag${fb===1?'':'s'} left`)}${fb<=1?mark(966,756,false):''}`)}
+
+  /* show grounds */
+  {const so=showOpen(),Y=364;let stripes='';for(let k=0;k<8;k++){const t0=k/8,t1=(k+1)/8,tl=700+160*t0,tr=700+160*t1,bl=668+224*t0,br=668+224*t1;stripes+=`<path d="M${tl},${Y} L${tr},${Y} L${br},${Y+32} L${bl},${Y+32} Z" fill="${k%2?'#fffaf0':'#b8352a'}"/>`}
+  let val='';for(let x=668;x<=892;x+=16)val+=`<circle cx="${x+8}" cy="${Y+32}" r="8" fill="${(x/16)%2?'#b8352a':'#fffaf0'}"/>`;
+  let flags='';for(let k=0;k<12;k++)flags+=`<path d="M${652+k*25},${Y-6} l12,3 l-6,12 Z" fill="${['#e8505b','#f0c25a','#5fa8e8','#6cbf5a'][k%4]}"/>`;
+  o+=`<path d="M600,420 H700" stroke="#c49a6a" stroke-width="40" stroke-linecap="round"/><path d="M600,420 H700" stroke="#d8b689" stroke-width="28" stroke-linecap="round"/>`;
+  o+=hot('show',`Horse show: ${showClass().name}`,`<rect x="640" y="${Y-12}" width="324" height="108" rx="12" fill="#8fbf6a"/>
+    <path d="M648,${Y-8} Q800,${Y+4} 958,${Y-8}" stroke="#6e4429" stroke-width="1.5" fill="none"/>${flags}
+    <rect x="674" y="${Y+30}" width="6" height="58" fill="#6e4429"/><rect x="880" y="${Y+30}" width="6" height="58" fill="#6e4429"/>
+    ${stripes}${val}
+    <rect x="722" y="${Y+60}" width="116" height="14" rx="3" fill="#6b3a1f"/><g fill="#3a2418"><circle cx="748" cy="${Y+52}" r="7"/><circle cx="780" cy="${Y+52}" r="7"/><circle cx="812" cy="${Y+52}" r="7"/></g>
+    <rect x="904" y="${Y+40}" width="48" height="44" rx="4" fill="#f3e3c3" stroke="#6e4429" stroke-width="3"/>
+    ${RIB_ORDER.map((k,i)=>`<circle cx="${916+(i%2)*24}" cy="${Y+52+Math.floor(i/2)*20}" r="7" fill="${RIB[k][0]}"/><circle cx="${916+(i%2)*24}" cy="${Y+52+Math.floor(i/2)*20}" r="3" fill="#fffaf0"/>`).join('')}
+    ${hl(640,Y-12,324,108,12)}${sign(780,Y+84,'Horse show',so?showClass().name:'Next show: level '+(S.level+1))}${so?`<g pointer-events="none"><g class="mark"><circle cx="950" cy="${Y+2}" r="15" fill="#2f63b8" stroke="#fff" stroke-width="3"/>${star(950,Y+3,8,'#f0c25a')}</g></g>`:mark(950,Y+2,true)}`)}
 
   /* barn shell */
   o+=`<rect x="30" y="48" width="560" height="372" rx="8" fill="rgba(40,20,10,.25)"/>
@@ -627,7 +743,7 @@ const LINES={
   girl:()=>["Okay team, let's get to work!",'I love the smell of fresh hay.',`${HORSES[S.horse].name} is waiting in the stall!`,'Where to next?','Best barn ever.'],
   horse:()=>{const n=HORSES[S.horse].name;return[`${n} nickers softly.`,`${n} nuzzles your pocket for treats.`,`${n} stomps a hoof. Flies!`,`${n} blows a big snuffly breath.`]}
 };
-function lineFor(who){const l=LINES[who];return pick(typeof l==='function'?l():l)}
+function lineFor(who){const l=LINES[who]||(ANIMALS[who]||{}).lines;return pick(typeof l==='function'?l():l)}
 
 /* walking */
 function setPos(el,x,y,dur){el.style.transition=dur?`transform ${dur}s linear`:'none';el.style.transform=`translate(${x}px,${y}px)`}
@@ -636,7 +752,7 @@ function walkTo(loc,cb){
   walking=true;const kid=$('#kid'),pdx=$('#pdx');kid.classList.add('walking');pdx.classList.add('walking');
   let [cx,cy]=posOf(kidAt),i=0;
   const leg=()=>{if(i>=pts.length){kid.classList.remove('walking');setTimeout(()=>pdx.classList.remove('walking'),350);walking=false;kidAt=loc;cb&&cb();return}
-    const[nx,ny]=pts[i++],d=Math.hypot(nx-cx,ny-cy)/230;
+    const[nx,ny]=pts[i++],d=Math.hypot(nx-cx,ny-cy)/300;
     setPos(kid,nx,ny,d);
     const fx=nx-cx;setTimeout(()=>{if(Math.abs(fx)>2)pdx.querySelector('.flipper').setAttribute('transform',fx<0?'scale(-1,1)':'');setPos(pdx,nx+(fx<0?34:-34),ny+6,d)},300);
     cx=nx;cy=ny;setTimeout(leg,d*1000)};
@@ -648,10 +764,14 @@ function go(loc,after){
   walkTo(loc,()=>{
     if(after)return after();
     const hn=HORSES[S.horse].name;
+    if(loc==='stall'&&!S.done.muck&&(S.feed||0)<=0)return say('girl',"We're out of feed! Let's drive to the feed store.");
     if(loc==='stall')return S.done.muck?say('horse',`${hn}'s stall is already done. ${hn} is napping.`):variant('muck').fn();
     if(loc==='groom')return S.done.groom?say('girl',`Already did that today. ${hn} is shining!`):variant('groom').fn();
     if(loc==='arena')return S.done.lesson?say('girl','Lessons are done for today!'):variant('lesson').fn();
     if(loc==='tack')return openTack();
+    if(loc==='show')return openShow();
+    if(loc==='trail')return trailRide();
+    if(loc==='feed')return openFeedStore();
     if(loc==='paddock'){const o=ownedHorses().filter(id=>id!==S.horse).map(id=>HORSES[id].name);
       return say('girl',o.length?`${o.join(' and ')} ${o.length>1?'are':'is'} munching grass. Tap one to bring them in.`:'Someday this paddock will be full of horses!')}
   });
@@ -670,13 +790,16 @@ function render(){
   $('#barnOf').textContent=S.name?`${S.name}'s barn · with ${HORSES[S.horse].name}`:'Welcome, barn boss';
   $('#lvl').textContent=S.level;$('#coins').innerHTML=`${COIN} ${S.coins||0}`;
   $('#nextPrize').textContent=prizeKind(nextPrize());
+  $('#wxChip').innerHTML=`${wxIcon(wx())} ${WEATHER[wx()].n}`;$('#feedChip').textContent=S.feed||0;
+  {const g=weatherGear();$('#wxTip').innerHTML=`${wxIcon(wx())} <b>${WEATHER[wx()].n}:</b> ${WEATHER[wx()].tip}${g?` <b>Your ${g.toLowerCase()} is on: +5 coins per chore!</b>`:''}`}
   $('#ribbonChip').hidden=!S.ribbons;$('#ribbons').textContent=S.ribbons;
+  $('#showRibs').innerHTML=`${ribbonTotal()}${S.showRibbons&&S.showRibbons.blue?` <small>(${S.showRibbons.blue} blue)</small>`:''}`;
   walking=false;
-  $('#scene').innerHTML=`<div class="map-inner" id="mapInner">${mapSVG()}<div class="bubble" id="bubble" hidden></div></div>`;
+  $('#scene').innerHTML=`<div class="map-inner" id="mapInner">${mapSVG()}${wxOverlay()}<div class="bubble" id="bubble" hidden></div></div>`;
   $$('#map .hot').forEach(g=>bindTap(g,()=>go(g.dataset.go)));
   $$('#map .phorse').forEach(g=>bindTap(g,()=>go('paddock',()=>paddockHorse(g.dataset.horse))));
-  $$('#map [data-who]').forEach(g=>{if(g.closest('.hot')&&g.dataset.who==='horse')return;bindTap(g,()=>{const w=g.dataset.who;say(w,lineFor(w));if(w==='toast'){g.classList.remove('hop');void g.getBBox();g.classList.add('hop')}})});
-  $('#chores').innerHTML=CHORES.map(c=>{const d=S.done[c.id];return`<button class="chore ${d?'done':''}" data-c="${c.id}" ${d?'disabled':''}>${ICONS[c.id]}<span class="t">${variant(c.id).t}</span><span class="s">${variant(c.id).s}</span><span class="st">${d?'Done '+'★'.repeat(d)+'☆'.repeat(3-d):'Walk to the '+PLACE[c.id]+' →'}</span></button>`}).join('');
+  $$('#map [data-who]').forEach(g=>{if(g.closest('.hot')&&g.dataset.who==='horse')return;bindTap(g,()=>{const w=g.dataset.who;if(w==='girl')return openWardrobe();if(w==='toast'||w==='poin')return dogMenu(w);say(w,lineFor(w));if(w==='toast'){g.classList.remove('hop');void g.getBBox();g.classList.add('hop')}})});
+  $('#chores').innerHTML=CHORES.map(c=>{const d=S.done[c.id];return`<button class="chore ${d?'done':''}" data-c="${c.id}" ${d?'disabled':''}>${ICONS[c.id]}<span class="t">${variant(c.id).t}</span><span class="s">${variant(c.id).s}</span><span class="st">${d?'Done '+'★'.repeat(d)+'☆'.repeat(3-d):c.id==='muck'&&(S.feed||0)<=0?'Out of feed: drive to the feed store':'Walk to the '+PLACE[c.id]+' →'}</span></button>`}).join('');
   $$('.chore').forEach(b=>b.onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go(GOTO[b.dataset.c])});
   const all=CHORES.every(c=>S.done[c.id]);const fb=$('#finishBtn');fb.disabled=!all;
   fb.textContent=all?'Finish the day & open your prize':`Finish the day (${CHORES.filter(c=>S.done[c.id]).length}/3 chores)`;
@@ -701,10 +824,10 @@ $('#xBtn').onclick=closeModal;
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#modal').hidden&&!$('#xBtn').hidden)closeModal()});
 
 function finishChore(kind,stars,line,art,title){
-  S.done[kind]=Math.max(S.done[kind]||0,stars);const earned=stars*10;S.coins=(S.coins||0)+earned;save();
+  S.done[kind]=Math.max(S.done[kind]||0,stars);const gear=weatherGear(),earned=stars*10+(gear?5:0);S.coins=(S.coins||0)+earned;save();
   title=title||{muck:'The stall is spotless!',groom:'All groomed and shiny!',lesson:'Lesson complete!'}[kind];
   const left=CHORES.filter(c=>!S.done[c.id]).length;
-  setBody(`<div class="result"><h2>${title}</h2><div class="stars" aria-label="${stars} of 3 stars">${starRow(stars)}</div><p class="coin-pop">${COIN} +${earned} coins</p><p>${line}</p><div class="result-art">${art}</div>
+  setBody(`<div class="result"><h2>${title}</h2><div class="stars" aria-label="${stars} of 3 stars">${starRow(stars)}</div><p class="coin-pop">${COIN} +${earned} coins${gear?` (includes +5 for your ${gear.toLowerCase()})`:""}</p><p>${line}</p><div class="result-art">${art}</div>
   <p class="eyebrow">${left?left+' chore'+(left>1?'s':'')+' left today':'All chores done. Time to open your prize!'}</p><button class="big-btn" id="backBtn">Back to the barn</button></div>`);
   $('#backBtn').onclick=closeModal;$('#backBtn').focus();
 }
@@ -768,7 +891,7 @@ function startGroom(){
   const stage=$('#stage'),spotsEl=$('#spots');
   function renderStep(){const st=GROOM[step];
     $('#gsteps').innerHTML=GROOM.map((g,i)=>`<span class="step ${i<step?'done':i===step?'on':''}">${g.tool}</span>`).join('');
-    $('#ghint').textContent=st.verb;spots=st.spots.map(([x,y])=>({x,y,hp:st.tap?1:9}));
+    $('#ghint').textContent=st.verb;spots=(st.kind==='mud'&&wx()==='rainy'?[...st.spots,[132,116],[176,140],[222,118],[110,150]]:st.spots).map(([x,y])=>({x,y,hp:st.tap?1:9}));if(st.kind==='mud'&&wx()==='rainy')$('#ghint').textContent='Rainy day: extra mud! '+st.verb;
     spotsEl.innerHTML=spots.map((s,i)=>`<button class="spot ${st.kind}" data-i="${i}" style="left:${(s.x/3).toFixed(2)}%;top:${(s.y/2.2).toFixed(2)}%" aria-label="${st.tap?'Hoof':'Dirty spot'}">${st.kind==='tangle'?TANGLE:''}</button>`).join('');
     stage.style.cursor=st.tap?'pointer':'';
     $$('#spots .spot').forEach(b=>b.onclick=()=>{const s=spots[+b.dataset.i];if(s.hp<=0)return;s.hp=st.tap?0:Math.max(0,s.hp-4);b.style.opacity=st.tap?0:s.hp/9;if(s.hp<=0)cleaned(b,s)})}
@@ -919,7 +1042,7 @@ function muckFeed(){
 /* ---------- muck C: fly patrol ---------- */
 const FLY=`<svg viewBox="0 0 24 24"><g class="wing"><ellipse cx="7" cy="9" rx="6" ry="3.6" fill="rgba(225,238,248,.9)" stroke="#9fb3c2" stroke-width=".6"/><ellipse cx="17" cy="9" rx="6" ry="3.6" fill="rgba(225,238,248,.9)" stroke="#9fb3c2" stroke-width=".6"/></g><ellipse cx="12" cy="14" rx="4.5" ry="5.5" fill="#262626"/><circle cx="12" cy="8.5" r="3" fill="#333"/><circle cx="10.6" cy="8" r="1.1" fill="#c33"/><circle cx="13.4" cy="8" r="1.1" fill="#c33"/></svg>`;
 function muckFlies(){
-  const hn=HORSES[S.horse].name,n=Math.min(14,6+S.level),t0=performance.now();
+  const hn=HORSES[S.horse].name,n=Math.min(18,6+S.level+(wx()==='hot'?4:0)),t0=performance.now();
   openModal(`<div class="mg-head"><h2>Fly patrol</h2>${poinSVG('class="mg-dog"')}</div>
   <p class="hint" id="flyhint">Flies are bugging ${esc(hn)}! Tap them to shoo them out the window.</p>
   <div class="stall fresh flystall" id="fs"><div class="fwin" id="fwin"></div><div class="fs-horse">${horseSVG(S.horse,lookOf(S.horse))}</div><div class="count" id="fcount">0 / ${n}</div></div>`);
@@ -974,12 +1097,12 @@ function groomBath(){
 function groomBraid(){
   const H=HORSES[S.horse],hn=H.name;
   const crest=[[231,21],[224,32],[216,44],[208,56],[200,68],[192,80]];
-  const COLS=[['#ef6a9a','Pink'],['#f0c25a','Gold'],['#5fa8e8','Blue']],LENS=[3,4,5];
+  const COLS=[['#ef6a9a','Pink'],['#f0c25a','Gold'],['#5fa8e8','Blue']],LENS=wx()==='windy'?[4,5,6]:[3,4,5];
   let round=0,seq=[],input=[],busy=true,mistakes=0;
   openModal(`<div class="mg-head"><h2>Braid ${esc(hn)}'s mane</h2><div class="steps" id="bsteps"></div>${toastSVG('class="mg-dog"')}</div>
   <p class="hint" id="bhint">Watch the strands light up, then tap them in the same order.</p>
-  <div class="groom-stage" id="stage">${horseSVG(S.horse,{mane:'natural'})}<div class="deco" id="deco"></div></div>
-  <div class="strands wait" id="strands">${COLS.map(([c,n],i)=>`<button class="strand" data-i="${i}" style="--c:${c}">${n}</button>`).join('')}</div>`);
+  <div class="strands wait" id="strands">${COLS.map(([c,n],i)=>`<button class="strand" data-i="${i}" style="--c:${c}">${n}</button>`).join('')}</div>
+  <div class="groom-stage" id="stage">${horseSVG(S.horse,{mane:'natural'})}<div class="deco" id="deco"></div></div>`);
   const btns=$$('.strand'),hint=$('#bhint'),deco=$('#deco'),wrap=$('#strands'),NAMES=['Braid 1','Braid 2','Braid 3'];
   const flash=i=>{btns[i].classList.add('lit');later(()=>btns[i].classList.remove('lit'),380)};
   function play(){busy=true;input=[];wrap.classList.add('wait');hint.textContent='Watch the pattern…';
@@ -1083,6 +1206,7 @@ function lessonLead(){
 
 /* ---------- finish day & prizes ---------- */
 const GIFT=`<svg viewBox="0 0 170 150"><rect x="20" y="58" width="130" height="86" rx="8" fill="#9a3226"/><rect x="12" y="40" width="146" height="28" rx="6" fill="#b8433a"/><rect x="76" y="40" width="18" height="104" fill="#f0c25a"/><path d="M85,40 C60,6 36,24 58,40 Z M85,40 C110,6 134,24 112,40 Z" fill="#f0c25a" stroke="#b4862a" stroke-width="2"/></svg>`;
+const TROPHY=`<svg viewBox="0 0 120 150"><path d="M30,20 h60 v24 a30,30 0 0 1 -60,0 Z" fill="#f0c25a" stroke="#b4862a" stroke-width="3"/><path d="M30,28 h-14 a14,16 0 0 0 16,24 M90,28 h14 a14,16 0 0 1 -16,24" fill="none" stroke="#b4862a" stroke-width="5"/><rect x="52" y="72" width="16" height="30" fill="#d9a521"/><rect x="34" y="100" width="52" height="16" rx="3" fill="#6b3a1f"/><rect x="28" y="114" width="64" height="22" rx="3" fill="#7d4524"/>${'${star(60,44,9,"#fffaf0")}'}</svg>`;
 const RIBBON=`<svg viewBox="0 0 120 160"><path d="M44,80 L30,150 L50,138 L60,156 L66,84 Z M76,80 L90,150 L70,138 L60,156 L54,84 Z" fill="#2f63b8"/><circle cx="60" cy="58" r="44" fill="#3b78d8"/><circle cx="60" cy="58" r="32" fill="#f4efe4"/><text x="60" y="67" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="26" fill="#2f63b8">1st</text></svg>`;
 function confetti(){const cs=['#f0c25a','#ef6a9a','#5fa8e8','#6cbf5a','#9b6ad6','#fff'];for(let i=0;i<60;i++){const c=document.createElement('span');c.className='confetti';c.style.left=Math.random()*100+'vw';c.style.background=pick(cs);c.style.animationDelay=Math.random()*.6+'s';c.style.animationDuration=1.6+Math.random()*1.4+'s';document.body.appendChild(c);setTimeout(()=>c.remove(),3600)}}
 function finishDay(){
@@ -1091,33 +1215,495 @@ function finishDay(){
   if(p){S.owned.push(p.t+':'+p.id);name=prizeName(p);
     if(p.t==='horse')art=horseSVG(p.id,DEFAULT_LOOK);
     else art=horseSVG(S.horse,Object.assign(lookOf(S.horse),{[p.t]:p.id},p.t==='saddle'&&lookOf(S.horse).pad==='none'?{pad:'barnred'}:{}));}
-  else{S.ribbons++;name=`Blue ribbon #${S.ribbons}`;art=RIBBON}
-  S.coins=(S.coins||0)+25;S.level++;S.done={muck:0,groom:0,lesson:0};save();
+  else{S.ribbons++;name=`Champion trophy #${S.ribbons}`;art=TROPHY}
+  const yard=(hasAnimal('goose')?10:0)+(hasAnimal('pony')?15:0);S.coins=(S.coins||0)+25+yard;S.level++;S.done={muck:0,groom:0,lesson:0};S.feed=Math.max(0,(S.feed||0)-1);rollWeather();save();
   openModal(`<div class="result"><p class="eyebrow">Level ${lv} complete</p><h2>You earned a prize!</h2><div id="pbox"><button class="gift" id="gift" aria-label="Open your prize">${GIFT}</button><p>Tap the present to open it.</p></div></div>`);
   $('#gift').onclick=()=>{confetti();
     const tryBtn=p?`<button class="big-btn" id="tryBtn">${p.t==='horse'?'Bring '+HORSES[p.id].name+' in':'Try it on'}</button>`:'';
-    $('#pbox').innerHTML=`<div class="result-art" style="margin:0 auto">${art}</div><p class="prize-name">${esc(name)}</p><p class="coin-pop">${COIN} +25 coin bonus</p>${p?'':'<p>You have unlocked everything! Keep finishing days to collect blue ribbons.</p>'}${p&&p.t==='horse'?`<p>${HORSES[p.id].desc}. Find them in the paddock.</p>`:''}<div class="btn-row">${tryBtn}<button class="wood-btn" id="pBack">Back to the barn</button></div>`;
+    $('#pbox').innerHTML=`<div class="result-art" style="margin:0 auto">${art}</div><p class="prize-name">${esc(name)}</p><p class="coin-pop">${COIN} +${25+yard} coin bonus${yard?" (includes barnyard friends)":""}</p><p>${wxIcon(wx())} New weather: <b>${WEATHER[wx()].n}</b>. ${(S.feed||0)<=0?"You are out of feed. Drive to the feed store!":`${S.feed} feed bag${S.feed===1?"":"s"} left.`}</p>${p?'':'<p>You have won every prize! Keep finishing levels to collect champion trophies.</p>'}${p&&p.t==='horse'?`<p>${HORSES[p.id].desc}. Find them in the paddock.</p>`:''}<div class="btn-row">${tryBtn}<button class="wood-btn" id="pBack">Back to the barn</button></div>`;
     $('#pBack').onclick=closeModal;
     if(p)$('#tryBtn').onclick=()=>{if(p.t==='horse'){S.horse=p.id;save();closeModal();return}const l=lookOf(S.horse);l[p.t]=p.id;if(p.t==='saddle'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l;save();openTack()}};
 }
 $('#finishBtn').onclick=finishDay;
 
+/* ---------- horse show ---------- */
+const SHOW_CLASSES=[
+  {name:'Short Stirrup Jumpers',jumps:5,speed:.30,rail:.12},
+  {name:'Pony Hunter Classic',jumps:6,speed:.33,rail:.14},
+  {name:'Junior Jumper Derby',jumps:7,speed:.36,rail:.16},
+  {name:'Willow Creek Grand Prix',jumps:8,speed:.39,rail:.18}];
+const showIdx=()=>Math.min(3,Math.floor((S.level-1)/2));
+const showClass=()=>SHOW_CLASSES[showIdx()];
+const showOpen=()=>S.showLevel!==S.level;
+const RIB={blue:['#2f63b8','#6a98e0','1st'],red:['#b8352a','#e0695c','2nd'],yellow:['#d9a521','#f3d27e','3rd'],white:['#bdb6a6','#ffffff','4th']};
+const RIB_ORDER=['blue','red','yellow','white'];
+function rosette(kind,w=120){const[c1,c2,lab]=RIB[kind];let pet='';for(let i=0;i<18;i++){const a=i/18*TAU;pet+=`<circle cx="${(60+Math.cos(a)*40).toFixed(1)}" cy="${(58+Math.sin(a)*40).toFixed(1)}" r="9" fill="${c1}"/>`}
+  return`<svg viewBox="0 0 120 160" width="${w}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${lab} place ribbon"><path d="M44,80 L30,152 L50,140 L60,158 L66,84 Z M76,80 L90,152 L70,140 L60,158 L54,84 Z" fill="${c1}"/>${pet}<circle cx="60" cy="58" r="38" fill="${c2}"/><circle cx="60" cy="58" r="27" fill="#fffaf0" stroke="${c1}" stroke-width="3"/><text x="60" y="66" text-anchor="middle" font-family="Grandstander, sans-serif" font-weight="800" font-size="22" fill="${kind==='white'?'#5a5248':c1}">${lab}</text></svg>`}
+const ribbonTotal=()=>RIB_ORDER.reduce((n,k)=>n+((S.showRibbons||{})[k]||0),0);
+
+function turnout(){const L=lookOf(S.horse),items=[];let pts=0;
+  const add=(ok,good,bad)=>{items.push({ok,txt:ok?good:bad});if(ok)pts+=10};
+  add(!!S.done.groom,'Freshly groomed today','Not groomed yet today. Groom first for 10 more points.');
+  add(L.mane!=='natural','Show-ready hairstyle','Plain natural mane. Judges love a styled mane.');
+  add(L.pad!=='none'&&L.saddle!=='none'&&L.bridle!=='none','Fully tacked up','Missing a saddle pad, saddle, or bridle.');
+  add(['mane','pad','bridle','wraps'].some(t=>PRIZE_ONLY.includes(t+':'+L[t])),'Wearing prize-winning gear','No prize-only gear on. Win some by leveling up.');
+  return{pts,items}}
+
+function openShow(){
+  if(!showOpen())return say('girl','We already showed this level. The next show opens after we level up!');
+  const C=showClass(),H=HORSES[S.horse],T=turnout();
+  openModal(`<div class="mg-head"><h2>${C.name}</h2>${poinSVG('class="mg-dog"')}</div>
+  <p class="eyebrow">Horse show · ${C.jumps} jumps · one entry per level</p>
+  <div class="tack"><div class="tack-preview">${horseSVG(S.horse,lookOf(S.horse))}<div class="nm">${esc(S.name||'You')} &amp; ${H.name}</div><p class="ds">Entry #${12+S.level*3}</p></div>
+  <div><h3 class="judge-h">Turnout check</h3><ul class="judge">${T.items.map(i=>`<li class="${i.ok?'ok':''}"><b>${i.ok?'+10':'+0'}</b><span>${i.txt}</span></li>`).join('')}</ul>
+  <p class="score-line">Turnout: <b>${T.pts} / 40</b></p>
+  <p>Next is the jumping round, worth up to 60 points. Press <b>Jump</b> when your horse reaches the yellow takeoff mark in front of each fence.</p>
+  <div class="btn-row" style="justify-content:flex-start"><button class="big-btn" id="enterRing">Enter the ring</button><button class="wood-btn" id="notYet">Get ready first</button></div></div></div>`);
+  $('#enterRing').onclick=()=>jumpRound(C,T);$('#notYet').onclick=closeModal;
+}
+
+function jumpRound(C,T){
+  const H=HORSES[S.horse],L=lookOf(S.horse);
+  setBody(`<div class="mg-head"><h2>${C.name}</h2></div><p class="hint" id="jhint">Press Jump (or tap the ring, or the space bar) when you reach the yellow mark.</p>
+  <div class="arena-wrap" id="jwrap"><canvas id="jc" class="lead" aria-label="Show jumping course"></canvas><div class="callout" id="callout" hidden></div></div>
+  <button class="big-btn jump-btn" id="jumpBtn">Jump!</button><p class="progress" id="jprog"></p>`);
+  const cv=$('#jc'),ctx=cv.getContext('2d'),wrap=$('#jwrap');let W=0,Hh=0;
+  function size(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;Hh=Math.round(W*.5);cv.width=W*dpr;cv.height=Hh*dpr;cv.style.height=Hh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();window.addEventListener('resize',size);cleanups.push(()=>window.removeEventListener('resize',size));
+  const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(horseSVG(S.horse,L));
+  const COLS=[['#e8505b','#fff'],['#2f63b8','#fff'],['#f0c25a','#3d6aa8'],['#6cbf5a','#fff'],['#9b6ad6','#f0c25a']];
+  const crowd=Array.from({length:70},(_,i)=>[Math.random(),Math.random(),pick(['#e8505b','#5fa8e8','#f0c25a','#6cbf5a','#ef6a9a','#fff','#9b6ad6'])]);
+  // course laid out in units of screen width
+  const jumps=[];let x=1.05;for(let i=0;i<C.jumps;i++){jumps.push({x,c:pick(COLS),passed:false,down:false,fall:0});x+=.85+Math.random()*.4}
+  const finishX=x+.1,TAIR=.8;
+  let dist=-.15,air=-1,faults=0,clears=0,done=false,last=performance.now(),raf;
+  const callout=(t,k)=>{const c=$('#callout');c.textContent=t;c.className='callout '+(k||'');c.hidden=false;clearTimeout(callout.t);callout.t=setTimeout(()=>{c.hidden=true},1100)};
+  const jump=()=>{if(air<0&&!done&&dist>-.05)air=0};
+  $('#jumpBtn').onclick=jump;cv.addEventListener('pointerdown',jump);
+  const key=e=>{if(e.code==='Space'||e.key===' '){e.preventDefault();jump()}};document.addEventListener('keydown',key);cleanups.push(()=>document.removeEventListener('keydown',key));
+  const prog=()=>{$('#jprog').textContent=`Fence ${Math.min(jumps.filter(j=>j.passed).length+1,jumps.length)} of ${jumps.length} · Rails down: ${faults}`};prog();
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+    if(!done)dist+=C.speed*dt;
+    if(air>=0){air+=dt;if(air>TAIR)air=-1}
+    const u=air>=0?air/TAIR:0,lift=air>=0?4*u*(1-u):0; /* 0..1 of peak */
+    const peak=wx()==='rainy'||wx()==='snowy'?.27:.30,railTop=C.rail*1.15;
+    jumps.forEach(j=>{if(!j.passed&&j.x<=dist){j.passed=true;
+      if(lift*peak>railTop+.01){clears++;callout(pick(['Clear!','Beautiful!','Over it!','Nice jump!']),'good')}
+      else{faults++;j.down=true;callout('Rail down! Keep going.','soft')}prog()}
+      if(j.down&&j.fall<1)j.fall=Math.min(1,j.fall+dt*3)});
+    if(!done&&dist>=finishX){done=true;setTimeout(()=>{if($('#jc'))results(C,T,faults)},900)}
+    draw(lift*peak,u);raf=requestAnimationFrame(frame)}
+  function draw(liftH,u){
+    const gY=Hh*.84,HX=W*.26,unit=W;
+    const sky=ctx.createLinearGradient(0,0,0,gY);sky.addColorStop(0,'#9fd0ef');sky.addColorStop(1,'#e6f4fb');ctx.fillStyle=sky;ctx.fillRect(0,0,W,gY);
+    // grandstand with crowd (parallax)
+    const off=(dist*unit*.35)%(W*.5);
+    ctx.fillStyle='#8a5a36';ctx.fillRect(0,Hh*.18,W,Hh*.3);ctx.fillStyle='#6e4429';for(let r=0;r<4;r++)ctx.fillRect(0,Hh*(.22+r*.065),W,3);
+    crowd.forEach(([a,b,c])=>{let px=((a*W*1.5-off)%(W*1.5)+W*1.5)%(W*1.5);if(px>W)return;const py=Hh*(.2+Math.floor(b*4)*.065);ctx.fillStyle=c;ctx.fillRect(px,py,7,Hh*.04);ctx.fillStyle='#e8b48e';ctx.beginPath();ctx.arc(px+3.5,py-3,3.5,0,TAU);ctx.fill()});
+    ctx.fillStyle='#9a3226';ctx.fillRect(0,Hh*.12,W,Hh*.06);
+    for(let i=0;i<12;i++){ctx.fillStyle=i%2?'#f3e3c3':'#9a3226';ctx.beginPath();const bx=((i*W/6-off*1.2)%(W*2)+W*2)%(W*2)-W*.1;ctx.moveTo(bx,Hh*.12);ctx.lineTo(bx+W/12,Hh*.12);ctx.lineTo(bx+W/24,Hh*.17);ctx.fill()}
+    // rail fence + ground
+    ctx.fillStyle='#7fae5e';ctx.fillRect(0,Hh*.48,W,gY-Hh*.48);
+    ctx.fillStyle='#fbf7ee';ctx.fillRect(0,Hh*.6,W,4);ctx.fillRect(0,Hh*.68,W,4);
+    for(let p=0;p<10;p++){const px=((p*W/8-dist*unit)%(W*1.25)+W*1.25)%(W*1.25)-W*.1;ctx.fillRect(px,Hh*.58,5,Hh*.14)}
+    ctx.fillStyle='#dcbf8e';ctx.fillRect(0,gY,W,Hh-gY);
+    ctx.fillStyle='rgba(160,120,70,.35)';for(let k=0;k<30;k++){const px=((k*53-dist*unit)%W+W)%W;ctx.fillRect(px,gY+6+(k*7)%(Hh-gY-8),3,2)}
+    // fences
+    jumps.forEach((j,i)=>{const sx=HX+(j.x-dist)*unit;if(sx<-60||sx>W+60)return;
+      const tx=HX+(j.x-TAIR*.5*C.speed-dist)*unit;
+      if(!j.passed){ctx.fillStyle='#f0c25a';rrect(ctx,tx-12,gY+3,24,7,3);ctx.fill();ctx.fillStyle='rgba(240,194,90,.35)';ctx.beginPath();ctx.moveTo(tx-7,gY-4);ctx.lineTo(tx+7,gY-4);ctx.lineTo(tx,gY+2);ctx.fill()}
+      const top=gY-C.rail*Hh*1.15,pw=6,span=W*.055;
+      ctx.fillStyle='#e85c8a';ctx.beginPath();ctx.ellipse(sx,gY,span*.9,6,0,0,TAU);ctx.fill();
+      ctx.fillStyle='#f6d34a';for(let f=0;f<5;f++){ctx.beginPath();ctx.arc(sx-span*.7+f*span*.35,gY-4,3,0,TAU);ctx.fill()}
+      ctx.fillStyle='#fbf7ee';ctx.fillRect(sx-span-pw/2,top-8,pw,gY-top+8);ctx.fillRect(sx+span-pw/2,top-8,pw,gY-top+8);
+      const rails=3;for(let r=0;r<rails;r++){const ry=top+r*(gY-top)/rails*.9;
+        ctx.save();if(j.down&&r===0){ctx.translate(sx,ry);ctx.rotate(j.fall*.5);ctx.translate(0,j.fall*(gY-ry-6));ctx.translate(-sx,-ry)}
+        const len=span*2;for(let s=0;s<6;s++){ctx.fillStyle=s%2?j.c[1]:j.c[0];ctx.fillRect(sx-span+s*len/6,ry,len/6+1,6)}ctx.restore()}
+      ctx.fillStyle='#3a2418';ctx.font='800 11px Nunito, sans-serif';ctx.textAlign='center';ctx.fillText(String(i+1),sx-span,top-12)});
+    // finish banner
+    const fx=HX+(finishX-dist)*unit;if(fx<W+40){ctx.fillStyle='#3a2418';ctx.fillRect(fx,gY-Hh*.42,5,Hh*.42);for(let r=0;r<3;r++)for(let c=0;c<5;c++){ctx.fillStyle=(r+c)%2?'#fff':'#1d130d';ctx.fillRect(fx+5+c*8,gY-Hh*.42+r*8,8,8)}}
+    // horse + rider
+    const hw=W*.24,hh=hw*220/300,lift=liftH*Hh,bob=air<0&&!done?Math.abs(Math.sin(performance.now()/90))*3:0,ang=air>=0?-.28*(1-2*u):0;
+    ctx.fillStyle='rgba(40,25,10,.22)';ctx.beginPath();ctx.ellipse(HX,gY+3,hw*.35*(1-liftH),5,0,0,TAU);ctx.fill();
+    ctx.save();ctx.translate(HX,gY-lift-bob);ctx.rotate(ang);
+    if(img.complete&&img.naturalWidth)ctx.drawImage(img,-hw*.52,-hh*.91,hw,hh);
+    // rider (you): seat at about saddle
+    const rx=hw*(155/300-.52),ry=-hh*.91+hh*(70/220);
+    ctx.fillStyle='#2b1c16';ctx.beginPath();ctx.moveTo(rx+2,ry-hh*.36);ctx.quadraticCurveTo(rx-hw*.08,ry-hh*.25,rx-hw*.1-u*4,ry-hh*.08);ctx.lineTo(rx-hw*.05,ry-hh*.08);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#3f5f8f';ctx.beginPath();ctx.ellipse(rx+hw*.02,ry+hh*.02,hw*.05,hh*.09,.5,0,TAU);ctx.fill();
+    ctx.fillStyle='#6b3a1f';rrect(ctx,rx+hw*.04,ry+hh*.1,hw*.035,hh*.06,3);ctx.fill();
+    ctx.fillStyle='#b8433a';ctx.save();ctx.translate(rx+hw*.01,ry-hh*.14);ctx.rotate(.45);rrect(ctx,-hw*.035,-hh*.12,hw*.07,hh*.2,6);ctx.fill();ctx.restore();
+    ctx.fillStyle=S.skin||'#e8b48e';ctx.beginPath();ctx.arc(rx+hw*.05,ry-hh*.3,hh*.075,0,TAU);ctx.fill();
+    ctx.fillStyle='#1d1d22';ctx.beginPath();ctx.arc(rx+hw*.05,ry-hh*.32,hh*.08,PI,TAU);ctx.fill();ctx.fillRect(rx+hw*.05,ry-hh*.33,hw*.05,hh*.02);
+    ctx.fillStyle='#b8433a';ctx.beginPath();ctx.ellipse(rx+hw*.11,ry-hh*.13,hw*.04,hh*.022,.6,0,TAU);ctx.fill();
+    ctx.restore();
+    if(dist<0){ctx.fillStyle='rgba(58,36,24,.75)';rrect(ctx,W/2-90,Hh*.05,180,30,15);ctx.fill();ctx.fillStyle='#fff';ctx.font='800 15px Nunito, sans-serif';ctx.textAlign='center';ctx.fillText('Ready… canter on!',W/2,Hh*.05+20)}
+  }
+  raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+
+function results(C,T,faults){
+  const ride=Math.max(12,60-faults*8),total=T.pts+ride+(hasAnimal('donkey')?5:0),ci=showIdx();
+  const RIVALS=['Harper on Ziggy','Mason on Ladybug','Zoe on Captain','Ollie on Marshmallow','Lila on Thunder','Ezra on Pickles','Mia on Sundance','Jack on Waffles','Ruby on Moonpie','Finn on Biscotti'];
+  const field=shuffle(RIVALS).slice(0,3).map(n=>({n,s:Math.max(35,Math.min(97,Math.round(58+ci*7+(Math.random()*28-14))))}));
+  field.push({n:`${S.name||'You'} on ${HORSES[S.horse].name}`,s:total,me:true});
+  field.sort((a,b)=>b.s-a.s||(a.me?-1:1));
+  const place=field.findIndex(f=>f.me),kind=RIB_ORDER[place],coins=[50,35,20,10][place];
+  S.showRibbons=S.showRibbons||{};S.showRibbons[kind]=(S.showRibbons[kind]||0)+1;S.coins=(S.coins||0)+coins;S.showLevel=S.level;
+  const extra=[];if(place===0&&giveCloth('shirt:show'))extra.push('New outfit: Navy show coat!');if(place<=2&&giveCloth('boots:tall'))extra.push('New outfit: Tall show boots!');
+  if(place<=1){const miss=accMissing(S.horse);if(miss.length){const k=pick(miss);extra.push(`Prize for ${HORSES[S.horse].name}: the ${accName(S.horse,k).toLowerCase()}!`+giveAcc(S.horse,k))}}save();
+  if(place===0)confetti();
+  const head=['You won the blue ribbon!','Second place: red ribbon!','Third place: yellow ribbon!','Fourth place: white ribbon!'][place];
+  const judge=faults===0&&T.pts===40?'Judge: "A perfect round and a perfect turnout. What a team!"'
+    :faults===0?'Judge: "A lovely clear round!"'+(T.pts<40?' Better turnout will earn even more points.':'')
+    :T.pts<30?'Judge: "Nice riding! Grooming and a styled mane will boost your score next time."'
+    :`Judge: "Beautiful turnout! Watch your takeoff spots and you'll be clear next time."`;
+  setBody(`<div class="result"><p class="eyebrow">${C.name} · results</p><h2>${head}</h2><div>${rosette(kind,110)}</div>
+  <p class="coin-pop">${COIN} +${coins} coins</p>
+  <table class="board-tbl"><thead><tr><th>Place</th><th>Rider</th><th>Score</th></tr></thead><tbody>${field.map((f,i)=>`<tr class="${f.me?'me':''}"><td>${['1st','2nd','3rd','4th'][i]}</td><td>${esc(f.n)}</td><td>${f.s}</td></tr>`).join('')}</tbody></table>
+  <p class="score-line">Turnout ${T.pts}/40 · Jumping ${ride}/60 (${faults} rail${faults===1?'':'s'} down)</p>
+  ${extra.map(e=>`<p class="coin-pop">${esc(e)}</p>`).join('')}${hasAnimal('donkey')?'<p class="store-note">Hank the donkey kept your horse calm: +5 points.</p>':''}<p>${judge}</p><button class="big-btn" id="backBtn">Back to the barn</button></div>`);
+  $('#backBtn').onclick=closeModal;
+}
+
+/* ================= v2 features ================= */
+/* ---------- clothing ---------- */
+const CLOTHES={
+  shirt:{label:'Top',items:{plaid:{n:'Red flannel'},pink:{n:'Pink tee',p:30},denim:{n:'Denim jacket',p:50},rain:{n:'Yellow raincoat',p:40,wx:'rainy'},sweater:{n:'Rainbow sweater',earn:'Find it on a trail ride'},show:{n:'Navy show coat',earn:'Win a blue ribbon'}}},
+  hat:{label:'Hat',items:{none:{n:'No hat'},helmet:{n:'Riding helmet',p:35,wx:'windy'},cowboy:{n:'Cowboy hat',p:45},beanie:{n:'Pom-pom beanie',p:25,wx:'snowy'},sun:{n:'Straw sun hat',p:30,wx:'hot'},crown:{n:'Flower crown',earn:'Find it on a trail ride'}}},
+  boots:{label:'Boots',items:{brown:{n:'Brown boots'},pink:{n:'Pink boots',p:35},rain:{n:'Rubber rain boots',p:30,wx:'rainy'},tall:{n:'Tall show boots',earn:'Place in a horse show'}}}
+};
+const outfitOf=()=>Object.assign({shirt:'plaid',hat:'none',boots:'brown'},S.outfit||{});
+const ownsCloth=k=>(S.clothes||[]).includes(k);
+function giveCloth(k){if(ownsCloth(k))return false;S.clothes=[...(S.clothes||[]),k];const[t,id]=k.split(':');S.outfit=Object.assign(outfitOf(),{[t]:id});return true}
+const clothName=k=>{const[t,id]=k.split(':');return CLOTHES[t].items[id].n};
+
+function shirtLayer(id,u){
+  const F={plaid:`url(#${u}p)`,pink:'#f28fb5',denim:'#4f74a8',rain:'#f2c230',sweater:`url(#${u}rs)`,show:'#23325c'}[id]||`url(#${u}p)`;
+  const short=id==='pink';
+  let o=short?`<rect x="20" y="72" width="11" height="16" rx="5" fill="${F}"/><rect x="21" y="86" width="9" height="26" rx="4.5" fill="SKIN"/><rect x="69" y="72" width="11" height="16" rx="5" fill="${F}"/><rect x="70" y="86" width="9" height="26" rx="4.5" fill="SKIN"/>`
+    :`<rect x="20" y="72" width="11" height="40" rx="5" fill="${F}"/><rect x="69" y="72" width="11" height="40" rx="5" fill="${F}"/>`;
+  o+=`<circle cx="25.5" cy="114" r="5" fill="SKIN"/><circle cx="74.5" cy="114" r="5" fill="SKIN"/>`;
+  const len=id==='rain'||id==='show'?132:121;
+  o+=`<path d="M29,70 Q50,62 71,70 L${id==='rain'?75:72},${len} L${id==='rain'?25:28},${len} Z" fill="${F}"/>`;
+  if(id==='show')o+=`<path d="M42,66 L50,82 L58,66 Z" fill="#fff"/><path d="M44,68 L50,90 L56,68" fill="none" stroke="#1a2546" stroke-width="2"/><circle cx="50" cy="100" r="1.8" fill="#d4a72c"/><circle cx="50" cy="110" r="1.8" fill="#d4a72c"/>`;
+  else if(id==='denim')o+=`<path d="M42,66 L50,78 L58,66" fill="none" stroke="#c9d8ee" stroke-width="2.6"/><path d="M50,78 V120" stroke="#3b5c8c" stroke-width="1.5"/><rect x="33" y="84" width="9" height="7" rx="1" fill="none" stroke="#3b5c8c" stroke-width="1.3"/><rect x="58" y="84" width="9" height="7" rx="1" fill="none" stroke="#3b5c8c" stroke-width="1.3"/>`;
+  else if(id==='rain')o+=`<path d="M50,72 V130" stroke="#c9971e" stroke-width="1.6"/><g fill="#c9971e"><circle cx="53" cy="84" r="1.6"/><circle cx="53" cy="98" r="1.6"/><circle cx="53" cy="112" r="1.6"/></g>`;
+  else if(id==='pink')o+=`<path d="M43,66 Q50,72 57,66" fill="none" stroke="#fff" stroke-width="2"/>${star(50,92,6,'#fff6c8')}`;
+  else o+=`<path d="M42,66 L50,75 L58,66" fill="none" stroke="#f1d4a6" stroke-width="2.4"/>`;
+  return o}
+function hatLayer(id){
+  if(id==='helmet')return`<path d="M29,36 C29,16 71,16 71,36 Z" fill="#26262c"/><path d="M60,34 Q74,34 78,38 L66,38 Z" fill="#26262c"/><path d="M32,38 Q50,32 68,38" stroke="#4a4a52" stroke-width="2" fill="none"/><path d="M33,38 L36,58 M67,38 L64,58" stroke="#26262c" stroke-width="1.6"/>`;
+  if(id==='cowboy')return`<ellipse cx="50" cy="28" rx="34" ry="7" fill="#8a5a36"/><path d="M34,28 C34,10 66,10 66,28 Z" fill="#a0703f"/><path d="M34,24 H66" stroke="#5e3a1f" stroke-width="3"/><path d="M47,13 Q50,17 53,13" stroke="#7a4f2a" stroke-width="2" fill="none"/>`;
+  if(id==='beanie')return`<path d="M29,36 C28,14 72,14 71,36 Z" fill="#c84a5a"/><rect x="28" y="30" width="44" height="8" rx="3" fill="#f3e3c3"/><g stroke="#a83a4a" stroke-width="1.4"><path d="M38,18 V30 M46,15 V30 M54,15 V30 M62,18 V30"/></g><circle cx="50" cy="12" r="6" fill="#f3e3c3"/>`;
+  if(id==='sun')return`<ellipse cx="50" cy="27" rx="36" ry="8" fill="#e6c375"/><path d="M33,27 C33,11 67,11 67,27 Z" fill="#efd28c"/><path d="M33,24 H67" stroke="#e46aa0" stroke-width="3.5"/><g stroke="#cfa95a" stroke-width=".8" opacity=".7"><path d="M20,27 Q50,33 80,27"/><path d="M38,15 V27 M50,12 V27 M62,15 V27"/></g>`;
+  if(id==='crown')return[34,41,50,59,66].map((x,i)=>flower(x,20+Math.abs(i-2)*2.5,['#f48fb1','#fff3f7','#b39ddb','#f6d34a','#f48fb1'][i])).join('');
+  return''}
+function bootsLayer(id){
+  const c={brown:'#6b3a1f',pink:'#e46aa0',rain:'#f2c230',tall:'#1d1d22'}[id]||'#6b3a1f';
+  if(id==='tall')return`<path d="M30,146 h15 v36 h-19 q-1,-7 4,-8 Z" fill="${c}"/><path d="M55,146 h15 v28 q5,1 4,8 h-19 Z" fill="${c}"/><path d="M31,150 h13 M56,150 h13" stroke="#3a3a42" stroke-width="2"/>`;
+  let o=`<path d="M30,164 h15 v18 h-19 q-1,-7 4,-8 Z" fill="${c}"/><path d="M55,164 h15 v10 q5,1 4,8 h-19 Z" fill="${c}"/>`;
+  if(id==='rain')o+=`<g fill="#fff" opacity=".8"><circle cx="37" cy="171" r="1.6"/><circle cx="62" cy="171" r="1.6"/></g>`;
+  if(id==='pink')o+=star(37,172,3,'#fff6c8')+star(62,172,3,'#fff6c8');
+  return o}
+
+/* ---------- weather ---------- */
+const WEATHER={
+  sunny:{n:'Sunny',tip:'A perfect barn day.'},
+  rainy:{n:'Rainy',tip:'Horses get muddy and jumps are slippery. Wear a raincoat or rain boots for +5 coins per chore.'},
+  hot:{n:'Hot',tip:'Extra flies today. Wear a straw sun hat for +5 coins per chore.'},
+  windy:{n:'Windy',tip:'Braids are harder and the show ring is gusty. Wear a riding helmet for +5 coins per chore.'},
+  snowy:{n:'Snowy',tip:'Trails are slow and the footing is slick. Wear a pom-pom beanie for +5 coins per chore.'}};
+const wx=()=>S.weather||'sunny';
+function rollWeather(){const r=Math.random();S.weather=r<.36?'sunny':r<.52?'rainy':r<.68?'hot':r<.84?'windy':'snowy'}
+function weatherGear(){const w=wx();if(w==='sunny')return null;const o=outfitOf();for(const t of Object.keys(CLOTHES)){const it=CLOTHES[t].items[o[t]];if(it&&it.wx===w)return it.n}return null}
+const WX_ICON={sunny:`<circle cx="12" cy="12" r="5" fill="#f6c84a"/><g stroke="#f6c84a" stroke-width="2" stroke-linecap="round"><path d="M12,2v3M12,19v3M2,12h3M19,12h3M5,5l2,2M17,17l2,2M5,19l2-2M17,7l2-2"/></g>`,
+  rainy:`<path d="M6,14a4,4 0 0 1 1-8a5,5 0 0 1 9,1a3.5,3.5 0 0 1 1,7Z" fill="#c9d3da"/><g stroke="#6cc0ea" stroke-width="2" stroke-linecap="round"><path d="M8,17l-1,3M12,17l-1,3M16,17l-1,3"/></g>`,
+  hot:`<circle cx="12" cy="12" r="6" fill="#f59e42"/><g stroke="#f59e42" stroke-width="2.4" stroke-linecap="round"><path d="M12,1v3M12,20v3M1,12h3M20,12h3"/></g>`,
+  windy:`<g stroke="#c9d3da" stroke-width="2.2" fill="none" stroke-linecap="round"><path d="M3,8h11a3,3 0 1 0-3-3"/><path d="M3,13h15a3,3 0 1 1-3,3"/><path d="M3,18h7"/></g>`,
+  snowy:`<g stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M12,3v18M4.5,7.5l15,9M19.5,7.5l-15,9"/></g>`};
+const wxIcon=w=>`<svg class="wxi" viewBox="0 0 24 24" aria-hidden="true">${WX_ICON[w]}</svg>`;
+function wxOverlay(){const w=wx();if(w==='sunny')return'';
+  if(w==='windy')return`<div class="wx windy">${Array.from({length:10},(_,i)=>`<i style="top:${8+i*9}%;animation-delay:-${(i*.7).toFixed(1)}s;animation-duration:${(3+i%3).toFixed(1)}s"></i>`).join('')}</div>`;
+  return`<div class="wx ${w}"></div>`}
+
+/* ---------- per-horse collections ---------- */
+const HORSE_THEME={maple:{c:'#d9662a',c2:'#f6d34a',motif:'leaf',name:'Autumn'},clover:{c:'#3f8a4f',c2:'#ffffff',motif:'clover',name:'Lucky'},biscuit:{c:'#e85c8a',c2:'#ffffff',motif:'heart',name:'Sweetheart'},midnight:{c:'#3b2a6b',c2:'#f0c25a',motif:'moon',name:'Starlight'},pepper:{c:'#4a90d9',c2:'#ffffff',motif:'snow',name:'Snowflake'}};
+const ACC_KINDS=[['bonnet','fly bonnet'],['blanket','quarter sheet'],['tailbow','tail bow'],['glitter','hoof glitter']];
+const accName=(id,k)=>`${HORSE_THEME[id].name} ${ACC_KINDS.find(a=>a[0]===k)[1]}`;
+const accOwned=id=>((S.acc||{})[id]||[]);
+const accMissing=id=>HORSE_THEME[id]?ACC_KINDS.map(a=>a[0]).filter(k=>!accOwned(id).includes(k)):[];
+function giveAcc(id,k){S.acc=S.acc||{};S.accOn=S.accOn||{};S.acc[id]=[...accOwned(id),k];S.accOn[id]=[...new Set([...(S.accOn[id]||[]),k])];
+  let bonus='';if(accOwned(id).length===4){S.coins=(S.coins||0)+100;bonus=` That completes ${HORSES[id].name}'s whole collection! +100 coins.`}return bonus}
+function motif(m,x,y,s,c){
+  if(m==='leaf')return`<path d="M${x},${y-s} C${x+s},${y-s*.4} ${x+s*.6},${y+s*.6} ${x},${y+s} C${x-s*.6},${y+s*.6} ${x-s},${y-s*.4} ${x},${y-s} Z M${x},${y-s*.6} V${y+s*1.3}" fill="${c}" stroke="${c}" stroke-width="1.2"/>`;
+  if(m==='clover')return`<g fill="${c}"><circle cx="${x}" cy="${y-s*.5}" r="${s*.45}"/><circle cx="${x-s*.48}" cy="${y+s*.2}" r="${s*.45}"/><circle cx="${x+s*.48}" cy="${y+s*.2}" r="${s*.45}"/></g><path d="M${x},${y+s*.3} q${s*.2},${s*.6} ${s*.5},${s}" stroke="${c}" stroke-width="1.6" fill="none"/>`;
+  if(m==='heart')return`<path d="M${x},${y+s*.8} C${x-s*1.2},${y-s*.1} ${x-s*.6},${y-s} ${x},${y-s*.35} C${x+s*.6},${y-s} ${x+s*1.2},${y-s*.1} ${x},${y+s*.8} Z" fill="${c}"/>`;
+  if(m==='moon')return`<path d="M${x+s*.3},${y-s} A${s},${s} 0 1 0 ${x+s*.3},${y+s} A${s*.7},${s*.7} 0 1 1 ${x+s*.3},${y-s} Z" fill="${c}"/>`;
+  return`<g stroke="${c}" stroke-width="1.8" stroke-linecap="round"><path d="M${x},${y-s}V${y+s}M${x-s*.87},${y-s*.5}L${x+s*.87},${y+s*.5}M${x+s*.87},${y-s*.5}L${x-s*.87},${y+s*.5}"/></g>`}
+function accArt(id,kinds,layer){const t=HORSE_THEME[id];if(!t||!kinds||!kinds.length)return'';const has=k=>kinds.includes(k);let o='';
+  if(layer==='tail'&&has('tailbow'))o+=bow(80,99,t.c,1.9)+`<circle cx="80" cy="99" r="2.6" fill="${t.c2}"/>`;
+  if(layer==='body'&&has('blanket'))o+=`<path d="M190,80 C168,70 112,70 82,96 L84,130 C120,144 170,144 196,130 Z" fill="${t.c}" stroke="${t.c2}" stroke-width="3" opacity=".96"/>${motif(t.motif,112,116,8,t.c2)}<path d="M84,130 C120,144 170,144 196,130" stroke="${t.c2}" stroke-width="2" fill="none" stroke-dasharray="4 4"/>`;
+  if(layer==='hooves'&&has('glitter'))[[96,194],[115,194],[193,194],[212,194]].forEach(([x,y],i)=>o+=star(x+(i%2?5:-4),y-7,3.4,'#fff6c8')+star(x-6,y-1,2.4,t.c));
+  if(layer==='head'&&has('bonnet'))o+=`<path d="M223,30 L222,7 L238,22 Z M230,26 L238,3 L249,22 Z" fill="${t.c}"/><path d="M226,31 C236,24 249,25 255,33 L250,39 C243,33 234,32 228,37 Z" fill="${t.c}"/>${[238,242,246,250].map(x=>`<circle cx="${x}" cy="${36+(x-238)*.2}" r="1.5" fill="${t.c2}"/>`).join('')}${motif(t.motif,240,14,3.5,t.c2)}`;
+  return o}
+
+/* ---------- barnyard animals ---------- */
+const ANIMALS={
+  goose:{n:'Gertrude',kind:'Goose',price:40,perk:'Lays eggs you can sell: +10 coins every level.',lines:['HONK!','Gertrude is chasing Poindexter again.','Gertrude guards the pond. Fiercely.','*suspicious goose stare*']},
+  donkey:{n:'Hank',kind:'Donkey',price:80,perk:'Keeps your horse calm at shows: +5 points every show.',lines:['HEE-HAW!','Hank leans on the fence for scratches.','Hank is best friends with every horse.','Hank flicks his giant ears at you.']},
+  pony:{n:'Peanut',kind:'Mini pony',price:120,perk:'Gives pony rides to visitors: +15 coins every level.',lines:['Peanut is small but mighty.','Peanut tries to eat your shoelace.','*tiny pony snort*','Peanut wants to be in charge of the barn.']}};
+const hasAnimal=a=>(S.animals||[]).includes(a);
+function donkeySVG(attrs=''){return`<svg ${attrs} viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hank the donkey">
+  <ellipse cx="80" cy="124" rx="58" ry="5" fill="rgba(35,18,8,.25)"/>
+  <path d="M32,62 C24,72 23,90 26,100" stroke="#6f6a66" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="103" rx="4" ry="7" fill="#3a3532"/>
+  <rect x="48" y="78" width="10" height="42" rx="4" fill="#6f6a66"/><rect x="100" y="78" width="10" height="42" rx="4" fill="#6f6a66"/>
+  <ellipse cx="72" cy="70" rx="44" ry="24" fill="#8e8984"/><ellipse cx="74" cy="84" rx="30" ry="9" fill="#e9e4dc"/>
+  <path d="M36,54 Q72,44 108,50" stroke="#5a5552" stroke-width="3" fill="none"/>
+  <rect x="38" y="78" width="11" height="44" rx="4" fill="#8e8984"/><rect x="92" y="78" width="11" height="44" rx="4" fill="#8e8984"/>
+  <g fill="#2e2a28"><rect x="37" y="117" width="13" height="6" rx="2"/><rect x="91" y="117" width="13" height="6" rx="2"/></g>
+  <path d="M100,62 L118,30 L134,40 L118,76 Z" fill="#8e8984"/><path d="M104,58 L120,30" stroke="#3a3532" stroke-width="5" stroke-linecap="round"/>
+  <path d="M121,31 L112,2 L128,25 Z" fill="#8e8984"/><path d="M120,24 L115,8 L124,22 Z" fill="#c9b9b0"/>
+  <path d="M129,28 L133,0 L139,27 Z" fill="#7d7874"/>
+  <ellipse cx="136" cy="47" rx="17" ry="13" fill="#8e8984" transform="rotate(22 136 47)"/>
+  <ellipse cx="146" cy="58" rx="11" ry="9" fill="#e9e4dc"/><circle cx="150" cy="57" r="1.8" fill="#3a3532"/>
+  <circle cx="135" cy="43" r="5" fill="#e9e4dc"/><circle cx="135" cy="43" r="2.6" fill="#1d130d"/><circle cx="136" cy="42" r=".9" fill="#fff"/>
+  </svg>`}
+function gooseSVG(attrs=''){return`<svg ${attrs} viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gertrude the goose">
+  <ellipse cx="42" cy="84" rx="26" ry="4" fill="rgba(35,18,8,.25)"/>
+  <g stroke="#f08a2c" stroke-width="3" stroke-linecap="round"><path d="M36,72 v10 h-5 M48,72 v10 h-5"/></g>
+  <path d="M12,54 C14,40 34,38 54,46 C66,52 66,72 48,76 C30,80 12,72 12,54 Z" fill="#fbf7ee"/><path d="M12,54 L4,48 L14,50 Z" fill="#fbf7ee"/>
+  <path d="M24,56 C32,52 44,54 50,60" stroke="#d9d4c7" stroke-width="3" fill="none"/>
+  <path d="M56,50 C60,40 60,28 64,20" stroke="#fbf7ee" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path d="M55,42 q6,4 11,0 l-3,6 Z" fill="#4a90d9"/>
+  <circle cx="66" cy="17" r="9" fill="#fbf7ee"/><path d="M73,13 L86,17 L73,21 Z" fill="#f08a2c"/><circle cx="68" cy="14" r="1.7" fill="#1d130d"/>
+  </svg>`}
+const ponySVG=(attrs='')=>horseSVG('peanut',{mane:'natural',pad:'none',saddle:'none',bridle:'none'},'',attrs);
+
+/* ---------- feed store ---------- */
+let storeTab='feed';
+function openFeedStore(){
+  openModal(`<div class="drive"><div class="road"></div><div class="truck">${TRUCK}</div><p class="hint">Driving to Hilltop Feed &amp; Tack…</p></div>`);
+  later(()=>{storeTab=S.feed<=0?'feed':storeTab;drawStore()},1500);
+}
+const TRUCK=`<svg viewBox="0 0 120 60"><rect x="8" y="22" width="70" height="22" rx="4" fill="#b8352a"/><path d="M78,22 h18 l14,12 v10 h-32 Z" fill="#b8352a"/><path d="M82,25 h12 l9,9 h-21 Z" fill="#bfe3f5"/><rect x="12" y="14" width="30" height="10" fill="#e2b450"/><circle cx="28" cy="46" r="8" fill="#2a2a2a"/><circle cx="28" cy="46" r="3" fill="#9aa0a6"/><circle cx="92" cy="46" r="8" fill="#2a2a2a"/><circle cx="92" cy="46" r="3" fill="#9aa0a6"/></svg>`;
+function drawStore(msg){
+  const coins=S.coins||0,tabs=[['feed','Feed'],['clothes','Clothes'],['adopt','Adoption board']];
+  let body='';
+  if(storeTab==='feed'){
+    body=`<div class="store-row"><div class="store-ico">${FEED_ICONS?`<svg viewBox="0 0 48 48">${FEED_ICONS.hay}</svg>`:''}</div><div><b>Feed bag</b><p>Hay and grain for one level. You have <b>${S.feed||0}</b> bag${S.feed===1?'':'s'}. Each level uses one.</p></div>
+      <button class="big-btn" id="buyFeed" ${coins>=15&&(S.feed||0)<6?'':'disabled'}>${COIN} 15</button></div>
+      <p class="store-note">${(S.feed||0)>=6?'The feed room is full.':''}${(S.feed||0)<=0&&coins<15?'':''}</p>`;
+    if((S.feed||0)<=0&&coins<15)body+=`<div class="store-row credit"><div><b>Ms. Alvarez says:</b><p>"Short on coins? Take a bag on me. Pay me back by taking good care of that horse."</p></div><button class="wood-btn" id="freeFeed">Take a free bag</button></div>`;
+  }
+  if(storeTab==='clothes'){
+    body=Object.keys(CLOTHES).map(t=>`<div class="opt-group"><h3>${CLOTHES[t].label}</h3><div class="chips">${Object.entries(CLOTHES[t].items).map(([id,it])=>{const k=t+':'+id;
+      if(ownsCloth(k))return`<button class="cbtn" disabled>${it.n} · owned</button>`;
+      if(it.earn)return`<button class="cbtn prize" disabled>${it.n} · ${it.earn.toLowerCase()}</button>`;
+      return`<button class="cbtn buy" data-cloth="${k}" ${coins>=it.p?'':'disabled'}>${it.n}${it.wx?' ('+WEATHER[it.wx].n.toLowerCase()+' days)':''} · ${COIN}${it.p}</button>`}).join('')}</div></div>`).join('')
+      +`<p class="store-note">Tap yourself on the barn map to change outfits.</p>`;
+  }
+  if(storeTab==='adopt'){
+    body=`<p>Rescue animals looking for a barn to call home:</p><div class="adopt">${Object.entries(ANIMALS).map(([k,a])=>`<div class="adopt-card"><div class="adopt-art">${k==='goose'?gooseSVG():k==='donkey'?donkeySVG():ponySVG()}</div><b>${a.n} the ${a.kind.toLowerCase()}</b><p>${a.perk}</p>${hasAnimal(k)?'<span class="lives">Lives at your barn</span>':`<button class="big-btn" data-adopt="${k}" ${coins>=a.price?'':'disabled'}>Adopt · ${COIN} ${a.price}</button>`}</div>`).join('')}</div>`;
+  }
+  setBody(`<div class="mg-head"><h2>Hilltop Feed &amp; Tack</h2><span class="shop-coins">${COIN} ${coins} coins</span></div>
+  <p class="hint">${esc(msg||'Ms. Alvarez waves from behind the counter. "What can I get you today?"')}</p>
+  <div class="tabs" role="tablist">${tabs.map(([k,n])=>`<button class="tab ${storeTab===k?'on':''}" data-tab="${k}" role="tab" aria-selected="${storeTab===k}">${n}</button>`).join('')}</div>
+  <div class="store-body">${body}</div><button class="wood-btn" id="storeDone" style="margin-top:12px">Drive home</button>`);
+  $$('.tab').forEach(b=>b.onclick=()=>{storeTab=b.dataset.tab;drawStore()});
+  $('#storeDone').onclick=closeModal;
+  const bf=$('#buyFeed');if(bf)bf.onclick=()=>{S.coins-=15;S.feed=(S.feed||0)+1;save();drawStore('One feed bag, loaded in the truck!')};
+  const ff=$('#freeFeed');if(ff)ff.onclick=()=>{S.feed=1;save();drawStore('Ms. Alvarez loads a bag into your truck with a wink.')};
+  $$('[data-cloth]').forEach(b=>b.onclick=()=>{const k=b.dataset.cloth,[t,id]=k.split(':'),p=CLOTHES[t].items[id].p;if((S.coins||0)<p)return;S.coins-=p;giveCloth(k);save();drawStore(`You bought the ${clothName(k).toLowerCase()} and put it on!`)});
+  $$('[data-adopt]').forEach(b=>b.onclick=()=>{const k=b.dataset.adopt,a=ANIMALS[k];if((S.coins||0)<a.price)return;S.coins-=a.price;S.animals=[...(S.animals||[]),k];save();confetti();drawStore(`${a.n} the ${a.kind.toLowerCase()} is riding home in the truck with you!`)});
+}
+
+/* ---------- wardrobe ---------- */
+function openWardrobe(){
+  const draw=()=>{const o=outfitOf();
+    return`<div class="mg-head"><h2>Wardrobe</h2></div><p class="hint">Pick what ${esc(S.name||'you')} wears. ${WEATHER[wx()].n} day${weatherGear()?`: your ${weatherGear().toLowerCase()} earns a weather bonus!`:wx()==='sunny'?'.':': '+WEATHER[wx()].tip.split('. ').pop()}</p>
+    <div class="tack"><div class="tack-preview wardrobe-prev">${girlSVG(S.skin)}<div class="nm">${esc(S.name||'You')}</div></div>
+    <div>${Object.keys(CLOTHES).map(t=>`<div class="opt-group"><h3>${CLOTHES[t].label}</h3><div class="chips">${Object.entries(CLOTHES[t].items).map(([id,it])=>{const k=t+':'+id,own=ownsCloth(k);
+      return own?`<button class="cbtn ${o[t]===id?'on':''}" data-w="${k}">${it.n}${it.wx?' '+wxIcon(it.wx):''}</button>`:`<button class="cbtn prize" disabled>${it.n} · ${it.earn?it.earn.toLowerCase():'feed store'}</button>`}).join('')}</div></div>`).join('')}
+    <button class="big-btn" id="wDone">Done</button></div></div>`};
+  const bind=()=>{$$('[data-w]').forEach(b=>b.onclick=()=>{const[t,id]=b.dataset.w.split(':');S.outfit=Object.assign(outfitOf(),{[t]:id});save();$('#mbody').innerHTML=draw();bind()});$('#wDone').onclick=closeModal};
+  openModal(draw());bind();
+}
+
+/* ---------- dogs ---------- */
+const DOGS={toast:{n:'Princess Toast',bio:'Pittie-pug rescue. Loves naps, snacks, socks, and being the boss. Hates baths.',games:[['catch','Treat catch'],['rubs','Belly rubs']]},
+  poin:{n:'Poindexter',bio:'Coonhound mutt rescue. World-class nose. Wears glasses for reading the barn mail.',games:[['sniff','Sniff search'],['rubs','Ear scratches']]}};
+function dogMenu(d){const D=DOGS[d];
+  openModal(`<div class="result"><div class="dog-big">${d==='toast'?toastSVG():poinSVG()}<div class="hearts" id="hearts"></div></div><h2>${D.n}</h2><p>${D.bio}</p>
+  <p class="eyebrow">${(S.dogPlayed||{})[d]===S.level?'Already played for coins this level. Play again just for fun!':'Play a game to earn coins'}</p>
+  <div class="btn-row">${D.games.map(([k,n])=>`<button class="${k==='rubs'?'wood-btn':'big-btn'}" data-dg="${k}">${n}</button>`).join('')}</div></div>`);
+  $$('[data-dg]').forEach(b=>b.onclick=()=>{const k=b.dataset.dg;
+    if(k==='rubs'){const h=$('#hearts');for(let i=0;i<6;i++){const s=document.createElement('span');s.textContent='♥';s.style.left=(20+Math.random()*60)+'%';s.style.animationDelay=(i*.12)+'s';h.appendChild(s);setTimeout(()=>s.remove(),1600)}
+      b.textContent=d==='toast'?'*happy snorts*':'*leg thump thump*';return}
+    k==='catch'?toastCatch():poinSniff()});
+}
+function dogReward(d,coins,line){const first=(S.dogPlayed||{})[d]!==S.level;if(first){S.dogPlayed=Object.assign({},S.dogPlayed,{[d]:S.level});S.coins=(S.coins||0)+coins}save();
+  setBody(`<div class="result"><div class="result-art" style="width:min(220px,60%)">${d==='toast'?toastSVG():poinSVG()}</div><h2>${line}</h2>${first?`<p class="coin-pop">${COIN} +${coins} coins</p>`:'<p>Just for fun this time. Coins come back next level.</p>'}<div class="btn-row"><button class="big-btn" id="again">Play again</button><button class="wood-btn" id="backBtn">Back to the barn</button></div></div>`);
+  $('#again').onclick=()=>d==='toast'?toastCatch():poinSniff();$('#backBtn').onclick=closeModal}
+
+function toastCatch(){
+  setOrOpen(`<div class="mg-head"><h2>Treat catch</h2><span class="shop-coins" id="tcs">0 treats</span></div>
+  <p class="hint">Drag, tap, or use the arrow keys to move Princess Toast. Catch treats and socks. Dodge the bath sponges!</p>
+  <div class="arena-wrap" id="tcw"><canvas id="tc" class="lead" aria-label="Treat catch game"></canvas><div class="callout" id="callout" hidden></div></div>
+  <div class="gaits" style="grid-template-columns:1fr 1fr"><button class="gait" data-g="walk" id="tl">◀ Left</button><button class="gait" data-g="trot" id="tr">Right ▶</button></div><p class="progress" id="tct">30 seconds</p>`);
+  const cv=$('#tc'),ctx=cv.getContext('2d'),wrap=$('#tcw');let W=0,Hh=0;
+  function size(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;Hh=Math.round(W*.6);cv.width=W*dpr;cv.height=Hh*dpr;cv.style.height=Hh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();window.addEventListener('resize',size);cleanups.push(()=>window.removeEventListener('resize',size));
+  const img=new Image();img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(toastSVG());
+  let tx=.5,px=.5,score=0,time=30,items=[],spawn=0,dir=0,done=false,hurt=0,last=performance.now(),raf;
+  const setX=e=>{const r=cv.getBoundingClientRect();tx=Math.max(.06,Math.min(.94,(e.clientX-r.left)/r.width))};
+  let drag=false;cv.addEventListener('pointerdown',e=>{drag=true;setX(e)});cv.addEventListener('pointermove',e=>{if(drag)setX(e)});['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{drag=false}));
+  const hold=(id,d)=>{const b=$(id);b.addEventListener('pointerdown',()=>{dir=d});['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{dir=0}))};hold('#tl',-1);hold('#tr',1);
+  const kd=e=>{if(e.key==='ArrowLeft'){dir=-1;e.preventDefault()}if(e.key==='ArrowRight'){dir=1;e.preventDefault()}},ku=e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight')dir=0};
+  document.addEventListener('keydown',kd);document.addEventListener('keyup',ku);cleanups.push(()=>{document.removeEventListener('keydown',kd);document.removeEventListener('keyup',ku)});
+  const callout=(t,k)=>{const c=$('#callout');if(!c)return;c.textContent=t;c.className='callout '+(k||'');c.hidden=false;clearTimeout(callout.t);callout.t=setTimeout(()=>{c.hidden=true},800)};
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+    if(!done){time-=dt;if(time<=0){done=true;later(()=>dogReward('toast',Math.min(15,Math.max(3,Math.floor(score/2))),`Princess Toast caught ${score} treats!`),700)}
+      if(dir)tx=Math.max(.06,Math.min(.94,tx+dir*dt*.9));px+=(tx-px)*Math.min(1,dt*10);
+      spawn-=dt;if(spawn<=0){spawn=.55-Math.min(.25,(30-time)*.008);const r=Math.random();items.push({x:.06+Math.random()*.88,y:-.05,vy:.32+Math.random()*.18+(30-time)*.008,t:r<.14?'sponge':r<.24?'sock':r<.62?'bone':'cheese'})}
+      items.forEach(it=>{it.y+=it.vy*dt;if(!it.gone&&it.y>.78&&it.y<.92&&Math.abs(it.x-px)<.09){it.gone=true;
+        if(it.t==='sponge'){score=Math.max(0,score-2);hurt=.6;callout('Ew, a bath sponge! -2','soft')}else{const v=it.t==='sock'?3:1;score+=v;if(v>1)callout('A sock! +3','good')}
+        $('#tcs').textContent=`${score} treats`}});items=items.filter(it=>!it.gone&&it.y<1.1);
+      $('#tct').textContent=`${Math.ceil(Math.max(0,time))} seconds`}
+    hurt=Math.max(0,hurt-dt);
+    ctx.fillStyle='#bba98c';ctx.fillRect(0,0,W,Hh);ctx.fillStyle='#a8977a';for(let i=0;i<8;i++)ctx.fillRect(0,i*Hh/8,W,2);
+    ctx.fillStyle='#d9b06a';ctx.fillRect(0,Hh*.88,W,Hh*.12);
+    items.forEach(it=>{const x=it.x*W,y=it.y*Hh,s=W*.022;
+      if(it.t==='bone'){ctx.fillStyle='#e8d2b0';ctx.fillRect(x-s,y-s*.3,s*2,s*.6);[[-1,-1],[-1,1],[1,-1],[1,1]].forEach(([a,b])=>{ctx.beginPath();ctx.arc(x+a*s,y+b*s*.35,s*.4,0,TAU);ctx.fill()})}
+      else if(it.t==='cheese'){ctx.fillStyle='#f6c84a';ctx.beginPath();ctx.moveTo(x-s,y+s*.6);ctx.lineTo(x+s,y+s*.6);ctx.lineTo(x+s,y-s*.6);ctx.closePath();ctx.fill();ctx.fillStyle='#d9a521';ctx.beginPath();ctx.arc(x+s*.4,y+s*.2,s*.2,0,TAU);ctx.fill()}
+      else if(it.t==='sock'){ctx.fillStyle='#f3eee6';ctx.fillRect(x-s*.5,y-s,s,s*1.4);ctx.fillRect(x-s*.5,y+s*.2,s*1.4,s*.7);ctx.fillStyle='#9a3226';ctx.fillRect(x-s*.5,y-s*.7,s,s*.25)}
+      else{ctx.fillStyle='#f6d34a';rrect(ctx,x-s,y-s*.6,s*2,s*1.2,s*.3);ctx.fill();ctx.fillStyle='#c9a52a';for(let k=0;k<4;k++){ctx.beginPath();ctx.arc(x-s*.5+k*s*.35,y-s*.1+(k%2)*s*.3,s*.12,0,TAU);ctx.fill()}}});
+    const dw=W*.2,dh=dw*100/130;if(img.complete&&img.naturalWidth){ctx.save();ctx.translate(px*W,Hh*.98-dh*.5);if(hurt)ctx.rotate(Math.sin(hurt*30)*.08);ctx.drawImage(img,-dw/2,-dh/2,dw,dh);ctx.restore()}
+    raf=requestAnimationFrame(frame)}
+  raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+function setOrOpen(html){if($('#modal').hidden)openModal(html);else setBody(html)}
+function poinSniff(){
+  let round=0,taps=0,hid=-1,found=false;const N=12,COLS=4;
+  const draw=()=>{hid=Math.floor(Math.random()*N);found=false;
+    setOrOpen(`<div class="mg-head"><h2>Sniff search</h2><div class="steps">${stepChips(['Round 1','Round 2','Round 3'],round)}</div>${poinSVG('class="mg-dog"')}</div>
+    <p class="hint" id="snh">Poindexter's squeaky duck is hidden under a hay bale. Tap a bale and he'll sniff to tell you if you're warm or cold.</p>
+    <div class="bales">${Array.from({length:N},(_,i)=>`<button class="bale" data-i="${i}" aria-label="Hay bale ${i+1}"><svg viewBox="0 0 60 40">${bale(2,2,56,36)}</svg></button>`).join('')}</div>`);
+    $$('.bale').forEach(b=>b.onclick=()=>{if(found||b.classList.contains('open'))return;taps++;const i=+b.dataset.i;b.classList.add('open');
+      const d=Math.abs(i%COLS-hid%COLS)+Math.abs(Math.floor(i/COLS)-Math.floor(hid/COLS));
+      if(d===0){found=true;b.innerHTML=`<svg viewBox="0 0 60 40"><ellipse cx="30" cy="26" rx="16" ry="10" fill="#f6d34a"/><circle cx="40" cy="16" r="8" fill="#f6d34a"/><path d="M47,16 l8,2 l-8,3 Z" fill="#f08a2c"/><circle cx="42" cy="14" r="1.5" fill="#1d130d"/></svg>`;
+        $('#snh').textContent=pick(['AROOOO! He found the squeaky duck!','*squeak squeak squeak* Found it!','Poindexter proudly parades the duck around.']);round++;
+        if(round>=3)later(()=>dogReward('poin',Math.max(4,18-taps),`Poindexter found the duck in ${taps} sniffs!`),1100);else later(draw,1300)}
+      else{b.innerHTML='<span class="empty">empty</span>';$('#snh').textContent=d===1?'*SNIFF SNIFF* Very warm! It is right next to this one!':d===2?'*sniff sniff* Getting warmer…':'*sniff…* Cold. Poindexter looks the other way.'}})};
+  draw();
+}
+
+/* ---------- trail rides ---------- */
+const FINDS={
+  berries:{n:'Wild blackberries',d:'A bush full of ripe berries. You share a few with {h}.',coins:5},
+  shoe:{n:'A lucky horseshoe',d:'An old horseshoe half-buried in the dirt. Lucky!',coins:10},
+  deer:{n:'A deer and her fawn',d:'They watch you quietly, then bound into the trees.'},
+  nest:{n:"A robin's nest",d:'Three tiny blue eggs. You ride past very gently.'},
+  creek:{n:'Creek crossing',d:'{h} splashes happily through the cool water.',coins:5},
+  apple:{n:'An old apple tree',d:'You pick an apple for {h}. Crunch!',coins:5},
+  fox:{n:'A red fox',d:'It trots along the stone wall, then vanishes.'},
+  owl:{n:'A sleepy owl',d:'It blinks at you from a hollow tree. Who? Who?'},
+  turtle:{n:'A box turtle',d:'Slow and steady, crossing the trail. You wait for it.'},
+  mushroom:{n:'A fairy ring',d:'A perfect circle of mushrooms. Magical!'},
+  wall:{n:'An old stone wall',d:'Built long ago by farmers. A great spot for a snack break.',coins:3},
+  flowers:{n:'Wildflower meadow',d:'You weave a flower crown and wear it home!',cloth:'hat:crown'},
+  picnic:{n:'A forgotten picnic basket',d:'A note says "Free to a good home." Inside is a rainbow sweater!',cloth:'shirt:sweater'},
+  treasure:{n:'Hidden treasure',d:'Tucked inside a hollow log…',acc:true}};
+const FIND_COL={berries:'#5b3a8a',shoe:'#9aa0a6',deer:'#a8742c',nest:'#6cc0ea',creek:'#4a90d9',apple:'#d8413c',fox:'#e8742c',owl:'#8a6a50',turtle:'#4f7d3b',mushroom:'#e8505b',wall:'#8d949a',flowers:'#ef6a9a',picnic:'#b8433a',treasure:'#f0c25a'};
+const trailOpen=()=>S.trailLevel!==S.level;
+function trailRide(){
+  if(!trailOpen())return say('girl','The trail is resting. We can ride out again next level!');
+  const H=HORSES[S.horse],hn=H.name,L=lookOf(S.horse),w=wx();
+  const pad=L.pad!=='none'?PADS[L.pad][0]:'#6b3a1f';
+  let pool=Object.keys(FINDS).filter(k=>k!=='treasure'&&!(FINDS[k].cloth&&ownsCloth(FINDS[k].cloth)));
+  const pickN=shuffle(pool).slice(0,accMissing(S.horse).length?4:5);if(accMissing(S.horse).length)pickN.push('treasure');
+  const spots=[];pickN.forEach(k=>{let p,t=0;do{p=[.18+Math.random()*.76,.1+Math.random()*.8];t++}while(t<200&&(spots.some(s=>Math.hypot(s.u-p[0],(s.v-p[1])*.66)<.18)||Math.hypot(p[0]-.06,(p[1]-.86)*.66)<.25));spots.push({k,u:p[0],v:p[1],found:false})});
+  if(spots.find(s=>s.k==='treasure')){const far=spots.reduce((a,b)=>Math.hypot(b.u-.06,b.v-.86)>Math.hypot(a.u-.06,a.v-.86)?b:a);const t=spots.find(s=>s.k==='treasure');[t.u,t.v,far.u,far.v]=[far.u,far.v,t.u,t.v]}
+  openModal(`<div class="mg-head"><h2>Trail ride on ${esc(hn)}</h2><span class="shop-coins" id="trc">0 / ${spots.length} found</span></div>
+  <p class="hint" id="trh">Tap or drag to ride. Sparkles appear when you get close to something. Ride back to the gate when you're done.</p>
+  <div class="arena-wrap" id="trw"><canvas id="trcv" class="lead" aria-label="Trail map"></canvas><div class="find-card" id="findCard" hidden></div></div>
+  <button class="wood-btn" id="trHome" style="margin-top:10px">Head home</button>`);
+  const cv=$('#trcv'),ctx=cv.getContext('2d'),wrap=$('#trw');let W=0,Hh=0;
+  function size(){const dpr=Math.min(2,window.devicePixelRatio||1);W=wrap.clientWidth;Hh=Math.round(W*.66);cv.width=W*dpr;cv.height=Hh*dpr;cv.style.height=Hh+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();window.addEventListener('resize',size);cleanups.push(()=>window.removeEventListener('resize',size));
+  const trees=[];for(let i=0;i<70;i++){const u=Math.random(),v=Math.random();if(Math.hypot(u-.06,(v-.86)*.66)<.12)continue;if(spots.some(s=>Math.hypot(s.u-u,(s.v-v)*.66)<.07))continue;trees.push([u,v,.018+Math.random()*.02,Math.random()<.3])}
+  const creekY=u=>.42+Math.sin(u*7)*.07;
+  const puddles=w==='rainy'?Array.from({length:7},()=>[Math.random(),Math.random()]):[];
+  const fx=Array.from({length:90},()=>[Math.random(),Math.random(),Math.random()]);
+  let hx=.06,hy=.86,tx=hx,ty=hy,ang=-.6,drag=false,paused=false,results=[],ended=false,hintT=0,last=performance.now(),raf;
+  const setT=e=>{const r=cv.getBoundingClientRect();tx=Math.max(.02,Math.min(.98,(e.clientX-r.left)/r.width));ty=Math.max(.03,Math.min(.97,(e.clientY-r.top)/r.height))};
+  cv.addEventListener('pointerdown',e=>{if(paused)return;drag=true;try{cv.setPointerCapture(e.pointerId)}catch(_){}setT(e)});cv.addEventListener('pointermove',e=>{if(drag&&!paused)setT(e)});['pointerup','pointercancel'].forEach(ev=>cv.addEventListener(ev,()=>{drag=false}));
+  const card=$('#findCard');
+  function discover(s){paused=true;s.found=true;const F=FINDS[s.k];let reward='',title=F.n.replace('{h}',hn),desc=F.d.replace('{h}',hn);
+    const newJ=!(S.journal||[]).includes(s.k);if(newJ)S.journal=[...(S.journal||[]),s.k];
+    if(F.coins){S.coins=(S.coins||0)+F.coins;reward=`+${F.coins} coins`}
+    if(F.cloth){giveCloth(F.cloth);reward=`New outfit: ${clothName(F.cloth)}!`}
+    if(F.acc){const miss=accMissing(S.horse);if(miss.length){const k=pick(miss);const bonus=giveAcc(S.horse,k);desc+=` It's ${hn}'s ${accName(S.horse,k).toLowerCase()}!${bonus}`;reward=`Collection: ${accOwned(S.horse).length} / 4`}else{S.coins=(S.coins||0)+15;reward='+15 coins'}}
+    save();results.push({title,reward});
+    card.innerHTML=`<div class="fc-ico" style="background:${FIND_COL[s.k]}"><svg viewBox="0 0 24 24">${star(12,12,10,'#fffaf0')}</svg></div><div><b>${esc(title)}</b><p>${esc(desc)}</p>${reward?`<p class="coin-pop">${esc(reward)}</p>`:''}${newJ?'<p class="eyebrow">New in your trail journal!</p>':''}<button class="big-btn" id="fcGo">Keep riding</button></div>`;
+    card.hidden=false;$('#trc').textContent=`${spots.filter(x=>x.found).length} / ${spots.length} found`;
+    $('#fcGo').onclick=()=>{card.hidden=true;paused=false;if(spots.every(x=>x.found))$('#trh').textContent='You found everything! Ride back to the gate in the corner.'}}
+  function finish(){if(ended)return;ended=true;S.trailLevel=S.level;save();
+    const J=(S.journal||[]).length,T=Object.keys(FINDS).length;
+    setBody(`<div class="result"><h2>Home from the trail</h2><div class="result-art" style="width:min(320px,80%)">${horseSVG(S.horse,lookOf(S.horse))}</div>
+    ${results.length?`<ul class="judge">${results.map(r=>`<li class="ok"><b>★</b><span>${esc(r.title)}${r.reward?' · '+esc(r.reward):''}</span></li>`).join('')}</ul>`:'<p>A quiet, peaceful ride. Sometimes that is the best kind.</p>'}
+    <p class="score-line">Trail journal: ${J} / ${T} discoveries</p><button class="big-btn" id="backBtn">Back to the barn</button></div>`);$('#backBtn').onclick=closeModal}
+  $('#trHome').onclick=finish;
+  function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+    if(!paused&&!ended){const dx=(tx-hx)*W,dy=(ty-hy)*Hh,dist=Math.hypot(dx,dy);let sp=W*.12*(w==='rainy'||w==='snowy'?.72:1);
+      if(puddles.some(p=>Math.hypot((p[0]-hx)*W,(p[1]-hy)*Hh)<W*.04))sp*=.5;
+      if(Math.abs(hy-creekY(hx))<.03)sp*=.7;
+      if(dist>2){const st=Math.min(dist,sp*dt);hx+=dx/dist*st/W;hy+=dy/dist*st/Hh;ang+=angDiff(Math.atan2(dy,dx),ang)*Math.min(1,dt*8)}
+      spots.forEach(s=>{if(!s.found&&Math.hypot((s.u-hx)*W,(s.v-hy)*Hh)<W*.035)discover(s)});
+      if(spots.some(s=>s.found)&&Math.hypot((hx-.06)*W,(hy-.86)*Hh)<W*.04&&Math.hypot((tx-.06)*W,(ty-.86)*Hh)<W*.06)finish();
+      hintT+=dt;if(hintT>9){hintT=0;const un=spots.filter(s=>!s.found);if(un.length){const n=un.reduce((a,b)=>Math.hypot(b.u-hx,b.v-hy)<Math.hypot(a.u-hx,a.v-hy)?b:a);
+        const dirs=Math.abs(n.u-hx)>Math.abs(n.v-hy)?(n.u>hx?'east':'west'):(n.v>hy?'south':'north');$('#trh').textContent=`${hn}'s ears perk up toward the ${dirs}…`}}}
+    draw(now);raf=requestAnimationFrame(frame)}
+  function draw(now){
+    const g=w==='snowy'?'#e8eef2':w==='hot'?'#a3c26a':'#86b862';ctx.fillStyle=g;ctx.fillRect(0,0,W,Hh);
+    ctx.fillStyle=w==='snowy'?'#d6e0e6':'#79aa58';for(let i=0;i<40;i++){const a=fx[i];ctx.fillRect(a[0]*W,a[1]*Hh,3,3)}
+    ctx.strokeStyle=w==='snowy'?'#9cc6e0':'#5aa6d8';ctx.lineWidth=W*.028;ctx.beginPath();for(let u=0;u<=1.001;u+=.02){const x=u*W,y=creekY(u)*Hh;u?ctx.lineTo(x,y):ctx.moveTo(x,y)}ctx.stroke();
+    ctx.strokeStyle='rgba(255,255,255,.4)';ctx.lineWidth=2;ctx.stroke();
+    ctx.strokeStyle=w==='snowy'?'#cdbba0':'#c9a274';ctx.lineWidth=W*.03;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(.06*W,.86*Hh);ctx.bezierCurveTo(.3*W,.95*Hh,.35*W,.55*Hh,.55*W,.6*Hh);ctx.bezierCurveTo(.8*W,.65*Hh,.92*W,.3*Hh,.7*W,.15*Hh);ctx.bezierCurveTo(.5*W,.05*Hh,.2*W,.2*Hh,.18*W,.45*Hh);ctx.stroke();
+    puddles.forEach(p=>{ctx.fillStyle='rgba(90,130,160,.55)';ctx.beginPath();ctx.ellipse(p[0]*W,p[1]*Hh,W*.035,W*.018,0,0,TAU);ctx.fill()});
+    ctx.fillStyle='#8a5a36';ctx.fillRect(.02*W,.8*Hh,4,Hh*.12);ctx.fillRect(.1*W,.8*Hh,4,Hh*.12);ctx.fillRect(.02*W,.8*Hh,.08*W+4,5);
+    ctx.fillStyle='#3d2517';ctx.font=`800 ${Math.max(10,W*.016)}px Nunito, sans-serif`;ctx.textAlign='center';ctx.fillText('GATE',.06*W+2,.78*Hh);
+    spots.forEach(s=>{if(s.found){ctx.fillStyle='rgba(255,255,255,.6)';ctx.beginPath();ctx.arc(s.u*W,s.v*Hh,5,0,TAU);ctx.fill();return}
+      const d=Math.hypot((s.u-hx)*W,(s.v-hy)*Hh);if(d<W*.22){const a=Math.max(0,1-d/(W*.22)),t=now/300;ctx.globalAlpha=a;for(let k=0;k<4;k++){const r=6+((t+k*.8)%3)*5;ctx.strokeStyle='#fff6c8';ctx.lineWidth=2;ctx.beginPath();ctx.arc(s.u*W,s.v*Hh,r,0,TAU);ctx.stroke()}ctx.globalAlpha=1}});
+    trees.forEach(([u,v,r,pine])=>{const x=u*W,y=v*Hh,R=r*W;ctx.fillStyle='rgba(20,40,10,.25)';ctx.beginPath();ctx.ellipse(x+R*.3,y+R*.5,R,R*.6,0,0,TAU);ctx.fill();
+      ctx.fillStyle=w==='snowy'?(pine?'#3f6b4a':'#9fb8a8'):pine?'#2f5d36':w==='hot'?'#6e9a3e':'#4f7d3b';ctx.beginPath();ctx.arc(x,y,R,0,TAU);ctx.fill();
+      ctx.fillStyle=w==='snowy'?'#fff':pine?'#3f7546':'#5f9148';ctx.beginPath();ctx.arc(x-R*.3,y-R*.3,R*.45,0,TAU);ctx.fill()});
+    const sc=Math.max(.75,W/560);drawHorseTop(ctx,hx*W,hy*Hh,ang,sc,H,pad,'#26262c',0);
+    ctx.save();ctx.translate(hx*W,hy*Hh);ctx.rotate(ang);ctx.scale(sc,sc);ctx.fillStyle='#2b1c16';ctx.beginPath();ctx.ellipse(-6,0,6,3,0,0,TAU);ctx.fill();ctx.restore();
+    if(w==='rainy'){ctx.strokeStyle='rgba(200,225,245,.55)';ctx.lineWidth=1.2;fx.forEach(([a,b,c])=>{const y=((b*Hh+now*.4*(1+c))%Hh),x=a*W;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-4,y+12);ctx.stroke()})}
+    if(w==='snowy'){ctx.fillStyle='#fff';fx.forEach(([a,b,c])=>{const y=((b*Hh+now*.05*(1+c))%Hh),x=a*W+Math.sin(now/600+c*9)*6;ctx.beginPath();ctx.arc(x,y,1.5+c*1.5,0,TAU);ctx.fill()})}
+    if(w==='hot'){const gr=ctx.createRadialGradient(W*.95,0,0,W*.95,0,W*.5);gr.addColorStop(0,'rgba(255,220,120,.45)');gr.addColorStop(1,'rgba(255,220,120,0)');ctx.fillStyle=gr;ctx.fillRect(0,0,W,Hh)}
+    if(w==='windy'){ctx.fillStyle='#d9a521';fx.slice(0,14).forEach(([a,b,c])=>{const x=((a*W+now*.15*(1+c))%W),y=b*Hh+Math.sin(now/300+c*7)*8;ctx.save();ctx.translate(x,y);ctx.rotate(now/200+c);ctx.fillRect(-3,-1.5,6,3);ctx.restore()})}
+  }
+  raf=requestAnimationFrame(frame);cleanups.push(()=>cancelAnimationFrame(raf));
+}
+
 /* ---------- tack room shop ---------- */
 const PRICE={mane:{buttons:40,ribbons:60,flowers:70,curly:70,rainbow:90},pad:{sky:40,sunflower:70},saddle:{western:120},bridle:{sparkle:80},wraps:{strawberry:60}};
 function openTack(msg){
-  let hint=msg||'Dress up your horse, or spend coins on something new. Every chore star earns 10 coins.';
+  let hint=msg||'Dress up your horse, or spend coins on something new. Items marked prize only can be won by leveling up, never bought.';
   const draw=()=>{const L=lookOf(S.horse),H=HORSES[S.horse],coins=S.coins||0;
     const chip=(t,id,label,on,extra='')=>{
       if(owns(t,id))return`<button class="cbtn ${on?'on':''}" data-t="${t}" data-id="${id}" ${on?'aria-pressed="true"':''}>${extra}${label}</button>`;
       if(t==='horse')return`<button class="cbtn" disabled>${extra}${label} · level prize</button>`;
-      const pr=PRICE[t][id];return`<button class="cbtn buy" data-buy="${t}:${id}" ${coins>=pr?'':'disabled'} aria-label="Buy ${label} for ${pr} coins">${extra}${label} · ${COIN}${pr}</button>`};
+      const pr=PRICE[t]&&PRICE[t][id];if(!pr)return`<button class="cbtn prize" disabled>${extra}${label} · prize only</button>`;return`<button class="cbtn buy" data-buy="${t}:${id}" ${coins>=pr?'':'disabled'} aria-label="Buy ${label} for ${pr} coins">${extra}${label} · ${COIN}${pr}</button>`};
     const groups=[
-      ['Horse',Object.keys(HORSES).map(id=>chip('horse',id,HORSES[id].name,S.horse===id,`<span class="sw" style="background:${HORSES[id].coat}"></span>`)).join('')],
+      ['Horse',Object.keys(HORSES).filter(id=>!HORSES[id].mini).map(id=>chip('horse',id,HORSES[id].name,S.horse===id,`<span class="sw" style="background:${HORSES[id].coat}"></span>`)).join('')],
       ['Hairstyle',Object.keys(MANES).map(id=>chip('mane',id,MANES[id],L.mane===id)).join('')],
       ...Object.keys(TACK).map(t=>[TACK[t].label,Object.keys(TACK[t].items).map(id=>chip(t,id,TACK[t].items[id],L[t]===id,PADS[id]&&t==='pad'?`<span class="sw" style="background:${PADS[id][0]}"></span>`:'')).join('')])];
     return`<div class="mg-head"><h2>Tack room</h2><span class="shop-coins">${COIN} ${coins} coins</span></div><p class="hint">${esc(hint)}</p>
     <div class="tack"><div class="tack-preview">${horseSVG(S.horse,L)}<div class="nm">${esc(H.name)}</div><p class="ds">${H.desc}</p></div>
-    <div>${groups.map(([h,c])=>`<div class="opt-group"><h3>${h}</h3><div class="chips">${c}</div></div>`).join('')}<button class="big-btn" id="tackDone">Done</button></div></div>`};
+    <div>${groups.map(([h,c])=>`<div class="opt-group"><h3>${h}</h3><div class="chips">${c}</div></div>`).join('')}${HORSE_THEME[S.horse]?`<div class="opt-group"><h3>${H.name}'s collection · ${accOwned(S.horse).length} / 4</h3><div class="chips">${ACC_KINDS.map(([k,l])=>accOwned(S.horse).includes(k)?`<button class="cbtn ${((S.accOn||{})[S.horse]||[]).includes(k)?'on':''}" data-acc="${k}">${accName(S.horse,k)}</button>`:`<button class="cbtn prize" disabled>Mystery ${l} · trail or show</button>`).join('')}</div><p class="store-note">Each horse has 4 to collect. ${ownedHorses().filter(i=>HORSE_THEME[i]).map(i=>`${HORSES[i].name} ${accOwned(i).length}/4`).join(' · ')}</p></div>`:''}<button class="big-btn" id="tackDone">Done</button></div></div>`};
   const bind=()=>{
     $$('.cbtn[data-t]').forEach(b=>b.onclick=()=>{const t=b.dataset.t,id=b.dataset.id;
       if(t==='horse')S.horse=id;else{const l=lookOf(S.horse);l[t]=id;if(t==='saddle'&&id!=='none'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l}
@@ -1125,10 +1711,15 @@ function openTack(msg){
     $$('.cbtn[data-buy]').forEach(b=>b.onclick=()=>{const[t,id]=b.dataset.buy.split(':'),pr=PRICE[t][id];if((S.coins||0)<pr)return;
       S.coins-=pr;S.owned.push(t+':'+id);const l=lookOf(S.horse);l[t]=id;if(t==='saddle'&&l.pad==='none')l.pad='barnred';S.looks[S.horse]=l;save();
       hint=`You bought ${t==='mane'?'the '+MANES[id]+' hairstyle':'the '+TACK[t].items[id]+' '+TACK[t].label.toLowerCase()}! ${HORSES[S.horse].name} is trying it on.`;redraw()});
+    $$('[data-acc]').forEach(b=>b.onclick=()=>{const k=b.dataset.acc;S.accOn=S.accOn||{};const on=S.accOn[S.horse]||[];S.accOn[S.horse]=on.includes(k)?on.filter(x=>x!==k):[...on,k];save();redraw()});
     $('#tackDone').onclick=closeModal};
   const redraw=()=>{$('#mbody').innerHTML=draw();bind()};
   openModal(draw());bind();
 }
+$('#trailBtn').onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go('trail')};
+$('#feedBtn').onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go('feed')};
+$('#wardBtn').onclick=()=>openWardrobe();
+$('#showBtn').onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go('show')};
 $('#tackBtn').onclick=()=>{$('#scene').scrollIntoView({behavior:'smooth',block:'nearest'});go('tack')};
 
 /* ---------- welcome ---------- */
